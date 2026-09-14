@@ -1,106 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080808">
-<meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'">
-<title>Mini Vestaboard</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Switch Test</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    #screen {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+
+    #header {
+      padding-top: 35px;
+      font-size: 22px;
+    }
+
+    #clock {
+      margin-top: 30px;
+      font-size: 72px;
+      font-weight: bold;
+    }
+
+    #date {
+      margin-top: 8px;
+      font-size: 22px;
+      color: #bbb;
+    }
+
+    #status {
+      margin: 30px auto 0 auto;
+      width: 80%;
+      padding: 15px;
+      background: #222;
+      border-radius: 12px;
+      font-size: 18px;
+    }
+
+    .button {
+      display: inline-block;
+      margin: 25px 10px 0 10px;
+      padding: 18px 28px;
+      background: #eee;
+      color: #111;
+      border-radius: 10px;
+      font-size: 20px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #counter {
+      margin-top: 25px;
+      font-size: 20px;
+    }
+
+    #footer {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
 </head>
-<body class="display">
-<main id="board" class="board-shell" role="img" aria-label="Mini split-flap display"></main>
-<footer id="toolbar" class="board-toolbar">
-  <span id="mode-status" class="status" role="status">Daily messages</span><br>
-  <button id="start">Fullscreen / sound</button>
-  <button id="pause" class="secondary">Pause</button>
-  <button id="settings-button" class="secondary">Settings &amp; modes</button>
-  <button id="alarm-snooze" class="hidden">Snooze 5 min</button>
-  <button id="alarm-dismiss" class="secondary hidden">Dismiss alarm</button>
-</footer>
-<section id="settings" class="hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
-<div class="settings-inner">
-  <button id="close-settings" class="secondary">Back to board</button>
-  <h1 id="settings-title">Make it yours</h1>
-  <h2>Choose a mode</h2>
-  <button id="normal">Daily messages</button>
-  <button id="focus">Start / restart focus</button>
-  <button id="breathe">Start breathing</button>
-  <button id="ambient-mode">Ambient colors</button>
-  <p class="hint">Focus: 25 minutes, then a 5-minute break. Breathing: 2 minutes, with 4 seconds in and 6 seconds out. Breathe comfortably at your own pace. Choosing a mode replaces the current session.</p>
-  <p class="hint">Tap the board for Pause / Resume. Timers keep elapsed time if the tablet sleeps, but cannot wake it or guarantee a sound while asleep. Reloading ends the session.</p>
-  <h2>Appearance</h2>
-  <label>Brightness: <span id="brightness-value">100%</span>
-    <input id="brightness" type="range" min="20" max="100" step="5">
-  </label>
-  <p class="hint">Changes the board's appearance, not the tablet backlight. Night mode dims it further from 10 PM to 6 AM. Settings stay readable.</p>
-  <label>Animation speed
-    <select id="speed"><option value="slow">Slow</option><option value="normal">Normal</option><option value="quick">Quick</option></select>
-  </label>
-  <label>Message color pattern
-    <select id="pattern"><option value="corners">Original colored corners</option><option value="border">Colored border</option><option value="rainbow">Rainbow top &amp; bottom</option><option value="none">No accents</option></select>
-  </label>
-  <label>Color scenes between messages
-    <select id="ambient"><option value="off">Off</option><option value="rainbow">Rainbow</option><option value="seasonal">Seasonal colors</option><option value="wave">Rainbow wave</option><option value="checker">Checkerboard</option><option value="diamond">Diamond</option><option value="heart">Pixel hearts</option><option value="chase">Chasing border</option></select>
-  </label>
-  <p class="hint">Color scenes last 12 seconds after each regular five-scene cycle. Seasonal palettes follow the calendar month. Ambient mode uses rainbow when this option is Off.</p>
-  <h2>Sound</h2>
-  <label><input id="sound" type="checkbox">Mechanical flap clicks</label>
-  <label><input id="chime" type="checkbox">Chime when focus or break ends</label>
-  <label>Volume<input id="volume" type="range" min="0" max="0.4" step="0.01"></label>
-  <button id="test-sound">Test sound</button>
-  <p class="hint">Flap sounds are softer after 5 PM, and regular sounds and focus chimes are off from 10 PM to 6 AM. An enabled alarm can still sound during quiet hours. Tap Fullscreen / sound after reloading. Breathing and ambient scenes stay quiet.</p>
-  <p id="save-status" class="status" role="status"></p>
-  <h2>Alarm clock</h2>
-  <div class="editor">
-    <label><input id="alarm-enabled" type="checkbox">Alarm enabled</label>
-    <label>Alarm time<input id="alarm-time" type="time" value="07:00"></label>
-    <label>Repeat
-      <select id="alarm-repeat"><option value="daily">Every day</option><option value="weekdays">Weekdays</option><option value="weekends">Weekends</option><option value="once">One time</option></select>
-    </label>
-    <label>Alarm message<input id="alarm-message" type="text" maxlength="80" value="GOOD MORNING"></label>
-    <label><input id="alarm-sound" type="checkbox" checked>Play alarm sound</label>
-    <button id="save-alarm" type="button">Save alarm</button>
-    <button id="test-alarm" type="button" class="secondary">Preview alarm</button>
-    <p id="alarm-status" class="status" role="status">Alarm is off.</p>
+
+<body>
+
+<div id="screen">
+
+  <div id="header">
+    NINTENDO SWITCH WEB TEST
   </div>
-  <p class="hint">For the alarm to ring, leave this page open, tap Fullscreen / sound once, keep the tablet's media volume on, and leave the tablet plugged in. A browser cannot wake a fully sleeping or closed tablet.</p>
-  <h2>Program a message on this tablet</h2>
-  <div class="editor">
-    <label>Your message
-      <textarea id="custom-message" maxlength="180" placeholder="TYPE YOUR MESSAGE HERE" autocapitalize="characters" autocomplete="off" spellcheck="false"></textarea>
-    </label>
-    <div class="symbol-picker" aria-label="Add a board symbol">
-      <button type="button" data-symbol="☺" aria-label="Happy face">☺</button><button type="button" data-symbol="☻" aria-label="Funny face">☻</button><button type="button" data-symbol="♥" aria-label="Heart">♥</button><button type="button" data-symbol="★" aria-label="Star">★</button><button type="button" data-symbol="☀" aria-label="Sun">☀</button><button type="button" data-symbol="☾" aria-label="Moon">☾</button><button type="button" data-symbol="⚡" aria-label="Energy">⚡</button><button type="button" data-symbol="✓" aria-label="You did it">✓</button><button type="button" data-symbol="✦" aria-label="Sparkle">✦</button><button type="button" data-symbol="✌" aria-label="Peace sign">✌</button><button type="button" data-symbol="♪" aria-label="Music">♪</button><button type="button" data-symbol="☕" aria-label="Coffee">☕</button>
-    </div>
-    <div id="custom-preview" class="message-preview" aria-label="Message preview"></div>
-    <p id="custom-fit" class="hint">Fits the board · 22 columns × 6 rows</p>
-    <label>Show it now for
-      <select id="custom-duration"><option value="5">5 minutes</option><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="60">1 hour</option><option value="0">Until I end it</option></select>
-    </label>
-    <div class="button-row">
-      <button id="show-custom" type="button">Show now</button>
-      <button id="end-custom" type="button" class="secondary">Return to schedule</button>
-    </div>
-    <label>Or add it to the regular rotation
-      <select id="custom-period"><option value="anytime">Any time</option><option value="morning">Morning · 6 AM–noon</option><option value="afternoon">Afternoon · noon–5 PM</option><option value="evening">Evening · 5–10 PM</option><option value="night">Night · 10 PM–6 AM</option></select>
-    </label>
-    <button id="save-custom" type="button">Save to rotation</button>
-    <p id="custom-status" class="status" role="status"></p>
+
+  <div id="clock">
+    --:--
   </div>
-  <h2>Saved messages</h2>
-  <div id="saved-messages"></div>
-  <button id="clear-saved" type="button" class="secondary">Delete all saved messages</button>
-  <p class="hint">Saved messages join the built-in slides during their chosen time. You can delete them individually below. They are stored only in this browser on this tablet.</p>
-  <h2>Privacy &amp; offline</h2>
-  <p id="offline-status" class="hint">Checking offline support…</p>
-  <p class="hint">The app stores appearance choices and your programmed messages only in this tablet's browser. It does not use accounts, location, contacts, calendars, or a cloud database. Clearing this browser's website data also clears your saved messages.</p>
-  <p class="hint">Version 5 local · Controls hide after six seconds. Tap the board to bring them back.</p>
+
+  <div id="date">
+    Loading...
+  </div>
+
+  <div id="status">
+    If you can read this, HTML and CSS are working.
+  </div>
+
+  <div>
+    <span class="button" onclick="testButton()">
+      TOUCH TEST
+    </span>
+
+    <span class="button" onclick="changeBackground()">
+      COLOR TEST
+    </span>
+  </div>
+
+  <div id="counter">
+    Button presses: 0
+  </div>
+
+  <div id="footer">
+    Switch Dashboard Compatibility Test v1
+  </div>
+
 </div>
-</section>
-<noscript>Enable JavaScript to show the board.</noscript>
-<script src="content.js"></script>
-<script src="app.js"></script>
+
+<script>
+
+var presses = 0;
+var dark = true;
+
+function updateClock() {
+
+  var now = new Date();
+
+  var hours = now.getHours();
+  var minutes = now.getMinutes();
+
+  var suffix = "AM";
+
+  if (hours >= 12) {
+    suffix = "PM";
+  }
+
+  if (hours > 12) {
+    hours = hours - 12;
+  }
+
+  if (hours === 0) {
+    hours = 12;
+  }
+
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+
+  document.getElementById("clock").innerHTML =
+    hours + ":" + minutes + " " + suffix;
+
+  document.getElementById("date").innerHTML =
+    now.toDateString();
+}
+
+function testButton() {
+
+  presses = presses + 1;
+
+  document.getElementById("counter").innerHTML =
+    "Button presses: " + presses;
+
+  document.getElementById("status").innerHTML =
+    "JavaScript + touchscreen working!";
+}
+
+function changeBackground() {
+
+  if (dark === true) {
+
+    document.body.style.backgroundColor = "#243447";
+
+    document.getElementById("status").innerHTML =
+      "Dynamic CSS working!";
+
+    dark = false;
+
+  } else {
+
+    document.body.style.backgroundColor = "#111111";
+
+    document.getElementById("status").innerHTML =
+      "Background reset.";
+
+    dark = true;
+  }
+}
+
+updateClock();
+
+setInterval(updateClock, 1000);
+
+</script>
+
 </body>
 </html>
