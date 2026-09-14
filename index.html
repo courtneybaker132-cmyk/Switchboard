@@ -9,585 +9,2003 @@ initial-scale=1.0,
 maximum-scale=1.0,
 user-scalable=no">
 
-<title>Retro TV Arcade</title>
+<title>RetroVision 2.0</title>
 
 <style>
 
-html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#050505;
-    font-family:monospace;
-    -webkit-user-select:none;
-    user-select:none;
+/* =========================================================
+   RETROVISION 2.0
+   SWITCH BROADCAST EDITION
+========================================================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #050505;
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-#cabinet{
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    background:#070707;
-}
 
-#tv{
-    position:absolute;
-    left:3%;
-    top:2%;
-    width:94%;
-    height:89%;
-    background:#171717;
-    border-radius:24px;
+/* =========================================================
+   CABINET
+========================================================= */
 
-    box-shadow:
-        inset 0 0 0 4px #303030,
-        inset 0 0 0 10px #090909,
-        0 8px 25px rgba(0,0,0,.9);
-}
+#cabinet {
 
-#picture{
-    position:absolute;
-    left:2.2%;
-    top:3%;
-    width:95.6%;
-    height:88%;
-    background:#000;
-    border-radius:17px;
-    overflow:hidden;
-}
+    position: absolute;
 
-canvas{
-    display:block;
-    width:100%;
-    height:100%;
-    image-rendering:pixelated;
-}
+    left: 0;
+    top: 0;
 
-#scanlines{
-    pointer-events:none;
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    z-index:20;
+    width: 100%;
+    height: 100%;
 
     background:
+        #070707;
+}
+
+
+/* =========================================================
+   TV SHELL
+========================================================= */
+
+#television {
+
+    position: absolute;
+
+    left: 3%;
+    top: 2%;
+
+    width: 94%;
+    height: 89%;
+
+    border-radius: 24px;
+
+    background:
+        #191919;
+
+    box-shadow:
+
+        inset 0 0 0 4px #363636,
+
+        inset 0 0 0 10px #090909,
+
+        0 9px 26px
+        rgba(0,0,0,.95);
+}
+
+
+/* =========================================================
+   PICTURE
+========================================================= */
+
+#picture {
+
+    position: absolute;
+
+    left: 2.2%;
+    top: 3%;
+
+    width: 95.6%;
+    height: 88%;
+
+    border-radius: 17px;
+
+    overflow: hidden;
+
+    background: #000;
+}
+
+
+canvas {
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    image-rendering:
+        pixelated;
+}
+
+
+/* =========================================================
+   CRT EFFECTS
+========================================================= */
+
+#scanlines {
+
+    pointer-events: none;
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 20;
+
+    opacity: .34;
+
+    background:
+
     repeating-linear-gradient(
+
         to bottom,
+
         rgba(255,255,255,0),
+
         rgba(255,255,255,0) 2px,
-        rgba(0,0,0,.25) 3px,
-        rgba(0,0,0,.25) 4px
+
+        rgba(0,0,0,.28) 3px,
+
+        rgba(0,0,0,.28) 4px
     );
 }
 
-#vignette{
-    pointer-events:none;
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    z-index:21;
+
+#vignette {
+
+    pointer-events: none;
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 21;
+
+    border-radius: 17px;
 
     box-shadow:
-        inset 0 0 90px rgba(0,0,0,.85);
+
+        inset 0 0 100px
+        rgba(0,0,0,.88);
 }
 
-#glass{
-    pointer-events:none;
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    z-index:22;
+
+#glass {
+
+    pointer-events: none;
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 22;
 
     background:
+
         linear-gradient(
+
             120deg,
-            rgba(255,255,255,.05),
+
+            rgba(255,255,255,.055),
+
             rgba(255,255,255,0) 22%
         );
 }
 
-#osd{
-    position:absolute;
-    left:22px;
-    top:18px;
-    z-index:30;
-    color:#fff;
-    font-size:16px;
-    text-shadow:2px 2px #000;
-    opacity:.8;
+
+/* =========================================================
+   TV OSD
+========================================================= */
+
+#osd {
+
+    position: absolute;
+
+    left: 22px;
+    top: 18px;
+
+    z-index: 30;
+
+    color: white;
+
+    font-size: 15px;
+
+    text-shadow:
+        2px 2px #000;
 }
 
-#nowPlaying{
-    margin-top:4px;
-    font-size:12px;
-    color:#c5c5c5;
+
+#programName {
+
+    margin-top: 4px;
+
+    font-size: 11px;
+
+    color: #bbb;
 }
 
-#brand{
-    position:absolute;
-    left:30px;
-    bottom:17px;
-    color:#6f6f6f;
-    letter-spacing:3px;
-    font-size:12px;
+
+#episodeTimer {
+
+    position: absolute;
+
+    right: 22px;
+    top: 18px;
+
+    z-index: 30;
+
+    font-size: 12px;
+
+    color: #ccc;
+
+    text-shadow:
+        2px 2px #000;
 }
 
-#channel{
-    position:absolute;
-    right:28px;
-    bottom:16px;
-    color:#6f6f6f;
-    font-size:12px;
+
+/* =========================================================
+   CABINET LABELS
+========================================================= */
+
+#brand {
+
+    position: absolute;
+
+    left: 30px;
+    bottom: 17px;
+
+    z-index: 45;
+
+    font-size: 12px;
+
+    letter-spacing: 3px;
+
+    color: #777;
+
+    cursor: pointer;
 }
 
-#led{
-    position:absolute;
-    right:14px;
-    bottom:18px;
-    width:7px;
-    height:7px;
-    border-radius:8px;
-    background:#00d26a;
-    box-shadow:0 0 8px #00d26a;
+
+#channel {
+
+    position: absolute;
+
+    right: 28px;
+    bottom: 16px;
+
+    font-size: 12px;
+
+    color: #777;
 }
 
-#controls{
-    position:absolute;
-    left:50%;
-    bottom:20px;
-    width:680px;
-    margin-left:-340px;
-    text-align:center;
-    z-index:50;
-    padding:10px 0;
-    border-radius:13px;
-    background:rgba(0,0,0,.82);
-    opacity:0;
+
+#powerLed {
+
+    position: absolute;
+
+    right: 14px;
+    bottom: 18px;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 8px;
+
+    background: #00d26a;
+
+    box-shadow:
+        0 0 8px #00d26a;
 }
 
-.button{
-    display:inline-block;
-    padding:11px 15px;
-    margin:0 4px;
-    min-width:55px;
-    color:#fff;
-    background:#252525;
-    border:1px solid #555;
-    border-radius:8px;
-    font-size:13px;
-}
 
-.button:active{
-    background:#777;
-}
+/* =========================================================
+   CHANNEL STATIC
+========================================================= */
 
-#static{
-    display:none;
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    z-index:35;
+#static {
+
+    display: none;
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 38;
+
+    opacity: .86;
 
     background:
+
     repeating-linear-gradient(
+
         0deg,
+
         #111 0px,
-        #999 1px,
+
+        #aaa 1px,
+
         #222 2px,
+
         #777 3px,
+
         #000 4px
     );
-
-    opacity:.85;
 }
 
-#arcadeOverlay{
-    display:none;
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    z-index:33;
-    pointer-events:none;
+
+/* =========================================================
+   TAP CONTROLS
+========================================================= */
+
+#controls {
+
+    position: absolute;
+
+    z-index: 60;
+
+    left: 50%;
+    bottom: 20px;
+
+    width: 680px;
+
+    margin-left: -340px;
+
+    padding: 10px 0;
+
+    text-align: center;
+
+    border-radius: 13px;
+
+    background:
+        rgba(0,0,0,.86);
+
+    opacity: 0;
 }
 
-#arcadeTitle{
-    position:absolute;
-    top:20px;
-    left:0;
-    width:100%;
-    text-align:center;
-    color:#fff;
-    font-size:20px;
-    letter-spacing:3px;
-    text-shadow:2px 2px #000;
+
+.control {
+
+    display: inline-block;
+
+    min-width: 52px;
+
+    padding: 11px 14px;
+
+    margin: 0 4px;
+
+    border: 1px solid #555;
+
+    border-radius: 7px;
+
+    background: #252525;
+
+    color: white;
+
+    font-size: 13px;
 }
 
-#arcadeInfo{
-    position:absolute;
-    bottom:15px;
-    left:0;
-    width:100%;
-    text-align:center;
-    color:#fff;
-    font-size:13px;
-    text-shadow:2px 2px #000;
+
+.control:active {
+
+    background: #777;
 }
 
-#startScreen{
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    background:#000;
-    color:#fff;
-    z-index:100;
-    text-align:center;
+
+/* =========================================================
+   BOOT / RESUME
+========================================================= */
+
+#boot {
+
+    position: absolute;
+
+    z-index: 100;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: #000;
+
+    color: white;
+
+    text-align: center;
 }
 
-#startTitle{
-    margin-top:175px;
-    font-size:48px;
-    letter-spacing:10px;
+
+#bootLogo {
+
+    margin-top: 155px;
+
+    font-size: 45px;
+
+    letter-spacing: 9px;
 }
 
-#startSubtitle{
-    margin-top:20px;
-    font-size:17px;
-    color:#999;
+
+#bootEdition {
+
+    margin-top: 10px;
+
+    font-size: 13px;
+
+    color: #666;
+
+    letter-spacing: 3px;
 }
 
-#startSmall{
-    margin-top:30px;
-    font-size:12px;
-    color:#555;
+
+#bootAction {
+
+    margin-top: 60px;
+
+    font-size: 18px;
+
+    color: #aaa;
+}
+
+
+#bootDetail {
+
+    margin-top: 15px;
+
+    font-size: 12px;
+
+    color: #555;
+}
+
+
+/* =========================================================
+   SECRET ARCADE
+========================================================= */
+
+#arcadeMenu {
+
+    display: none;
+
+    position: absolute;
+
+    z-index: 90;
+
+    left: 5%;
+    top: 6%;
+
+    width: 90%;
+    height: 78%;
+
+    border: 2px solid #555;
+
+    border-radius: 15px;
+
+    background:
+        rgba(4,4,8,.97);
+
+    color: white;
+
+    text-align: center;
+}
+
+
+#arcadeMenu h1 {
+
+    margin: 24px 0 4px 0;
+
+    font-size: 27px;
+
+    letter-spacing: 4px;
+}
+
+
+#arcadeMenuSubtitle {
+
+    font-size: 11px;
+
+    color: #777;
+
+    margin-bottom: 20px;
+}
+
+
+.arcadeGame {
+
+    display: inline-block;
+
+    vertical-align: top;
+
+    width: 185px;
+    height: 95px;
+
+    margin: 7px;
+
+    border: 1px solid #555;
+
+    border-radius: 9px;
+
+    background: #151515;
+
+    color: white;
+}
+
+
+.arcadeGameTitle {
+
+    margin-top: 17px;
+
+    font-size: 15px;
+}
+
+
+.arcadeScore {
+
+    margin-top: 8px;
+
+    font-size: 11px;
+
+    color: #999;
+}
+
+
+#closeArcade {
+
+    margin-top: 16px;
+
+    font-size: 13px;
+
+    color: #aaa;
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+#settings {
+
+    display: none;
+
+    position: absolute;
+
+    z-index: 95;
+
+    left: 8%;
+    top: 8%;
+
+    width: 84%;
+    height: 72%;
+
+    border: 2px solid #555;
+
+    border-radius: 15px;
+
+    background:
+        rgba(5,5,8,.98);
+
+    color: white;
+
+    text-align: center;
+}
+
+
+#settings h2 {
+
+    margin-top: 25px;
+
+    letter-spacing: 4px;
+}
+
+
+.settingRow {
+
+    margin: 13px auto;
+
+    width: 80%;
+
+    padding: 12px;
+
+    background: #171717;
+
+    border-radius: 8px;
+}
+
+
+.settingButton {
+
+    display: inline-block;
+
+    padding: 9px 14px;
+
+    margin: 3px;
+
+    border: 1px solid #555;
+
+    border-radius: 6px;
+
+    background: #292929;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ARCADE HUD
+========================================================= */
+
+#arcadeHud {
+
+    display: none;
+
+    pointer-events: none;
+
+    position: absolute;
+
+    z-index: 50;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    color: white;
+}
+
+
+#arcadeHudTitle {
+
+    position: absolute;
+
+    left: 0;
+    top: 18px;
+
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 18px;
+
+    letter-spacing: 3px;
+}
+
+
+#arcadeHudScore {
+
+    position: absolute;
+
+    left: 22px;
+    bottom: 16px;
+
+    font-size: 13px;
+}
+
+
+#arcadeHudTime {
+
+    position: absolute;
+
+    right: 22px;
+    bottom: 16px;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   END OF BROADCAST
+========================================================= */
+
+#signoff {
+
+    display: none;
+
+    position: absolute;
+
+    z-index: 110;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: #020202;
+
+    text-align: center;
+
+    color: white;
+}
+
+
+#signoffTitle {
+
+    margin-top: 170px;
+
+    font-size: 40px;
+
+    letter-spacing: 7px;
+}
+
+
+#signoffText {
+
+    margin-top: 35px;
+
+    font-size: 15px;
+
+    color: #999;
+
+    line-height: 28px;
 }
 
 </style>
 </head>
 
+
 <body>
+
 
 <div id="cabinet">
 
-<div id="tv">
+
+<div id="television">
+
 
 <div id="picture">
 
-<canvas id="game"
+<canvas
+id="canvas"
 width="960"
-height="540"></canvas>
+height="540">
+</canvas>
 
 <div id="scanlines"></div>
+
 <div id="vignette"></div>
+
 <div id="glass"></div>
 
 <div id="static"></div>
 
+
 <div id="osd">
-RETRO TV
-<div id="nowPlaying">CH 01</div>
+
+RETROVISION
+
+<div id="programName">
+INITIALIZING
 </div>
 
-<div id="arcadeOverlay">
+</div>
 
-<div id="arcadeTitle">
+
+<div id="episodeTimer">
+19:00
+</div>
+
+
+<div id="arcadeHud">
+
+<div id="arcadeHudTitle">
 SECRET ARCADE
 </div>
 
-<div id="arcadeInfo">
-30 SECONDS
+<div id="arcadeHudScore">
+SCORE 0
+</div>
+
+<div id="arcadeHudTime">
+30
 </div>
 
 </div>
 
+
 </div>
 
-<div id="brand">
-RETROVISION
+
+<div
+id="brand">
+RETROVISION 2.0
 </div>
+
 
 <div id="channel">
-CH 01
+RV8
 </div>
 
-<div id="led"></div>
+
+<div id="powerLed"></div>
+
 
 </div>
+
 
 <div id="controls">
 
-<span class="button"
-onclick="previousScene()">◀</span>
+<span
+class="control"
+onclick="previousProgram()">
+◀
+</span>
 
-<span class="button"
+<span
+class="control"
 onclick="togglePause()"
-id="pauseButton">PAUSE</span>
+id="pauseControl">
+PAUSE
+</span>
 
-<span class="button"
-onclick="nextScene()">▶</span>
+<span
+class="control"
+onclick="nextProgram()">
+▶
+</span>
 
-<span class="button"
-onclick="toggleShuffle()"
-id="shuffleButton">SHUFFLE ON</span>
-
-<span class="button"
-onclick="toggleMode()"
-id="modeButton">AUTO TV</span>
-
-<span class="button"
-onclick="tryArcade()">
+<span
+class="control"
+onclick="launchCurrentGame()">
 PLAY
+</span>
+
+<span
+class="control"
+onclick="openSettings()">
+SETTINGS
 </span>
 
 </div>
 
-<div id="startScreen"
-onclick="startTV()">
 
-<div id="startTitle">
-RETRO TV
+<!-- =====================================================
+     SECRET ARCADE MENU
+===================================================== -->
+
+<div id="arcadeMenu">
+
+<h1>
+SECRET ARCADE
+</h1>
+
+<div id="arcadeMenuSubtitle">
+HOLD RETROVISION LOGO TO OPEN
 </div>
 
-<div id="startSubtitle">
+
+<div
+class="arcadeGame"
+onclick="startArcade('star')">
+
+<div class="arcadeGameTitle">
+STAR DEFENDER
+</div>
+
+<div
+class="arcadeScore"
+id="scoreStar">
+HI 0
+</div>
+
+</div>
+
+
+<div
+class="arcadeGame"
+onclick="startArcade('breakout')">
+
+<div class="arcadeGameTitle">
+CYBER BREAKOUT
+</div>
+
+<div
+class="arcadeScore"
+id="scoreBreakout">
+HI 0
+</div>
+
+</div>
+
+
+<div
+class="arcadeGame"
+onclick="startArcade('tennis')">
+
+<div class="arcadeGameTitle">
+PIXEL TENNIS
+</div>
+
+<div
+class="arcadeScore"
+id="scoreTennis">
+HI 0
+</div>
+
+</div>
+
+
+<div
+class="arcadeGame"
+onclick="startArcade('runner')">
+
+<div class="arcadeGameTitle">
+PIXEL RUNNER
+</div>
+
+<div
+class="arcadeScore"
+id="scoreRunner">
+HI 0
+</div>
+
+</div>
+
+
+<div
+id="closeArcade"
+onclick="closeArcadeMenu()">
+TAP HERE TO RETURN TO TV
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
+
+<div id="settings">
+
+<h2>
+RETROVISION SETTINGS
+</h2>
+
+
+<div class="settingRow">
+
+CRT EFFECT
+
+<div>
+
+<span
+class="settingButton"
+onclick="setCRT(true)">
+ON
+</span>
+
+<span
+class="settingButton"
+onclick="setCRT(false)">
+OFF
+</span>
+
+</div>
+
+</div>
+
+
+<div class="settingRow">
+
+PERFORMANCE
+
+<div>
+
+<span
+class="settingButton"
+onclick="setQuality('auto')">
+AUTO
+</span>
+
+<span
+class="settingButton"
+onclick="setQuality('high')">
+HIGH
+</span>
+
+<span
+class="settingButton"
+onclick="setQuality('low')">
+LOW
+</span>
+
+</div>
+
+</div>
+
+
+<div class="settingRow">
+
+PROGRAMMING
+
+<div>
+
+<span
+class="settingButton"
+onclick="setShuffle(true)">
+SHUFFLE
+</span>
+
+<span
+class="settingButton"
+onclick="setShuffle(false)">
+ORDERED
+</span>
+
+</div>
+
+</div>
+
+
+<div class="settingRow">
+
+<span
+class="settingButton"
+onclick="resetScores()">
+RESET HIGH SCORES
+</span>
+
+<span
+class="settingButton"
+onclick="closeSettings()">
+DONE
+</span>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     BOOT
+===================================================== -->
+
+<div
+id="boot"
+onclick="bootRetrovision()">
+
+<div id="bootLogo">
+RETROVISION
+</div>
+
+<div id="bootEdition">
+BROADCAST EDITION
+</div>
+
+<div id="bootAction">
 TAP TO START
 </div>
 
-<div id="startSmall">
-RETRO TV + SECRET ARCADE
+<div id="bootDetail">
+LOADING RV8 BROADCAST NETWORK
 </div>
 
 </div>
 
+
+<!-- =====================================================
+     SIGN OFF
+===================================================== -->
+
+<div
+id="signoff"
+onclick="restartEpisode()">
+
+<div id="signoffTitle">
+RV8
 </div>
+
+<div id="signoffText">
+
+END OF BROADCAST
+
+<br>
+
+YOUR PROGRESS HAS BEEN SAVED
+
+<br><br>
+
+REOPEN RETROVISION TO CONTINUE
+
+<br><br>
+
+TAP TO BEGIN ANOTHER EPISODE
+
+</div>
+
+</div>
+
+
+</div>
+
 
 <script>
 
-/* =====================================================
-   CORE
-===================================================== */
+/* =========================================================
+   RETROVISION 2.0 ENGINE
+   ES5-SAFE / SWITCH-FRIENDLY
+========================================================= */
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
 
 var canvas =
-document.getElementById("game");
+document.getElementById(
+    "canvas"
+);
 
 var ctx =
-canvas.getContext("2d");
+canvas.getContext(
+    "2d"
+);
 
-var W=960;
-var H=540;
-
-var scene=0;
-var sceneCount=10;
-
-var frame=0;
-var phaseFrame=0;
-
-var paused=false;
-var started=false;
-
-var shuffle=true;
-var autoTV=true;
-
-var channelTimer=0;
-var channelDuration=60;
-
-var commercialMode=false;
-var commercialTimer=0;
-
-var controlsTimer=null;
+var W = 960;
+var H = 540;
 
 
-/* =====================================================
-   SECRET ARCADE
-===================================================== */
+/* =========================================================
+   REQUEST ANIMATION FRAME
+========================================================= */
 
-var arcade=false;
-var arcadeSeconds=30;
+var raf =
 
-var arcadeTimer=0;
-
-var score=0;
-
-var pointerX=480;
-var pointerY=270;
-
-
-/* STAR DEFENDER */
-
-var shipX=440;
-
-var bullets=[];
-
-var enemies=[];
-
-
-/* TENNIS */
-
-var tennisPaddleY=220;
-
-var tennisBallX=480;
-var tennisBallY=270;
-
-var tennisDX=6;
-var tennisDY=4;
-
-
-/* BREAKOUT */
-
-var breakoutPaddleX=400;
-
-var breakoutBallX=480;
-var breakoutBallY=270;
-
-var breakoutDX=5;
-var breakoutDY=-5;
-
-
-/* BLOCK DROP */
-
-var blockX=4;
-var blockY=0;
-var blockRotation=0;
-
-
-/* =====================================================
-   ANIMATION
-===================================================== */
-
-var raf=
 window.requestAnimationFrame ||
+
 window.webkitRequestAnimationFrame ||
+
 function(fn){
 
-    return setTimeout(fn,33);
+    return setTimeout(
+        fn,
+        33
+    );
 
 };
 
 
-/* =====================================================
-   HELPERS
-===================================================== */
+/* =========================================================
+   APP STATE
+========================================================= */
 
-function clear(c){
+var started = false;
 
-    ctx.fillStyle=c;
-    ctx.fillRect(0,0,W,H);
+var paused = false;
+
+var broadcastEnded = false;
+
+var programIndex = 0;
+
+var programFrame = 0;
+
+var globalFrame = 0;
+
+var programSeconds = 0;
+
+var broadcastSeconds = 0;
+
+
+/*
+19 minutes 10 seconds.
+
+This intentionally ends before
+Nintendo's approximate 20-minute
+browser cutoff.
+*/
+
+var EPISODE_LENGTH =
+19 * 60 + 10;
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+var settings = {
+
+    crt: true,
+
+    quality: "auto",
+
+    shuffle: true
+
+};
+
+
+/* =========================================================
+   FPS / PERFORMANCE
+========================================================= */
+
+var qualityMode = "high";
+
+var fpsFrames = 0;
+
+var fpsStart =
+new Date().getTime();
+
+var currentFPS = 30;
+
+
+/* =========================================================
+   HIGH SCORES
+========================================================= */
+
+var highScores = {
+
+    star: 0,
+
+    breakout: 0,
+
+    tennis: 0,
+
+    runner: 0
+
+};
+
+
+/* =========================================================
+   ARCADE STATE
+========================================================= */
+
+var arcadeActive = false;
+
+var arcadeGame = "";
+
+var arcadeSeconds = 0;
+
+var arcadeLength = 30;
+
+var arcadeScore = 0;
+
+var pointerX = 480;
+
+var pointerY = 270;
+
+
+/* Star Defender */
+
+var shipX = 430;
+
+var bullets = [];
+
+var enemies = [];
+
+
+/* Breakout */
+
+var breakoutPaddleX = 410;
+
+var breakoutBallX = 480;
+
+var breakoutBallY = 270;
+
+var breakoutDX = 6;
+
+var breakoutDY = -6;
+
+
+/* Tennis */
+
+var tennisPaddleY = 210;
+
+var tennisBallX = 480;
+
+var tennisBallY = 270;
+
+var tennisDX = 7;
+
+var tennisDY = 5;
+
+
+/* Runner */
+
+var runnerY = 410;
+
+var runnerVelocity = 0;
+
+var runnerObstacleX = 900;
+
+var runnerGrounded = true;
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function storageSet(
+    key,
+    value
+){
+
+    try{
+
+        localStorage.setItem(
+            key,
+            value
+        );
+
+    }
+
+    catch(e){}
 
 }
 
-function rect(x,y,w,h,c){
 
-    ctx.fillStyle=c;
+function storageGet(
+    key
+){
+
+    try{
+
+        return localStorage.getItem(
+            key
+        );
+
+    }
+
+    catch(e){
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE STATE
+========================================================= */
+
+function saveState(){
+
+    storageSet(
+        "rv_program",
+        programIndex
+    );
+
+    storageSet(
+        "rv_programSeconds",
+        programSeconds
+    );
+
+    storageSet(
+        "rv_broadcastSeconds",
+        broadcastSeconds
+    );
+
+    storageSet(
+        "rv_lastSeen",
+        new Date().getTime()
+    );
+
+    storageSet(
+        "rv_scores",
+        JSON.stringify(
+            highScores
+        )
+    );
+
+    storageSet(
+        "rv_settings",
+        JSON.stringify(
+            settings
+        )
+    );
+
+}
+
+
+/* =========================================================
+   LOAD STATE
+========================================================= */
+
+function loadState(){
+
+    var last =
+    parseInt(
+        storageGet(
+            "rv_lastSeen"
+        ),
+        10
+    );
+
+    var now =
+    new Date().getTime();
+
+    var sixHours =
+    6 * 60 * 60 * 1000;
+
+
+    /*
+    Only resume recent broadcasts.
+
+    If the Switch hasn't opened the
+    page for many hours, start a fresh
+    episode.
+    */
+
+    if(
+        last &&
+        now-last < sixHours
+    ){
+
+        var savedProgram =
+        parseInt(
+            storageGet(
+                "rv_program"
+            ),
+            10
+        );
+
+        var savedProgramSeconds =
+        parseInt(
+            storageGet(
+                "rv_programSeconds"
+            ),
+            10
+        );
+
+        var savedBroadcast =
+        parseInt(
+            storageGet(
+                "rv_broadcastSeconds"
+            ),
+            10
+        );
+
+
+        if(
+            !isNaN(savedProgram)
+        ){
+
+            programIndex =
+            savedProgram;
+
+        }
+
+
+        if(
+            !isNaN(savedProgramSeconds)
+        ){
+
+            programSeconds =
+            savedProgramSeconds;
+
+        }
+
+
+        if(
+            !isNaN(savedBroadcast) &&
+            savedBroadcast <
+            EPISODE_LENGTH
+        ){
+
+            broadcastSeconds =
+            savedBroadcast;
+
+        }
+
+
+        document.getElementById(
+            "bootAction"
+        ).innerHTML =
+        "TAP TO RESUME";
+
+
+        document.getElementById(
+            "bootDetail"
+        ).innerHTML =
+        "PREVIOUS BROADCAST FOUND";
+
+    }
+
+
+    var scores =
+    storageGet(
+        "rv_scores"
+    );
+
+
+    if(scores){
+
+        try{
+
+            highScores =
+            JSON.parse(
+                scores
+            );
+
+        }
+
+        catch(e){}
+
+    }
+
+
+    var savedSettings =
+    storageGet(
+        "rv_settings"
+    );
+
+
+    if(savedSettings){
+
+        try{
+
+            settings =
+            JSON.parse(
+                savedSettings
+            );
+
+        }
+
+        catch(e){}
+
+    }
+
+}
+
+
+/* =========================================================
+   BASIC DRAWING
+========================================================= */
+
+function clear(c){
+
+    ctx.fillStyle = c;
 
     ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+}
+
+
+function rect(
+    x,
+    y,
+    w,
+    h,
+    c
+){
+
+    ctx.fillStyle = c;
+
+    ctx.fillRect(
+
         Math.floor(x),
+
         Math.floor(y),
+
         Math.floor(w),
+
         Math.floor(h)
     );
 
 }
 
-function txt(v,x,y,size,color){
 
-    ctx.fillStyle=color;
-    ctx.font=size+"px monospace";
+function text(
+    value,
+    x,
+    y,
+    size,
+    color
+){
 
-    ctx.fillText(v,x,y);
+    ctx.fillStyle = color;
 
-}
-
-function centerText(v,y,size,color){
-
-    ctx.fillStyle=color;
-    ctx.font=size+"px monospace";
-
-    var width=
-    ctx.measureText(v).width;
+    ctx.font =
+    size +
+    "px monospace";
 
     ctx.fillText(
-        v,
-        (W-width)/2,
+        value,
+        x,
         y
     );
 
 }
 
-function rnd(a,b){
 
-    return Math.floor(
-        Math.random()*
-        (b-a+1)
-    )+a;
+function centerText(
+    value,
+    y,
+    size,
+    color
+){
+
+    ctx.fillStyle = color;
+
+    ctx.font =
+    size +
+    "px monospace";
+
+    var width =
+    ctx.measureText(
+        value
+    ).width;
+
+    ctx.fillText(
+
+        value,
+
+        (W-width)/2,
+
+        y
+    );
 
 }
 
 
-/* =====================================================
-   PASSIVE TV SCENES
-===================================================== */
+function random(
+    min,
+    max
+){
 
-var names=[
-"PIXEL KINGDOM",
-"STAR DEFENDER",
-"NEON HIGHWAY",
-"DUNGEON QUEST",
-"STREET BATTLE",
-"BLOCK DROP",
-"PIXEL ISLAND",
-"MIDNIGHT CITY",
-"PIXEL TENNIS",
-"CYBER BREAKOUT"
+    return Math.floor(
+
+        Math.random() *
+        (max-min+1)
+
+    ) + min;
+
+}
+
+
+/* =========================================================
+   PROGRAM LIST
+========================================================= */
+
+var programs = [
+
+{
+    name:
+    "PIXEL KINGDOM",
+
+    type:
+    "platform",
+
+    playable:
+    false
+},
+
+{
+    name:
+    "STAR DEFENDER",
+
+    type:
+    "space",
+
+    playable:
+    "star"
+},
+
+{
+    name:
+    "NEON HIGHWAY",
+
+    type:
+    "racer",
+
+    playable:
+    false
+},
+
+{
+    name:
+    "DUNGEON QUEST",
+
+    type:
+    "dungeon",
+
+    playable:
+    false
+},
+
+{
+    name:
+    "STREET BATTLE",
+
+    type:
+    "fighter",
+
+    playable:
+    false
+},
+
+{
+    name:
+    "BLOCK DROP",
+
+    type:
+    "blocks",
+
+    playable:
+    false
+},
+
+{
+    name:
+    "PIXEL ISLAND",
+
+    type:
+    "island",
+
+    playable:
+    false
+},
+
+{
+    name:
+    "MIDNIGHT CITY",
+
+    type:
+    "city",
+
+    playable:
+    false
+},
+
+{
+    name:
+    "PIXEL TENNIS",
+
+    type:
+    "tennis",
+
+    playable:
+    "tennis"
+},
+
+{
+    name:
+    "CYBER BREAKOUT",
+
+    type:
+    "breakout",
+
+    playable:
+    "breakout"
+},
+
+{
+    name:
+    "PIXEL RUNNER",
+
+    type:
+    "runner",
+
+    playable:
+    "runner"
+},
+
+{
+    name:
+    "STARLIGHT DRIVE",
+
+    type:
+    "ambient",
+
+    playable:
+    false
+}
+
 ];
 
 
-function titleCard(title,sub,color){
+/* =========================================================
+   TIME PROGRAMMING
+========================================================= */
 
-    clear("#050505");
+function hourNow(){
 
-    centerText(
-        title,
-        230,
-        42,
-        color
-    );
+    return new Date().
+    getHours();
 
-    centerText(
-        sub,
-        280,
-        17,
-        "#aaa"
-    );
+}
 
-    centerText(
-        "RETRO TV PRESENTS",
-        420,
-        13,
-        "#555"
+
+function nighttime(){
+
+    var h =
+    hourNow();
+
+    return (
+        h >= 20 ||
+        h < 6
     );
 
 }
 
 
-function platform(){
+/* =========================================================
+   TITLE SEQUENCE
+========================================================= */
 
-    clear("#58bde8");
+function drawTitle(
+    name,
+    subtitle,
+    color
+){
+
+    clear(
+        "#050505"
+    );
+
+
+    centerText(
+
+        "RETROVISION PRESENTS",
+
+        120,
+
+        14,
+
+        "#666"
+    );
+
+
+    centerText(
+
+        name,
+
+        250,
+
+        42,
+
+        color
+    );
+
+
+    centerText(
+
+        subtitle,
+
+        300,
+
+        17,
+
+        "#aaa"
+    );
+
+
+    centerText(
+
+        "RV8",
+
+        425,
+
+        15,
+
+        "#444"
+    );
+
+}
+
+
+/* =========================================================
+   GENERIC GAME OVER
+========================================================= */
+
+function drawGameOver(
+    name
+){
+
+    clear(
+        "#060606"
+    );
+
+
+    centerText(
+
+        "GAME OVER",
+
+        225,
+
+        48,
+
+        "#ff4d6d"
+    );
+
+
+    centerText(
+
+        name,
+
+        290,
+
+        20,
+
+        "#fff"
+    );
+
+
+    centerText(
+
+        "HIGH SCORE 025840",
+
+        350,
+
+        17,
+
+        "#fee440"
+    );
+
+
+    centerText(
+
+        "INSERT COIN",
+
+        430,
+
+        15,
+
+        "#777"
+    );
+
+}
+
+
+/* =========================================================
+   PIXEL KINGDOM
+========================================================= */
+
+function scenePlatform(){
+
+    clear(
+        "#58bde8"
+    );
+
+
+    var cloud =
+    (globalFrame*1.2)
+    %1100;
+
 
     rect(
+
+        860-cloud,
+        80,
+        150,
+        30,
+        "#fff"
+    );
+
+
+    rect(
+
+        900-cloud,
+        50,
+        70,
+        40,
+        "#fff"
+    );
+
+
+    rect(
+
         0,
         350,
         W,
@@ -595,7 +2013,9 @@ function platform(){
         "#439c70"
     );
 
+
     rect(
+
         0,
         445,
         W,
@@ -603,7 +2023,9 @@ function platform(){
         "#754321"
     );
 
+
     rect(
+
         0,
         445,
         W,
@@ -611,15 +2033,23 @@ function platform(){
         "#91c83e"
     );
 
-    var px=
-    (frame*2.8)%1080-80;
 
-    var jump=
+    var px =
+    (
+        globalFrame*3
+    )%1080-80;
+
+
+    var jump =
     Math.abs(
-        Math.sin(frame/18)
+        Math.sin(
+            globalFrame/18
+        )
     )*75;
 
+
     rect(
+
         px,
         402-jump,
         30,
@@ -627,7 +2057,9 @@ function platform(){
         "#ef233c"
     );
 
+
     rect(
+
         px+5,
         433-jump,
         22,
@@ -635,75 +2067,134 @@ function platform(){
         "#185adb"
     );
 
-    txt(
-        "PIXEL KINGDOM",
-        25,
-        35,
+
+    text(
+
+        "WORLD 1-3",
+
+        28,
+        42,
         17,
+
+        "#fff"
+    );
+
+
+    text(
+
+        "012500",
+
+        850,
+        42,
+        17,
+
         "#fff"
     );
 
 }
 
 
-function passiveSpace(){
+/* =========================================================
+   SPACE
+========================================================= */
 
-    clear("#010108");
+function sceneSpace(){
+
+    clear(
+        "#020208"
+    );
+
 
     var i;
 
-    for(i=0;i<60;i++){
+    var stars =
+    qualityMode ===
+    "low"
+    ? 30
+    : 70;
 
-        var sx=
+
+    for(
+        i=0;
+        i<stars;
+        i++
+    ){
+
+        var sx =
         (i*137)%W;
 
-        var sy=
+
+        var sy =
         (
-            i*83+
-            frame*2
+            i*79 +
+            globalFrame*2
         )%H;
 
+
         rect(
+
             sx,
             sy,
             2,
             4,
+
             "#fff"
         );
 
     }
 
-    var ship=
-    430+
-    Math.sin(frame/28)*210;
+
+    var ship =
+    430 +
+    Math.sin(
+        globalFrame/28
+    )*210;
+
 
     rect(
+
         ship,
         450,
         80,
         22,
+
         "#00f5d4"
     );
 
+
     rect(
+
         ship+27,
         425,
         26,
         55,
+
         "#00bbf9"
     );
 
-    for(i=0;i<6;i++){
 
-        var ex=
-        120+i*135+
-        Math.sin(frame/16+i)*35;
+    for(
+        i=0;
+        i<6;
+        i++
+    ){
+
+        var ex =
+        120 +
+        i*135 +
+        Math.sin(
+            globalFrame/16+i
+        )*35;
+
 
         rect(
+
             ex,
             120,
+
             42,
             24,
+
             "#ff006e"
         );
 
@@ -712,195 +2203,434 @@ function passiveSpace(){
 }
 
 
-function racer(){
+/* =========================================================
+   NEON RACER
+========================================================= */
 
-    clear("#10002b");
+function sceneRacer(){
 
-    ctx.fillStyle="#ff4d6d";
+    clear(
+        "#10002b"
+    );
+
+
+    ctx.fillStyle =
+    "#ff4d6d";
+
 
     ctx.beginPath();
 
+
     ctx.arc(
+
         480,
-        195,
-        90,
+        190,
+        88,
+
         0,
         Math.PI*2
     );
 
+
     ctx.fill();
 
+
     rect(
+
         0,
         280,
         W,
         260,
+
         "#03001c"
     );
 
-    ctx.fillStyle="#111";
+
+    ctx.fillStyle =
+    "#111";
+
 
     ctx.beginPath();
 
-    ctx.moveTo(390,280);
-    ctx.lineTo(570,280);
-    ctx.lineTo(840,540);
-    ctx.lineTo(120,540);
+
+    ctx.moveTo(
+        390,
+        280
+    );
+
+
+    ctx.lineTo(
+        570,
+        280
+    );
+
+
+    ctx.lineTo(
+        840,
+        540
+    );
+
+
+    ctx.lineTo(
+        120,
+        540
+    );
+
 
     ctx.closePath();
+
+
     ctx.fill();
 
+
+    var offset =
+    (
+        globalFrame*12
+    )%120;
+
+
+    var i;
+
+
+    for(
+        i=0;
+        i<5;
+        i++
+    ){
+
+        var y =
+        300 +
+        i*65 +
+        offset;
+
+
+        var size =
+        (y-260)/7;
+
+
+        rect(
+
+            480-size/2,
+
+            y,
+
+            size,
+            18,
+
+            "#fff"
+        );
+
+    }
+
+
     rect(
+
         400,
         420,
         160,
         58,
+
         "#ff006e"
     );
 
+
     rect(
+
         430,
         386,
         100,
         42,
+
         "#7209b7"
+    );
+
+
+    text(
+
+        "NEON HIGHWAY",
+
+        30,
+        42,
+        17,
+
+        "#00f5d4"
     );
 
 }
 
 
-function dungeon(){
+/* =========================================================
+   DUNGEON
+========================================================= */
 
-    clear("#13171a");
+function sceneDungeon(){
 
-    var hx=
-    430+
-    Math.sin(frame/25)*55;
+    clear(
+        "#13171a"
+    );
+
+
+    var x;
+    var y;
+
+
+    for(
+        y=0;
+        y<8;
+        y++
+    ){
+
+        for(
+            x=0;
+            x<13;
+            x++
+        ){
+
+            if(
+                (x+y)%2===0
+            ){
+
+                rect(
+
+                    x*80,
+                    y*70,
+
+                    80,
+                    70,
+
+                    "#1e2428"
+                );
+
+            }
+
+        }
+
+    }
+
+
+    var hero =
+    430 +
+    Math.sin(
+        globalFrame/25
+    )*55;
+
 
     rect(
-        hx,
+
+        hero,
         340,
+
         45,
         70,
+
         "#4361ee"
     );
 
+
     rect(
-        hx+8,
+
+        hero+8,
         305,
+
         30,
         38,
+
         "#f2cc8f"
     );
 
-    var slime=
-    680+
-    Math.sin(frame/15)*35;
+
+    var slime =
+    680 +
+    Math.sin(
+        globalFrame/15
+    )*35;
+
 
     rect(
+
         slime,
         370,
+
         65,
         38,
+
         "#70e000"
     );
 
-    txt(
-        "DUNGEON QUEST",
-        25,
-        35,
-        17,
+
+    text(
+
+        "HP ███████░░░",
+
+        30,
+        505,
+        16,
+
+        "#ff4d6d"
+    );
+
+}
+
+
+/* =========================================================
+   FIGHTER
+========================================================= */
+
+function sceneFighter(){
+
+    clear(
+        "#ee9b58"
+    );
+
+
+    rect(
+
+        0,
+        275,
+
+        W,
+        265,
+
+        "#3d3d3d"
+    );
+
+
+    var punch =
+    Math.sin(
+        globalFrame/10
+    )*20;
+
+
+    rect(
+
+        220,
+        330,
+
+        55,
+        115,
+
+        "#277da1"
+    );
+
+
+    rect(
+
+        270,
+        350,
+
+        70+punch,
+        20,
+
+        "#277da1"
+    );
+
+
+    rect(
+
+        700,
+        330,
+
+        55,
+        115,
+
+        "#d90429"
+    );
+
+
+    rect(
+
+        640-punch,
+        350,
+
+        70+punch,
+        20,
+
+        "#d90429"
+    );
+
+
+    centerText(
+
+        "ROUND 2",
+
+        60,
+
+        19,
+
         "#fff"
     );
 
 }
 
 
-function fighter(){
+/* =========================================================
+   BLOCKS
+========================================================= */
 
-    clear("#ee9b58");
+function sceneBlocks(){
 
-    rect(
-        0,
-        275,
-        W,
-        265,
-        "#3d3d3d"
+    clear(
+        "#070707"
     );
 
-    var punch=
-    Math.sin(frame/10)*20;
 
     rect(
-        220,
-        330,
-        55,
-        115,
-        "#277da1"
-    );
 
-    rect(
-        270,
-        350,
-        70+punch,
-        20,
-        "#277da1"
-    );
-
-    rect(
-        700,
-        330,
-        55,
-        115,
-        "#d90429"
-    );
-
-    rect(
-        640-punch,
-        350,
-        70+punch,
-        20,
-        "#d90429"
-    );
-
-}
-
-
-function passiveBlocks(){
-
-    clear("#070707");
-
-    rect(
         315,
         25,
+
         330,
         495,
+
         "#111"
     );
 
-    var colors=[
+
+    var colors = [
+
         "#00bbf9",
+
         "#f15bb5",
+
         "#fee440",
-        "#00f5d4"
+
+        "#00f5d4",
+
+        "#9b5de5"
     ];
+
 
     var x;
     var y;
 
-    for(y=9;y<15;y++){
 
-        for(x=1;x<10;x++){
+    for(
+        y=9;
+        y<15;
+        y++
+    ){
 
-            if((x+y)%3!==0){
+        for(
+            x=1;
+            x<10;
+            x++
+        ){
+
+            if(
+                (x+y)%3!==0
+            ){
 
                 rect(
+
                     325+x*30,
+
                     40+y*30,
+
                     28,
                     28,
+
                     colors[
-                        (x+y)%4
+                        (x+y)%5
                     ]
                 );
 
@@ -913,208 +2643,1436 @@ function passiveBlocks(){
 }
 
 
-function ocean(){
+/* =========================================================
+   ISLAND
+========================================================= */
 
-    clear("#72d6e8");
+function sceneIsland(){
+
+    clear(
+        "#72d6e8"
+    );
+
+
+    ctx.fillStyle =
+    "#ffe66d";
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+
+        780,
+        100,
+        55,
+
+        0,
+        Math.PI*2
+    );
+
+
+    ctx.fill();
+
 
     rect(
+
         0,
         240,
+
         W,
         300,
+
         "#0077b6"
     );
 
+
     rect(
+
         80,
         355,
+
         220,
         80,
+
         "#d4a373"
     );
 
-    var boatX=
-    (frame*1.5)%1200-150;
 
     rect(
-        boatX,
+
+        150,
+        255,
+
+        20,
+        110,
+
+        "#6b4423"
+    );
+
+
+    rect(
+
+        90,
+        230,
+
+        150,
+        45,
+
+        "#52b788"
+    );
+
+
+    var boat =
+    (
+        globalFrame*1.5
+    )%1200-150;
+
+
+    rect(
+
+        boat,
         350,
+
         110,
         30,
+
         "#fff"
     );
 
 }
 
 
-function city(){
+/* =========================================================
+   CITY
+========================================================= */
 
-    clear("#09001a");
+function sceneCity(){
+
+    clear(
+        "#09001a"
+    );
+
 
     var i;
 
-    for(i=0;i<12;i++){
 
-        var bh=
-        130+
+    for(
+        i=0;
+        i<12;
+        i++
+    ){
+
+        var height =
+        130 +
         (i%5)*35;
 
+
         rect(
+
             i*90,
-            500-bh,
+
+            500-height,
+
             72,
-            bh,
+            height,
+
             "#15152c"
         );
 
-    }
 
-    rect(
-        0,
-        470,
-        W,
-        70,
-        "#111"
-    );
-
-    var car=
-    (frame*4)%1100-100;
-
-    rect(
-        car,
-        480,
-        90,
-        30,
-        "#ff006e"
-    );
-
-}
-
-
-function passiveTennis(){
-
-    clear("#1b4332");
-
-    rect(
-        80,
-        70,
-        800,
-        400,
-        "#40916c"
-    );
-
-    ctx.strokeStyle="#fff";
-    ctx.lineWidth=4;
-
-    ctx.strokeRect(
-        80,
-        70,
-        800,
-        400
-    );
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        480,
-        70
-    );
-
-    ctx.lineTo(
-        480,
-        470
-    );
-
-    ctx.stroke();
-
-    var ballX=
-    480+
-    Math.sin(frame/15)*330;
-
-    var ballY=
-    270+
-    Math.sin(frame/9)*120;
-
-    rect(
-        ballX,
-        ballY,
-        12,
-        12,
-        "#fee440"
-    );
-
-}
-
-
-function passiveBreakout(){
-
-    clear("#050505");
-
-    var colors=[
-        "#ff006e",
-        "#8338ec",
-        "#3a86ff",
-        "#00f5d4"
-    ];
-
-    var x;
-    var y;
-
-    for(y=0;y<5;y++){
-
-        for(x=0;x<10;x++){
+        if(
+            qualityMode!==
+            "low"
+        ){
 
             rect(
-                85+x*80,
-                60+y*35,
-                68,
-                24,
-                colors[y%4]
+
+                i*90+15,
+
+                470-height,
+
+                10,
+                12,
+
+                "#ffd166"
+            );
+
+
+            rect(
+
+                i*90+43,
+
+                435-height,
+
+                10,
+                12,
+
+                "#ffd166"
             );
 
         }
 
     }
 
-    var paddle=
-    400+
-    Math.sin(frame/20)*250;
 
     rect(
+
+        0,
+        470,
+
+        W,
+        70,
+
+        "#111"
+    );
+
+
+    var car =
+    (
+        globalFrame*4
+    )%1100-100;
+
+
+    rect(
+
+        car,
+        480,
+
+        90,
+        30,
+
+        "#ff006e"
+    );
+
+}
+
+
+/* =========================================================
+   TENNIS ATTRACT
+========================================================= */
+
+function sceneTennis(){
+
+    clear(
+        "#1b4332"
+    );
+
+
+    rect(
+
+        80,
+        70,
+
+        800,
+        400,
+
+        "#40916c"
+    );
+
+
+    ctx.strokeStyle =
+    "#fff";
+
+
+    ctx.lineWidth =
+    4;
+
+
+    ctx.strokeRect(
+
+        80,
+        70,
+
+        800,
+        400
+    );
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        480,
+        70
+    );
+
+
+    ctx.lineTo(
+        480,
+        470
+    );
+
+
+    ctx.stroke();
+
+
+    var bx =
+    480 +
+    Math.sin(
+        globalFrame/15
+    )*330;
+
+
+    var by =
+    270 +
+    Math.sin(
+        globalFrame/9
+    )*120;
+
+
+    rect(
+
+        bx,
+        by,
+
+        12,
+        12,
+
+        "#fee440"
+    );
+
+}
+
+
+/* =========================================================
+   BREAKOUT ATTRACT
+========================================================= */
+
+function sceneBreakout(){
+
+    clear(
+        "#050505"
+    );
+
+
+    var colors = [
+
+        "#ff006e",
+
+        "#8338ec",
+
+        "#3a86ff",
+
+        "#00f5d4"
+    ];
+
+
+    var x;
+    var y;
+
+
+    for(
+        y=0;
+        y<5;
+        y++
+    ){
+
+        for(
+            x=0;
+            x<10;
+            x++
+        ){
+
+            rect(
+
+                85+x*80,
+
+                60+y*35,
+
+                68,
+                24,
+
+                colors[
+                    y%4
+                ]
+            );
+
+        }
+
+    }
+
+
+    var paddle =
+    400 +
+    Math.sin(
+        globalFrame/20
+    )*250;
+
+
+    rect(
+
         paddle,
         475,
+
         120,
         18,
+
         "#fff"
     );
 
 }
 
 
-/* =====================================================
-   ARCADE: STAR DEFENDER
-===================================================== */
+/* =========================================================
+   RUNNER ATTRACT
+========================================================= */
 
-function startStarGame(){
+function sceneRunner(){
 
-    score=0;
+    clear(
+        "#89c2d9"
+    );
 
-    shipX=440;
 
-    bullets=[];
+    rect(
 
-    enemies=[];
+        0,
+        430,
+
+        W,
+        110,
+
+        "#59412d"
+    );
+
+
+    rect(
+
+        0,
+        420,
+
+        W,
+        15,
+
+        "#90be6d"
+    );
+
+
+    var runnerX =
+    200;
+
+
+    var bounce =
+    Math.abs(
+        Math.sin(
+            globalFrame/14
+        )
+    )*7;
+
+
+    rect(
+
+        runnerX,
+        375-bounce,
+
+        32,
+        45,
+
+        "#f94144"
+    );
+
+
+    var obstacle =
+    900-
+    (
+        globalFrame*5
+    )%1000;
+
+
+    rect(
+
+        obstacle,
+        385,
+
+        28,
+        35,
+
+        "#577590"
+    );
+
+
+    text(
+
+        "DISTANCE 01284",
+
+        30,
+        40,
+        17,
+
+        "#fff"
+    );
+
+}
+
+
+/* =========================================================
+   AMBIENT DRIVE
+========================================================= */
+
+function sceneAmbient(){
+
+    clear(
+        "#080019"
+    );
+
+
+    var stars =
+    qualityMode ===
+    "low"
+    ? 20
+    : 60;
+
 
     var i;
 
-    for(i=0;i<8;i++){
+
+    for(
+        i=0;
+        i<stars;
+        i++
+    ){
+
+        rect(
+
+            (i*151)%W,
+
+            (
+                i*71 +
+                globalFrame
+            )%280,
+
+            2,
+            2,
+
+            "#fff"
+        );
+
+    }
+
+
+    rect(
+
+        0,
+        380,
+
+        W,
+        160,
+
+        "#080808"
+    );
+
+
+    var dash =
+    (
+        globalFrame*8
+    )%200;
+
+
+    for(
+        i=0;
+        i<7;
+        i++
+    ){
+
+        rect(
+
+            i*180-dash,
+
+            455,
+
+            100,
+            8,
+
+            "#fff"
+        );
+
+    }
+
+
+    centerText(
+
+        "STARLIGHT DRIVE",
+
+        75,
+
+        18,
+
+        "#b8c0ff"
+    );
+
+}
+
+
+/* =========================================================
+   COMMERCIALS
+========================================================= */
+
+var adNames = [
+
+"TURBO COLA",
+
+"MEGABYTE CEREAL",
+
+"POWER PAD 2000",
+
+"PIXEL MONTHLY",
+
+"GAME HOTLINE",
+
+"MEMORY MAX"
+];
+
+
+function drawCommercial(){
+
+    var index =
+    Math.floor(
+        programSeconds/3
+    ) %
+    adNames.length;
+
+
+    var name =
+    adNames[index];
+
+
+    clear(
+        "#111"
+    );
+
+
+    centerText(
+
+        "RETROVISION COMMERCIAL",
+
+        95,
+
+        15,
+
+        "#666"
+    );
+
+
+    centerText(
+
+        name,
+
+        230,
+
+        43,
+
+        "#ff006e"
+    );
+
+
+    centerText(
+
+        "POWER UP YOUR LIFE",
+
+        285,
+
+        18,
+
+        "#fff"
+    );
+
+
+    centerText(
+
+        "ONLY $19.99",
+
+        365,
+
+        26,
+
+        "#fee440"
+    );
+
+
+    centerText(
+
+        "CALL 1-800-RV8-NOW",
+
+        440,
+
+        14,
+
+        "#777"
+    );
+
+}
+
+
+/* =========================================================
+   STATION ID
+========================================================= */
+
+function drawStationID(){
+
+    clear(
+        "#020202"
+    );
+
+
+    centerText(
+
+        "RV8",
+
+        240,
+
+        90,
+
+        "#fff"
+    );
+
+
+    centerText(
+
+        "RETROVISION",
+
+        315,
+
+        25,
+
+        "#777"
+    );
+
+
+    centerText(
+
+        "ALL GAMES · ALL DAY",
+
+        385,
+
+        15,
+
+        "#444"
+    );
+
+}
+
+
+/* =========================================================
+   CURRENT PROGRAM RENDERING
+========================================================= */
+
+function renderProgram(){
+
+    var program =
+    programs[
+        programIndex
+    ];
+
+
+    /*
+    Each program runs through:
+    0-4 sec title
+    5-47 attract/gameplay
+    48-56 ending
+    57-62 station bumper
+    */
+
+
+    if(
+        programSeconds < 5
+    ){
+
+        drawTitle(
+
+            program.name,
+
+            program.playable
+            ? "TAP PLAY FOR SECRET ARCADE"
+            : "RETROVISION ORIGINAL",
+
+            "#00f5d4"
+        );
+
+        return;
+    }
+
+
+    if(
+        programSeconds >=57
+    ){
+
+        drawStationID();
+
+        return;
+    }
+
+
+    if(
+        programSeconds >=48
+    ){
+
+        drawGameOver(
+            program.name
+        );
+
+        return;
+    }
+
+
+    if(
+        program.type ===
+        "platform"
+    )
+        scenePlatform();
+
+
+    else if(
+        program.type ===
+        "space"
+    )
+        sceneSpace();
+
+
+    else if(
+        program.type ===
+        "racer"
+    )
+        sceneRacer();
+
+
+    else if(
+        program.type ===
+        "dungeon"
+    )
+        sceneDungeon();
+
+
+    else if(
+        program.type ===
+        "fighter"
+    )
+        sceneFighter();
+
+
+    else if(
+        program.type ===
+        "blocks"
+    )
+        sceneBlocks();
+
+
+    else if(
+        program.type ===
+        "island"
+    )
+        sceneIsland();
+
+
+    else if(
+        program.type ===
+        "city"
+    )
+        sceneCity();
+
+
+    else if(
+        program.type ===
+        "tennis"
+    )
+        sceneTennis();
+
+
+    else if(
+        program.type ===
+        "breakout"
+    )
+        sceneBreakout();
+
+
+    else if(
+        program.type ===
+        "runner"
+    )
+        sceneRunner();
+
+
+    else
+        sceneAmbient();
+
+}
+
+
+/* =========================================================
+   NEXT PROGRAM
+========================================================= */
+
+function chooseNextProgram(){
+
+    if(
+        settings.shuffle
+    ){
+
+        var old =
+        programIndex;
+
+
+        var attempts = 0;
+
+
+        while(
+            programIndex === old &&
+            attempts < 20
+        ){
+
+            if(
+                nighttime()
+            ){
+
+                var night = [
+                    1,
+                    2,
+                    3,
+                    7,
+                    9,
+                    11
+                ];
+
+
+                programIndex =
+                night[
+                    random(
+                        0,
+                        night.length-1
+                    )
+                ];
+
+            }
+
+            else{
+
+                programIndex =
+                random(
+                    0,
+                    programs.length-1
+                );
+
+            }
+
+
+            attempts++;
+
+        }
+
+    }
+
+    else{
+
+        programIndex++;
+
+
+        if(
+            programIndex >=
+            programs.length
+        ){
+
+            programIndex = 0;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   STATIC TRANSITION
+========================================================= */
+
+function showStatic(){
+
+    var s =
+    document.getElementById(
+        "static"
+    );
+
+
+    s.style.display =
+    "block";
+
+
+    setTimeout(
+
+        function(){
+
+            s.style.display =
+            "none";
+
+        },
+
+        180
+    );
+
+}
+
+
+/* =========================================================
+   NEXT / PREVIOUS
+========================================================= */
+
+function nextProgram(){
+
+    if(
+        arcadeActive
+    )
+        stopArcade();
+
+
+    showStatic();
+
+
+    chooseNextProgram();
+
+
+    programSeconds = 0;
+
+    programFrame = 0;
+
+
+    updateOSD();
+
+
+    saveState();
+
+}
+
+
+function previousProgram(){
+
+    if(
+        arcadeActive
+    )
+        stopArcade();
+
+
+    showStatic();
+
+
+    programIndex--;
+
+
+    if(
+        programIndex < 0
+    ){
+
+        programIndex =
+        programs.length-1;
+
+    }
+
+
+    programSeconds = 0;
+
+    programFrame = 0;
+
+
+    updateOSD();
+
+
+    saveState();
+
+}
+
+
+/* =========================================================
+   OSD
+========================================================= */
+
+function updateOSD(){
+
+    var program =
+    programs[
+        programIndex
+    ];
+
+
+    document.getElementById(
+        "programName"
+    ).innerHTML =
+    program.name;
+
+
+    var number =
+    programIndex+1;
+
+
+    var ch =
+    number<10
+    ? "0"+number
+    : number;
+
+
+    document.getElementById(
+        "channel"
+    ).innerHTML =
+    "CH "+ch;
+
+}
+
+
+/* =========================================================
+   EPISODE TIMER
+========================================================= */
+
+function updateEpisodeTimer(){
+
+    var remaining =
+    EPISODE_LENGTH -
+    broadcastSeconds;
+
+
+    if(
+        remaining < 0
+    )
+        remaining = 0;
+
+
+    var minutes =
+    Math.floor(
+        remaining/60
+    );
+
+
+    var seconds =
+    remaining%60;
+
+
+    if(
+        seconds < 10
+    ){
+
+        seconds =
+        "0"+seconds;
+
+    }
+
+
+    document.getElementById(
+        "episodeTimer"
+    ).innerHTML =
+    minutes+
+    ":"+
+    seconds;
+
+}
+
+
+/* =========================================================
+   SECOND TIMER
+========================================================= */
+
+function secondTick(){
+
+    if(
+        !started ||
+        paused ||
+        broadcastEnded
+    )
+        return;
+
+
+    if(
+        arcadeActive
+    ){
+
+        arcadeSeconds++;
+
+
+        updateArcadeHud();
+
+
+        if(
+            arcadeSeconds >=
+            arcadeLength
+        ){
+
+            stopArcade();
+
+        }
+
+    }
+
+
+    else{
+
+        programSeconds++;
+
+
+        broadcastSeconds++;
+
+
+        /*
+        auto advance every ~63 sec
+        */
+
+        if(
+            programSeconds >=63
+        ){
+
+            /*
+            occasional commercial
+            before next show
+            */
+
+            if(
+                random(1,4)===1
+            ){
+
+                drawCommercial();
+
+            }
+
+
+            nextProgram();
+
+        }
+
+
+        updateEpisodeTimer();
+
+
+        /*
+        Save every 5 seconds.
+        */
+
+        if(
+            broadcastSeconds%5===0
+        ){
+
+            saveState();
+
+        }
+
+
+        if(
+            broadcastSeconds >=
+            EPISODE_LENGTH
+        ){
+
+            endBroadcast();
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   FPS MONITOR
+========================================================= */
+
+function performanceCheck(){
+
+    fpsFrames++;
+
+
+    var now =
+    new Date().getTime();
+
+
+    var elapsed =
+    now -
+    fpsStart;
+
+
+    if(
+        elapsed >=5000
+    ){
+
+        currentFPS =
+        Math.round(
+            fpsFrames /
+            (elapsed/1000)
+        );
+
+
+        fpsFrames = 0;
+
+        fpsStart = now;
+
+
+        if(
+            settings.quality ===
+            "auto"
+        ){
+
+            if(
+                currentFPS <22
+            ){
+
+                qualityMode =
+                "low";
+
+            }
+
+            else if(
+                currentFPS >27
+            ){
+
+                qualityMode =
+                "high";
+
+            }
+
+        }
+
+
+        else{
+
+            qualityMode =
+            settings.quality;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   MAIN DRAW LOOP
+========================================================= */
+
+function draw(){
+
+    if(
+        started &&
+        !paused &&
+        !broadcastEnded
+    ){
+
+        globalFrame++;
+
+        programFrame++;
+
+
+        if(
+            arcadeActive
+        ){
+
+            renderArcade();
+
+        }
+
+        else{
+
+            renderProgram();
+
+        }
+
+
+        performanceCheck();
+
+    }
+
+
+    raf(
+        draw
+    );
+
+}
+
+
+/* =========================================================
+   TOUCH COORDINATES
+========================================================= */
+
+function getPoint(event){
+
+    var box =
+    canvas.
+    getBoundingClientRect();
+
+
+    var source;
+
+
+    if(
+        event.touches &&
+        event.touches.length
+    ){
+
+        source =
+        event.touches[0];
+
+    }
+
+    else{
+
+        source =
+        event;
+
+    }
+
+
+    pointerX =
+    (
+        source.clientX -
+        box.left
+    ) *
+    (
+        W /
+        box.width
+    );
+
+
+    pointerY =
+    (
+        source.clientY -
+        box.top
+    ) *
+    (
+        H /
+        box.height
+    );
+
+}
+
+
+/* =========================================================
+   STAR DEFENDER GAME
+========================================================= */
+
+function initStar(){
+
+    shipX = 430;
+
+    bullets = [];
+
+    enemies = [];
+
+
+    var i;
+
+
+    for(
+        i=0;
+        i<8;
+        i++
+    ){
 
         enemies.push({
 
-            x:rnd(60,880),
-            y:rnd(30,200),
-            alive:true
+            x:
+            random(
+                60,
+                860
+            ),
 
+            y:
+            random(
+                60,
+                210
+            ),
+
+            alive:
+            true
         });
 
     }
@@ -1124,67 +4082,78 @@ function startStarGame(){
 
 function playStar(){
 
-    clear("#010108");
+    sceneSpace();
+
+
+    shipX =
+    pointerX-40;
+
+
+    if(
+        shipX < 0
+    )
+        shipX = 0;
+
+
+    if(
+        shipX > 880
+    )
+        shipX = 880;
+
 
     var i;
 
-    for(i=0;i<60;i++){
+
+    for(
+        i=0;
+        i<bullets.length;
+        i++
+    ){
+
+        bullets[i].y -=
+        13;
+
 
         rect(
-            (i*137)%W,
-            (i*83+frame*3)%H,
-            2,
-            4,
-            "#fff"
-        );
 
-    }
-
-    rect(
-        shipX,
-        455,
-        80,
-        22,
-        "#00f5d4"
-    );
-
-    rect(
-        shipX+27,
-        430,
-        26,
-        55,
-        "#00bbf9"
-    );
-
-    for(i=0;i<bullets.length;i++){
-
-        bullets[i].y-=12;
-
-        rect(
             bullets[i].x,
+
             bullets[i].y,
+
             5,
             14,
+
             "#ffe600"
         );
 
     }
 
-    for(i=0;i<enemies.length;i++){
+
+    for(
+        i=0;
+        i<enemies.length;
+        i++
+    ){
 
         if(
             enemies[i].alive
         ){
 
             rect(
+
                 enemies[i].x,
+
                 enemies[i].y,
-                42,
-                24,
+
+                44,
+                25,
+
                 "#ff006e"
             );
 
+
             var b;
+
 
             for(
                 b=0;
@@ -1193,19 +4162,26 @@ function playStar(){
             ){
 
                 if(
+
                     bullets[b].x >
                     enemies[i].x &&
+
                     bullets[b].x <
-                    enemies[i].x+42 &&
+                    enemies[i].x+44 &&
+
                     bullets[b].y >
                     enemies[i].y &&
+
                     bullets[b].y <
-                    enemies[i].y+24
+                    enemies[i].y+25
                 ){
 
-                    enemies[i].alive=false;
+                    enemies[i].alive =
+                    false;
 
-                    score+=100;
+
+                    arcadeScore +=
+                    100;
 
                 }
 
@@ -1215,781 +4191,815 @@ function playStar(){
 
     }
 
-    txt(
-        "SCORE "+score,
-        25,
-        35,
-        18,
-        "#fff"
-    );
-
 }
 
 
-/* =====================================================
-   ARCADE: TENNIS
-===================================================== */
+/* =========================================================
+   BREAKOUT GAME
+========================================================= */
 
-function startTennisGame(){
+function initBreakout(){
 
-    score=0;
-
-    tennisPaddleY=220;
-
-    tennisBallX=480;
-    tennisBallY=270;
-
-    tennisDX=6;
-    tennisDY=4;
-
-}
+    breakoutPaddleX =
+    410;
 
 
-function playTennis(){
-
-    clear("#1b4332");
-
-    rect(
-        80,
-        70,
-        800,
-        400,
-        "#40916c"
-    );
-
-    ctx.strokeStyle="#fff";
-    ctx.lineWidth=4;
-
-    ctx.strokeRect(
-        80,
-        70,
-        800,
-        400
-    );
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        480,
-        70
-    );
-
-    ctx.lineTo(
-        480,
-        470
-    );
-
-    ctx.stroke();
-
-    tennisBallX+=tennisDX;
-    tennisBallY+=tennisDY;
-
-    if(
-        tennisBallY<80 ||
-        tennisBallY>450
-    ){
-
-        tennisDY=
-        -tennisDY;
-
-    }
-
-    if(
-        tennisBallX>850
-    ){
-
-        tennisDX=
-        -tennisDX;
-
-    }
-
-    if(
-        tennisBallX<115
-    ){
-
-        if(
-            tennisBallY >
-            tennisPaddleY &&
-            tennisBallY <
-            tennisPaddleY+110
-        ){
-
-            tennisDX=
-            Math.abs(
-                tennisDX
-            );
-
-            score++;
-
-        }
-
-        else{
-
-            tennisBallX=480;
-            tennisBallY=270;
-
-            score=0;
-
-        }
-
-    }
-
-    rect(
-        100,
-        tennisPaddleY,
-        18,
-        110,
-        "#277da1"
-    );
-
-    rect(
-        tennisBallX,
-        tennisBallY,
-        12,
-        12,
-        "#fee440"
-    );
-
-    txt(
-        "RALLY "+score,
-        25,
-        35,
-        18,
-        "#fff"
-    );
-
-}
+    breakoutBallX =
+    480;
 
 
-/* =====================================================
-   ARCADE: BREAKOUT
-===================================================== */
+    breakoutBallY =
+    280;
 
-function startBreakoutGame(){
 
-    score=0;
+    breakoutDX =
+    6;
 
-    breakoutPaddleX=400;
 
-    breakoutBallX=480;
-    breakoutBallY=300;
-
-    breakoutDX=5;
-    breakoutDY=-5;
+    breakoutDY =
+    -6;
 
 }
 
 
 function playBreakout(){
 
-    clear("#050505");
+    clear(
+        "#050505"
+    );
 
-    var colors=[
+
+    var colors = [
+
         "#ff006e",
+
         "#8338ec",
+
         "#3a86ff",
+
         "#00f5d4"
     ];
+
 
     var x;
     var y;
 
-    for(y=0;y<5;y++){
 
-        for(x=0;x<10;x++){
+    for(
+        y=0;
+        y<5;
+        y++
+    ){
+
+        for(
+            x=0;
+            x<10;
+            x++
+        ){
 
             rect(
+
                 85+x*80,
+
                 60+y*35,
+
                 68,
                 24,
-                colors[y%4]
+
+                colors[
+                    y%4
+                ]
             );
 
         }
 
     }
 
-    breakoutBallX+=
-    breakoutDX;
 
-    breakoutBallY+=
-    breakoutDY;
+    breakoutPaddleX =
+    pointerX-70;
+
 
     if(
-        breakoutBallX<15 ||
+        breakoutPaddleX < 0
+    )
+        breakoutPaddleX = 0;
+
+
+    if(
+        breakoutPaddleX > 820
+    )
+        breakoutPaddleX = 820;
+
+
+    breakoutBallX +=
+    breakoutDX;
+
+
+    breakoutBallY +=
+    breakoutDY;
+
+
+    if(
+        breakoutBallX<10 ||
         breakoutBallX>945
     ){
 
-        breakoutDX=
+        breakoutDX =
         -breakoutDX;
 
     }
 
+
     if(
-        breakoutBallY<30
+        breakoutBallY<25
     ){
 
-        breakoutDY=
+        breakoutDY =
         Math.abs(
             breakoutDY
         );
 
     }
 
+
     if(
-        breakoutBallY>460 &&
+
+        breakoutBallY>450 &&
+
         breakoutBallY<500 &&
-        breakoutBallX >
+
+        breakoutBallX>
         breakoutPaddleX &&
-        breakoutBallX <
+
+        breakoutBallX<
         breakoutPaddleX+140
     ){
 
-        breakoutDY=
+        breakoutDY =
         -Math.abs(
             breakoutDY
         );
 
-        score++;
+
+        arcadeScore++;
 
     }
+
 
     if(
         breakoutBallY>540
     ){
 
-        breakoutBallX=480;
-        breakoutBallY=260;
+        breakoutBallX =
+        480;
 
-        score=0;
+
+        breakoutBallY =
+        250;
+
+
+        arcadeScore = 0;
 
     }
 
+
     rect(
+
         breakoutPaddleX,
+
         475,
+
         140,
         18,
+
         "#fff"
     );
 
+
     rect(
+
         breakoutBallX,
+
         breakoutBallY,
+
         14,
         14,
+
         "#fee440"
     );
 
-    txt(
-        "SCORE "+score,
-        25,
-        35,
-        18,
-        "#fff"
-    );
+}
+
+
+/* =========================================================
+   TENNIS GAME
+========================================================= */
+
+function initTennis(){
+
+    tennisPaddleY =
+    210;
+
+
+    tennisBallX =
+    480;
+
+
+    tennisBallY =
+    270;
+
+
+    tennisDX =
+    7;
+
+
+    tennisDY =
+    5;
 
 }
 
 
-/* =====================================================
-   ARCADE: BLOCK DROP
-===================================================== */
+function playTennis(){
 
-function startBlockGame(){
-
-    score=0;
-
-    blockX=4;
-    blockY=0;
-
-    blockRotation=0;
-
-}
-
-
-function playBlocks(){
-
-    clear("#070707");
-
-    rect(
-        315,
-        25,
-        330,
-        495,
-        "#111"
+    clear(
+        "#1b4332"
     );
 
-    blockY+=0.06;
+
+    rect(
+
+        80,
+        70,
+
+        800,
+        400,
+
+        "#40916c"
+    );
+
+
+    ctx.strokeStyle =
+    "#fff";
+
+
+    ctx.lineWidth =
+    4;
+
+
+    ctx.strokeRect(
+
+        80,
+        70,
+
+        800,
+        400
+    );
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        480,
+        70
+    );
+
+
+    ctx.lineTo(
+        480,
+        470
+    );
+
+
+    ctx.stroke();
+
+
+    tennisPaddleY =
+    pointerY-55;
+
 
     if(
-        blockY>14
+        tennisPaddleY<75
+    )
+        tennisPaddleY=75;
+
+
+    if(
+        tennisPaddleY>355
+    )
+        tennisPaddleY=355;
+
+
+    tennisBallX +=
+    tennisDX;
+
+
+    tennisBallY +=
+    tennisDY;
+
+
+    if(
+        tennisBallY<80 ||
+        tennisBallY>450
     ){
 
-        blockY=0;
-
-        score++;
+        tennisDY =
+        -tennisDY;
 
     }
 
-    var px=
-    325+
-    blockX*30;
-
-    var py=
-    40+
-    blockY*30;
-
-    rect(
-        px,
-        py,
-        28,
-        28,
-        "#00f5d4"
-    );
-
-    rect(
-        px+30,
-        py,
-        28,
-        28,
-        "#00f5d4"
-    );
 
     if(
-        blockRotation===0
+        tennisBallX>850
     ){
 
-        rect(
-            px+60,
-            py,
-            28,
-            28,
-            "#00f5d4"
-        );
-
-        rect(
-            px+30,
-            py-30,
-            28,
-            28,
-            "#00f5d4"
-        );
-
-    }
-
-    else{
-
-        rect(
-            px+30,
-            py+30,
-            28,
-            28,
-            "#00f5d4"
-        );
-
-        rect(
-            px+30,
-            py-30,
-            28,
-            28,
-            "#00f5d4"
+        tennisDX =
+        -Math.abs(
+            tennisDX
         );
 
     }
 
-    txt(
-        "LINES "+score,
-        90,
-        150,
-        18,
-        "#fff"
-    );
-
-}
-
-
-/* =====================================================
-   DRAW LOOP
-===================================================== */
-
-function draw(){
 
     if(
-        started &&
-        !paused
+        tennisBallX<115
     ){
 
-        frame++;
+        if(
 
-        if(arcade){
+            tennisBallY >
+            tennisPaddleY &&
 
-            if(scene===1)
-                playStar();
+            tennisBallY <
+            tennisPaddleY+110
+        ){
 
-            else if(scene===5)
-                playBlocks();
+            tennisDX =
+            Math.abs(
+                tennisDX
+            );
 
-            else if(scene===8)
-                playTennis();
 
-            else if(scene===9)
-                playBreakout();
-
-        }
-
-        else if(commercialMode){
-
-            commercial();
+            arcadeScore++;
 
         }
 
         else{
 
-            if(scene===0)platform();
+            tennisBallX =
+            480;
 
-            if(scene===1)
-                passiveSpace();
 
-            if(scene===2)racer();
+            tennisBallY =
+            270;
 
-            if(scene===3)dungeon();
 
-            if(scene===4)fighter();
-
-            if(scene===5)
-                passiveBlocks();
-
-            if(scene===6)ocean();
-
-            if(scene===7)city();
-
-            if(scene===8)
-                passiveTennis();
-
-            if(scene===9)
-                passiveBreakout();
+            arcadeScore = 0;
 
         }
 
     }
 
-    raf(draw);
 
-}
+    rect(
 
+        100,
 
-/* =====================================================
-   COMMERCIAL
-===================================================== */
+        tennisPaddleY,
 
-function commercial(){
-
-    clear("#111");
-
-    centerText(
-        "RETRO TV COMMERCIAL",
-        90,
         18,
-        "#777"
+        110,
+
+        "#277da1"
     );
 
-    centerText(
-        "TURBO SODA",
-        230,
-        50,
-        "#ff006e"
-    );
 
-    centerText(
-        "POWER UP YOUR DAY",
-        290,
-        18,
-        "#fff"
-    );
+    rect(
 
-    centerText(
-        "ONLY 19.99",
-        390,
-        24,
+        tennisBallX,
+
+        tennisBallY,
+
+        12,
+        12,
+
         "#fee440"
     );
 
 }
 
 
-/* =====================================================
-   ARCADE CONTROL
-===================================================== */
+/* =========================================================
+   RUNNER GAME
+========================================================= */
 
-function arcadeAvailable(){
+function initRunner(){
 
-    return (
-        scene===1 ||
-        scene===5 ||
-        scene===8 ||
-        scene===9
-    );
+    runnerY =
+    410;
+
+
+    runnerVelocity =
+    0;
+
+
+    runnerObstacleX =
+    900;
+
+
+    runnerGrounded =
+    true;
 
 }
 
 
-function tryArcade(){
+function playRunner(){
+
+    clear(
+        "#89c2d9"
+    );
+
+
+    rect(
+
+        0,
+        430,
+
+        W,
+        110,
+
+        "#59412d"
+    );
+
+
+    rect(
+
+        0,
+        420,
+
+        W,
+        15,
+
+        "#90be6d"
+    );
+
+
+    runnerVelocity +=
+    0.8;
+
+
+    runnerY +=
+    runnerVelocity;
+
 
     if(
-        !arcadeAvailable()
+        runnerY >=410
     ){
 
-        document.getElementById(
-            "nowPlaying"
-        ).innerHTML=
-        "NO GAME ON THIS CHANNEL";
+        runnerY =
+        410;
 
-        return;
+
+        runnerVelocity =
+        0;
+
+
+        runnerGrounded =
+        true;
 
     }
 
-    startArcade();
+
+    runnerObstacleX -=
+    8;
+
+
+    if(
+        runnerObstacleX < -40
+    ){
+
+        runnerObstacleX =
+        980;
+
+
+        arcadeScore++;
+
+    }
+
+
+    rect(
+
+        200,
+
+        runnerY-45,
+
+        32,
+        45,
+
+        "#f94144"
+    );
+
+
+    rect(
+
+        runnerObstacleX,
+
+        385,
+
+        28,
+        35,
+
+        "#577590"
+    );
+
+
+    /*
+    collision
+    */
+
+    if(
+
+        runnerObstacleX<
+        232 &&
+
+        runnerObstacleX+28>
+        200 &&
+
+        runnerY>375
+    ){
+
+        arcadeScore = 0;
+
+
+        runnerObstacleX =
+        900;
+
+    }
 
 }
 
 
-function startArcade(){
+/* =========================================================
+   ARCADE RENDERER
+========================================================= */
 
-    if(arcade)
-        return;
+function renderArcade(){
 
-    arcade=true;
+    if(
+        arcadeGame ===
+        "star"
+    )
+        playStar();
 
-    arcadeTimer=0;
 
-    channelTimer=0;
+    else if(
+        arcadeGame ===
+        "breakout"
+    )
+        playBreakout();
 
-    commercialMode=false;
+
+    else if(
+        arcadeGame ===
+        "tennis"
+    )
+        playTennis();
+
+
+    else if(
+        arcadeGame ===
+        "runner"
+    )
+        playRunner();
+
 
     document.getElementById(
-        "arcadeOverlay"
-    ).style.display=
-    "block";
-
-    if(scene===1)
-        startStarGame();
-
-    if(scene===5)
-        startBlockGame();
-
-    if(scene===8)
-        startTennisGame();
-
-    if(scene===9)
-        startBreakoutGame();
-
-    updateArcadeInfo();
+        "arcadeHudScore"
+    ).innerHTML =
+    "SCORE "+
+    arcadeScore;
 
 }
 
+
+/* =========================================================
+   START ARCADE
+========================================================= */
+
+function startArcade(
+    game
+){
+
+    arcadeGame =
+    game;
+
+
+    arcadeActive =
+    true;
+
+
+    arcadeSeconds =
+    0;
+
+
+    arcadeScore =
+    0;
+
+
+    document.getElementById(
+        "arcadeMenu"
+    ).style.display =
+    "none";
+
+
+    document.getElementById(
+        "arcadeHud"
+    ).style.display =
+    "block";
+
+
+    if(
+        game ===
+        "star"
+    )
+        initStar();
+
+
+    else if(
+        game ===
+        "breakout"
+    )
+        initBreakout();
+
+
+    else if(
+        game ===
+        "tennis"
+    )
+        initTennis();
+
+
+    else if(
+        game ===
+        "runner"
+    )
+        initRunner();
+
+
+    document.getElementById(
+        "arcadeHudTitle"
+    ).innerHTML =
+    arcadeGame.toUpperCase();
+
+}
+
+
+/* =========================================================
+   STOP ARCADE
+========================================================= */
 
 function stopArcade(){
 
-    arcade=false;
+    if(
+        !arcadeActive
+    )
+        return;
 
-    arcadeTimer=0;
-
-    document.getElementById(
-        "arcadeOverlay"
-    ).style.display=
-    "none";
-
-    updateChannel();
-
-}
-
-
-function updateArcadeInfo(){
-
-    var remaining=
-    arcadeSeconds-
-    arcadeTimer;
-
-    document.getElementById(
-        "arcadeInfo"
-    ).innerHTML=
-    remaining+
-    " SECONDS · SCORE "+
-    score;
-
-}
-
-
-/* =====================================================
-   TOUCH INPUT
-===================================================== */
-
-function getCanvasPoint(event){
-
-    var rectBox=
-    canvas.getBoundingClientRect();
-
-    var touch=null;
 
     if(
-        event.touches &&
-        event.touches.length
+        arcadeScore >
+        highScores[
+            arcadeGame
+        ]
     ){
 
-        touch=
-        event.touches[0];
+        highScores[
+            arcadeGame
+        ] =
+        arcadeScore;
 
     }
 
-    else{
 
-        touch=event;
+    arcadeActive =
+    false;
 
-    }
 
-    pointerX=
-    (
-        touch.clientX-
-        rectBox.left
-    ) *
-    (
-        W/
-        rectBox.width
-    );
+    document.getElementById(
+        "arcadeHud"
+    ).style.display =
+    "none";
 
-    pointerY=
-    (
-        touch.clientY-
-        rectBox.top
-    ) *
-    (
-        H/
-        rectBox.height
+
+    updateScoreDisplay();
+
+
+    saveState();
+
+}
+
+
+/* =========================================================
+   ARCADE HUD
+========================================================= */
+
+function updateArcadeHud(){
+
+    var remaining =
+    arcadeLength -
+    arcadeSeconds;
+
+
+    if(
+        remaining < 0
+    )
+        remaining = 0;
+
+
+    document.getElementById(
+        "arcadeHudTime"
+    ).innerHTML =
+    remaining;
+
+
+    document.getElementById(
+        "arcadeHudScore"
+    ).innerHTML =
+    "SCORE "+
+    arcadeScore;
+
+}
+
+
+/* =========================================================
+   TOUCH ARCADE
+========================================================= */
+
+function arcadeMove(
+    event
+){
+
+    if(
+        !arcadeActive
+    )
+        return;
+
+
+    getPoint(
+        event
     );
 
 }
 
 
-function arcadeMove(event){
+function arcadeTap(
+    event
+){
 
-    if(!arcade)
+    if(
+        !arcadeActive
+    )
         return;
 
-    getCanvasPoint(event);
 
-    if(scene===1){
-
-        shipX=
-        pointerX-40;
-
-        if(shipX<0)
-            shipX=0;
-
-        if(shipX>880)
-            shipX=880;
-
-    }
-
-    if(scene===8){
-
-        tennisPaddleY=
-        pointerY-55;
-
-        if(
-            tennisPaddleY<75
-        )
-            tennisPaddleY=75;
-
-        if(
-            tennisPaddleY>355
-        )
-            tennisPaddleY=355;
-
-    }
-
-    if(scene===9){
-
-        breakoutPaddleX=
-        pointerX-70;
-
-        if(
-            breakoutPaddleX<0
-        )
-            breakoutPaddleX=0;
-
-        if(
-            breakoutPaddleX>820
-        )
-            breakoutPaddleX=820;
-
-    }
-
-}
+    getPoint(
+        event
+    );
 
 
-function arcadeTap(event){
-
-    if(!arcade){
-
-        if(
-            arcadeAvailable()
-        ){
-
-            startArcade();
-
-        }
-
-        return;
-
-    }
-
-    getCanvasPoint(event);
-
-    if(scene===1){
+    if(
+        arcadeGame ===
+        "star"
+    ){
 
         bullets.push({
 
-            x:shipX+38,
-            y:430
+            x:
+            shipX+38,
 
+            y:
+            425
         });
 
     }
 
-    if(scene===5){
+
+    else if(
+        arcadeGame ===
+        "runner"
+    ){
 
         if(
-            pointerX <
-            W/3
+            runnerGrounded
         ){
 
-            blockX--;
+            runnerVelocity =
+            -14;
 
-            if(blockX<0)
-                blockX=0;
 
-        }
-
-        else if(
-            pointerX >
-            W*2/3
-        ){
-
-            blockX++;
-
-            if(blockX>7)
-                blockX=7;
-
-        }
-
-        else{
-
-            blockRotation=
-            blockRotation===0 ?
-            1 :
-            0;
+            runnerGrounded =
+            false;
 
         }
 
@@ -1998,279 +5008,296 @@ function arcadeTap(event){
 }
 
 
-canvas.addEventListener(
-    "touchmove",
-    arcadeMove,
-    false
-);
+/* =========================================================
+   LAUNCH CURRENT GAME
+========================================================= */
 
-canvas.addEventListener(
-    "touchstart",
-    arcadeTap,
-    false
-);
+function launchCurrentGame(){
 
-canvas.addEventListener(
-    "click",
-    arcadeTap,
-    false
-);
+    var program =
+    programs[
+        programIndex
+    ];
 
 
-/* =====================================================
-   CHANNELS
-===================================================== */
+    if(
+        program.playable
+    ){
 
-function updateChannel(){
-
-    var n=
-    scene+1;
-
-    var d=
-    n<10 ?
-    "0"+n :
-    n;
-
-    document.getElementById(
-        "channel"
-    ).innerHTML=
-    "CH "+d;
-
-    document.getElementById(
-        "nowPlaying"
-    ).innerHTML=
-    "CH "+d+
-    " · "+
-    names[scene];
-
-}
-
-
-function channelStatic(){
-
-    var s=
-    document.getElementById(
-        "static"
-    );
-
-    s.style.display=
-    "block";
-
-    setTimeout(
-        function(){
-
-            s.style.display=
-            "none";
-
-        },
-        150
-    );
-
-}
-
-
-function nextScene(){
-
-    if(arcade)
-        stopArcade();
-
-    channelStatic();
-
-    commercialMode=false;
-
-    var old=scene;
-
-    if(shuffle){
-
-        while(scene===old){
-
-            scene=
-            rnd(
-                0,
-                sceneCount-1
-            );
-
-        }
+        startArcade(
+            program.playable
+        );
 
     }
 
     else{
 
-        scene++;
-
-        if(scene>=sceneCount)
-            scene=0;
+        showArcadeMenu();
 
     }
-
-    frame=0;
-    channelTimer=0;
-
-    updateChannel();
 
 }
 
 
-function previousScene(){
+/* =========================================================
+   SECRET ARCADE MENU
+========================================================= */
 
-    if(arcade)
-        stopArcade();
+function showArcadeMenu(){
 
-    scene--;
+    stopArcade();
 
-    if(scene<0)
-        scene=sceneCount-1;
 
-    frame=0;
-    channelTimer=0;
+    updateScoreDisplay();
 
-    updateChannel();
+
+    document.getElementById(
+        "arcadeMenu"
+    ).style.display =
+    "block";
 
 }
 
 
-/* =====================================================
-   TIMER
-===================================================== */
+function closeArcadeMenu(){
 
-function secondTimer(){
+    document.getElementById(
+        "arcadeMenu"
+    ).style.display =
+    "none";
+
+}
+
+
+/* =========================================================
+   SCORES
+========================================================= */
+
+function updateScoreDisplay(){
+
+    document.getElementById(
+        "scoreStar"
+    ).innerHTML =
+    "HI "+
+    highScores.star;
+
+
+    document.getElementById(
+        "scoreBreakout"
+    ).innerHTML =
+    "HI "+
+    highScores.breakout;
+
+
+    document.getElementById(
+        "scoreTennis"
+    ).innerHTML =
+    "HI "+
+    highScores.tennis;
+
+
+    document.getElementById(
+        "scoreRunner"
+    ).innerHTML =
+    "HI "+
+    highScores.runner;
+
+}
+
+
+/* =========================================================
+   LONG PRESS SECRET
+========================================================= */
+
+var logoHold = null;
+
+
+function beginLogoHold(){
+
+    logoHold =
+    setTimeout(
+
+        function(){
+
+            showArcadeMenu();
+
+        },
+
+        1200
+    );
+
+}
+
+
+function cancelLogoHold(){
 
     if(
-        !started ||
-        paused
-    )
-        return;
-
-    if(arcade){
-
-        arcadeTimer++;
-
-        updateArcadeInfo();
-
-        if(
-            arcadeTimer>=
-            arcadeSeconds
-        ){
-
-            stopArcade();
-
-        }
-
-        return;
-
-    }
-
-    if(commercialMode){
-
-        commercialTimer++;
-
-        if(
-            commercialTimer>=8
-        ){
-
-            commercialMode=false;
-
-            nextScene();
-
-        }
-
-        return;
-
-    }
-
-    if(!autoTV)
-        return;
-
-    channelTimer++;
-
-    if(
-        channelTimer>=
-        channelDuration
+        logoHold
     ){
 
-        channelTimer=0;
-
-        if(
-            rnd(1,4)===1
-        ){
-
-            commercialMode=true;
-            commercialTimer=0;
-
-        }
-
-        else{
-
-            nextScene();
-
-        }
+        clearTimeout(
+            logoHold
+        );
 
     }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    SETTINGS
-===================================================== */
+========================================================= */
+
+function openSettings(){
+
+    document.getElementById(
+        "settings"
+    ).style.display =
+    "block";
+
+}
+
+
+function closeSettings(){
+
+    document.getElementById(
+        "settings"
+    ).style.display =
+    "none";
+
+
+    saveState();
+
+}
+
+
+function setCRT(
+    enabled
+){
+
+    settings.crt =
+    enabled;
+
+
+    document.getElementById(
+        "scanlines"
+    ).style.display =
+    enabled
+    ? "block"
+    : "none";
+
+
+    document.getElementById(
+        "vignette"
+    ).style.display =
+    enabled
+    ? "block"
+    : "none";
+
+
+    saveState();
+
+}
+
+
+function setQuality(
+    value
+){
+
+    settings.quality =
+    value;
+
+
+    if(
+        value !==
+        "auto"
+    ){
+
+        qualityMode =
+        value;
+
+    }
+
+
+    saveState();
+
+}
+
+
+function setShuffle(
+    enabled
+){
+
+    settings.shuffle =
+    enabled;
+
+
+    saveState();
+
+}
+
+
+function resetScores(){
+
+    highScores = {
+
+        star: 0,
+
+        breakout: 0,
+
+        tennis: 0,
+
+        runner: 0
+
+    };
+
+
+    updateScoreDisplay();
+
+
+    saveState();
+
+}
+
+
+/* =========================================================
+   PAUSE
+========================================================= */
 
 function togglePause(){
 
-    paused=!paused;
+    paused =
+    !paused;
+
 
     document.getElementById(
-        "pauseButton"
-    ).innerHTML=
-    paused ?
-    "PLAY" :
-    "PAUSE";
+        "pauseControl"
+    ).innerHTML =
+    paused
+    ? "PLAY"
+    : "PAUSE";
 
 }
 
 
-function toggleShuffle(){
-
-    shuffle=!shuffle;
-
-    document.getElementById(
-        "shuffleButton"
-    ).innerHTML=
-    shuffle ?
-    "SHUFFLE ON" :
-    "SHUFFLE OFF";
-
-}
-
-
-function toggleMode(){
-
-    autoTV=!autoTV;
-
-    document.getElementById(
-        "modeButton"
-    ).innerHTML=
-    autoTV ?
-    "AUTO TV" :
-    "MANUAL";
-
-}
-
-
-/* =====================================================
+/* =========================================================
    CONTROLS
-===================================================== */
+========================================================= */
+
+var controlsTimer = null;
+
 
 function showControls(){
 
-    var controls=
     document.getElementById(
         "controls"
-    );
-
-    controls.style.opacity=
+    ).style.opacity =
     "1";
 
-    if(controlsTimer){
+
+    if(
+        controlsTimer
+    ){
 
         clearTimeout(
             controlsTimer
@@ -2278,72 +5305,301 @@ function showControls(){
 
     }
 
-    controlsTimer=
+
+    controlsTimer =
     setTimeout(
+
         function(){
 
-            controls.style.opacity=
+            document.getElementById(
+                "controls"
+            ).style.opacity =
             "0";
 
         },
+
         3500
     );
 
 }
 
 
-document.addEventListener(
-    "touchstart",
-    showControls,
-    false
-);
+/* =========================================================
+   END BROADCAST
+========================================================= */
 
-document.addEventListener(
-    "click",
-    showControls,
-    false
-);
+function endBroadcast(){
+
+    broadcastEnded =
+    true;
 
 
-/* =====================================================
-   START
-===================================================== */
+    saveState();
 
-function startTV(){
 
-    if(started)
-        return;
+    storageSet(
+        "rv_broadcastSeconds",
+        0
+    );
 
-    started=true;
 
     document.getElementById(
-        "startScreen"
-    ).style.display=
-    "none";
+        "signoff"
+    ).style.display =
+    "block";
 
 }
 
 
-/* =====================================================
-   INIT
-===================================================== */
+/* =========================================================
+   RESTART EPISODE
+========================================================= */
+
+function restartEpisode(){
+
+    broadcastSeconds =
+    0;
+
+
+    programSeconds =
+    0;
+
+
+    programIndex =
+    random(
+        0,
+        programs.length-1
+    );
+
+
+    broadcastEnded =
+    false;
+
+
+    document.getElementById(
+        "signoff"
+    ).style.display =
+    "none";
+
+
+    updateOSD();
+
+
+    saveState();
+
+}
+
+
+/* =========================================================
+   BOOT
+========================================================= */
+
+function bootRetrovision(){
+
+    if(
+        started
+    )
+        return;
+
+
+    started =
+    true;
+
+
+    document.getElementById(
+        "boot"
+    ).style.display =
+    "none";
+
+
+    applySettings();
+
+
+    updateOSD();
+
+
+    updateScoreDisplay();
+
+
+    updateEpisodeTimer();
+
+}
+
+
+/* =========================================================
+   APPLY SETTINGS
+========================================================= */
+
+function applySettings(){
+
+    setCRT(
+        settings.crt
+    );
+
+
+    if(
+        settings.quality !==
+        "auto"
+    ){
+
+        qualityMode =
+        settings.quality;
+
+    }
+
+}
+
+
+/* =========================================================
+   EVENT LISTENERS
+========================================================= */
+
+canvas.addEventListener(
+
+    "touchmove",
+
+    arcadeMove,
+
+    false
+);
+
+
+canvas.addEventListener(
+
+    "touchstart",
+
+    arcadeTap,
+
+    false
+);
+
+
+canvas.addEventListener(
+
+    "click",
+
+    arcadeTap,
+
+    false
+);
+
+
+document.addEventListener(
+
+    "touchstart",
+
+    showControls,
+
+    false
+);
+
+
+document.addEventListener(
+
+    "click",
+
+    showControls,
+
+    false
+);
+
+
+var brand =
+document.getElementById(
+    "brand"
+);
+
+
+brand.addEventListener(
+
+    "touchstart",
+
+    beginLogoHold,
+
+    false
+);
+
+
+brand.addEventListener(
+
+    "touchend",
+
+    cancelLogoHold,
+
+    false
+);
+
+
+brand.addEventListener(
+
+    "mousedown",
+
+    beginLogoHold,
+
+    false
+);
+
+
+brand.addEventListener(
+
+    "mouseup",
+
+    cancelLogoHold,
+
+    false
+);
+
+
+/* =========================================================
+   STARTUP
+========================================================= */
 
 function init(){
 
-    updateChannel();
+    loadState();
+
+
+    applySettings();
+
+
+    updateOSD();
+
+
+    updateScoreDisplay();
+
+
+    updateEpisodeTimer();
+
 
     setInterval(
-        secondTimer,
+
+        secondTick,
+
         1000
     );
+
+
+    /*
+    additional backup save
+    */
+
+    setInterval(
+
+        saveState,
+
+        5000
+    );
+
 
     draw();
 
 }
 
+
 init();
 
 </script>
+
 
 </body>
 </html>
