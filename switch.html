@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Switch Test</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    #screen {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+
+    #header {
+      padding-top: 35px;
+      font-size: 22px;
+    }
+
+    #clock {
+      margin-top: 30px;
+      font-size: 72px;
+      font-weight: bold;
+    }
+
+    #date {
+      margin-top: 8px;
+      font-size: 22px;
+      color: #bbb;
+    }
+
+    #status {
+      margin: 30px auto 0 auto;
+      width: 80%;
+      padding: 15px;
+      background: #222;
+      border-radius: 12px;
+      font-size: 18px;
+    }
+
+    .button {
+      display: inline-block;
+      margin: 25px 10px 0 10px;
+      padding: 18px 28px;
+      background: #eee;
+      color: #111;
+      border-radius: 10px;
+      font-size: 20px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #counter {
+      margin-top: 25px;
+      font-size: 20px;
+    }
+
+    #footer {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="screen">
+
+  <div id="header">
+    NINTENDO SWITCH WEB TEST
+  </div>
+
+  <div id="clock">
+    --:--
+  </div>
+
+  <div id="date">
+    Loading...
+  </div>
+
+  <div id="status">
+    If you can read this, HTML and CSS are working.
+  </div>
+
+  <div>
+    <span class="button" onclick="testButton()">
+      TOUCH TEST
+    </span>
+
+    <span class="button" onclick="changeBackground()">
+      COLOR TEST
+    </span>
+  </div>
+
+  <div id="counter">
+    Button presses: 0
+  </div>
+
+  <div id="footer">
+    Switch Dashboard Compatibility Test v1
+  </div>
+
+</div>
+
+<script>
+
+var presses = 0;
+var dark = true;
+
+function updateClock() {
+
+  var now = new Date();
+
+  var hours = now.getHours();
+  var minutes = now.getMinutes();
+
+  var suffix = "AM";
+
+  if (hours >= 12) {
+    suffix = "PM";
+  }
+
+  if (hours > 12) {
+    hours = hours - 12;
+  }
+
+  if (hours === 0) {
+    hours = 12;
+  }
+
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+
+  document.getElementById("clock").innerHTML =
+    hours + ":" + minutes + " " + suffix;
+
+  document.getElementById("date").innerHTML =
+    now.toDateString();
+}
+
+function testButton() {
+
+  presses = presses + 1;
+
+  document.getElementById("counter").innerHTML =
+    "Button presses: " + presses;
+
+  document.getElementById("status").innerHTML =
+    "JavaScript + touchscreen working!";
+}
+
+function changeBackground() {
+
+  if (dark === true) {
+
+    document.body.style.backgroundColor = "#243447";
+
+    document.getElementById("status").innerHTML =
+      "Dynamic CSS working!";
+
+    dark = false;
+
+  } else {
+
+    document.body.style.backgroundColor = "#111111";
+
+    document.getElementById("status").innerHTML =
+      "Background reset.";
+
+    dark = true;
+  }
+}
+
+updateClock();
+
+setInterval(updateClock, 1000);
+
+</script>
+
+</body>
+</html>
