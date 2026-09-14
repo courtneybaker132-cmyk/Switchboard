@@ -9,7 +9,7 @@ initial-scale=1.0,
 maximum-scale=1.0,
 user-scalable=no">
 
-<title>Retro TV</title>
+<title>Retro TV Arcade</title>
 
 <style>
 
@@ -124,7 +124,7 @@ canvas{
     color:#fff;
     font-size:16px;
     text-shadow:2px 2px #000;
-    opacity:.75;
+    opacity:.8;
 }
 
 #nowPlaying{
@@ -165,8 +165,8 @@ canvas{
     position:absolute;
     left:50%;
     bottom:20px;
-    width:660px;
-    margin-left:-330px;
+    width:680px;
+    margin-left:-340px;
     text-align:center;
     z-index:50;
     padding:10px 0;
@@ -213,16 +213,37 @@ canvas{
     opacity:.85;
 }
 
-#interactiveHint{
+#arcadeOverlay{
     display:none;
     position:absolute;
     left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    z-index:33;
+    pointer-events:none;
+}
+
+#arcadeTitle{
+    position:absolute;
+    top:20px;
+    left:0;
+    width:100%;
+    text-align:center;
+    color:#fff;
+    font-size:20px;
+    letter-spacing:3px;
+    text-shadow:2px 2px #000;
+}
+
+#arcadeInfo{
+    position:absolute;
     bottom:15px;
+    left:0;
     width:100%;
     text-align:center;
     color:#fff;
     font-size:13px;
-    z-index:32;
     text-shadow:2px 2px #000;
 }
 
@@ -282,8 +303,16 @@ RETRO TV
 <div id="nowPlaying">CH 01</div>
 </div>
 
-<div id="interactiveHint">
-TAP SCREEN TO PLAY
+<div id="arcadeOverlay">
+
+<div id="arcadeTitle">
+SECRET ARCADE
+</div>
+
+<div id="arcadeInfo">
+30 SECONDS
+</div>
+
 </div>
 
 </div>
@@ -320,6 +349,11 @@ id="shuffleButton">SHUFFLE ON</span>
 onclick="toggleMode()"
 id="modeButton">AUTO TV</span>
 
+<span class="button"
+onclick="tryArcade()">
+PLAY
+</span>
+
 </div>
 
 <div id="startScreen"
@@ -334,7 +368,7 @@ TAP TO START
 </div>
 
 <div id="startSmall">
-24-HOUR PIXEL VIDEO GAME CHANNEL
+RETRO TV + SECRET ARCADE
 </div>
 
 </div>
@@ -353,78 +387,111 @@ document.getElementById("game");
 var ctx =
 canvas.getContext("2d");
 
-var W = 960;
-var H = 540;
+var W=960;
+var H=540;
 
-var scene = 0;
-var sceneCount = 10;
+var scene=0;
+var sceneCount=10;
 
-var frame = 0;
-var phaseFrame = 0;
+var frame=0;
+var phaseFrame=0;
 
-var paused = false;
-var shuffle = true;
+var paused=false;
+var started=false;
 
-var started = false;
+var shuffle=true;
+var autoTV=true;
 
-var autoTV = true;
+var channelTimer=0;
+var channelDuration=60;
 
-var channelTimer = 0;
-var channelDuration = 65;
+var commercialMode=false;
+var commercialTimer=0;
 
-var controlsTimer = null;
+var controlsTimer=null;
 
-var commercialMode = false;
-var commercialTimer = 0;
 
-var interactiveMode = false;
+/* =====================================================
+   SECRET ARCADE
+===================================================== */
 
-var score = 0;
+var arcade=false;
+var arcadeSeconds=30;
 
-var raf =
+var arcadeTimer=0;
+
+var score=0;
+
+var pointerX=480;
+var pointerY=270;
+
+
+/* STAR DEFENDER */
+
+var shipX=440;
+
+var bullets=[];
+
+var enemies=[];
+
+
+/* TENNIS */
+
+var tennisPaddleY=220;
+
+var tennisBallX=480;
+var tennisBallY=270;
+
+var tennisDX=6;
+var tennisDY=4;
+
+
+/* BREAKOUT */
+
+var breakoutPaddleX=400;
+
+var breakoutBallX=480;
+var breakoutBallY=270;
+
+var breakoutDX=5;
+var breakoutDY=-5;
+
+
+/* BLOCK DROP */
+
+var blockX=4;
+var blockY=0;
+var blockRotation=0;
+
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+var raf=
 window.requestAnimationFrame ||
 window.webkitRequestAnimationFrame ||
 function(fn){
+
     return setTimeout(fn,33);
+
 };
 
 
 /* =====================================================
-   TIME OF DAY
-===================================================== */
-
-function currentHour(){
-
-    return new Date().getHours();
-
-}
-
-function isNight(){
-
-    var h = currentHour();
-
-    return (
-        h >= 20 ||
-        h < 6
-    );
-
-}
-
-
-/* =====================================================
-   DRAW HELPERS
+   HELPERS
 ===================================================== */
 
 function clear(c){
 
-    ctx.fillStyle = c;
+    ctx.fillStyle=c;
     ctx.fillRect(0,0,W,H);
 
 }
 
 function rect(x,y,w,h,c){
 
-    ctx.fillStyle = c;
+    ctx.fillStyle=c;
 
     ctx.fillRect(
         Math.floor(x),
@@ -435,29 +502,25 @@ function rect(x,y,w,h,c){
 
 }
 
-function txt(value,x,y,size,color){
+function txt(v,x,y,size,color){
 
-    ctx.fillStyle = color;
-    ctx.font = size + "px monospace";
+    ctx.fillStyle=color;
+    ctx.font=size+"px monospace";
 
-    ctx.fillText(
-        value,
-        x,
-        y
-    );
+    ctx.fillText(v,x,y);
 
 }
 
-function centerText(value,y,size,color){
+function centerText(v,y,size,color){
 
-    ctx.fillStyle = color;
-    ctx.font = size + "px monospace";
+    ctx.fillStyle=color;
+    ctx.font=size+"px monospace";
 
-    var width =
-    ctx.measureText(value).width;
+    var width=
+    ctx.measureText(v).width;
 
     ctx.fillText(
-        value,
+        v,
         (W-width)/2,
         y
     );
@@ -467,18 +530,32 @@ function centerText(value,y,size,color){
 function rnd(a,b){
 
     return Math.floor(
-        Math.random() *
+        Math.random()*
         (b-a+1)
-    ) + a;
+    )+a;
 
 }
 
 
 /* =====================================================
-   TITLE CARD
+   PASSIVE TV SCENES
 ===================================================== */
 
-function titleCard(title,subtitle,color){
+var names=[
+"PIXEL KINGDOM",
+"STAR DEFENDER",
+"NEON HIGHWAY",
+"DUNGEON QUEST",
+"STREET BATTLE",
+"BLOCK DROP",
+"PIXEL ISLAND",
+"MIDNIGHT CITY",
+"PIXEL TENNIS",
+"CYBER BREAKOUT"
+];
+
+
+function titleCard(title,sub,color){
 
     clear("#050505");
 
@@ -490,14 +567,14 @@ function titleCard(title,subtitle,color){
     );
 
     centerText(
-        subtitle,
+        sub,
         280,
         17,
         "#aaa"
     );
 
     centerText(
-        "PRESENTED BY RETRO TV",
+        "RETRO TV PRESENTS",
         420,
         13,
         "#555"
@@ -506,119 +583,9 @@ function titleCard(title,subtitle,color){
 }
 
 
-/* =====================================================
-   GAME OVER
-===================================================== */
-
-function gameOver(title){
-
-    clear("#080808");
-
-    centerText(
-        "GAME OVER",
-        235,
-        46,
-        "#ff4d6d"
-    );
-
-    centerText(
-        title,
-        285,
-        18,
-        "#fff"
-    );
-
-    centerText(
-        "HIGH SCORE  025840",
-        350,
-        17,
-        "#fee440"
-    );
-
-    centerText(
-        "PRESS START",
-        430,
-        15,
-        "#777"
-    );
-
-}
-
-
-/* =====================================================
-   SCENE PHASE
-===================================================== */
-
-function phase(){
-
-    var seconds =
-    Math.floor(
-        phaseFrame / 30
-    );
-
-    if(seconds < 5)
-        return 0;
-
-    if(seconds < 35)
-        return 1;
-
-    if(seconds < 50)
-        return 2;
-
-    return 3;
-
-}
-
-
-/* =====================================================
-   CHANNEL 1
-   PLATFORM KINGDOM
-===================================================== */
-
 function platform(){
 
-    var p = phase();
-
-    if(p===0){
-
-        titleCard(
-            "PIXEL KINGDOM",
-            "WORLD 1-1",
-            "#5bc0eb"
-        );
-
-        return;
-    }
-
-    if(p===3){
-
-        gameOver(
-            "PIXEL KINGDOM"
-        );
-
-        return;
-    }
-
     clear("#58bde8");
-
-    var cx =
-    (frame*1.2)%1150;
-
-    rect(
-        900-cx,
-        80,
-        150,
-        28,
-        "#fff"
-    );
-
-    rect(
-        940-cx,
-        53,
-        65,
-        35,
-        "#fff"
-    );
 
     rect(
         0,
@@ -644,24 +611,10 @@ function platform(){
         "#91c83e"
     );
 
-    var i;
-
-    for(i=0;i<13;i++){
-
-        rect(
-            i*80,
-            380,
-            55,
-            35,
-            "#c96522"
-        );
-
-    }
-
-    var px =
+    var px=
     (frame*2.8)%1080-80;
 
-    var jump =
+    var jump=
     Math.abs(
         Math.sin(frame/18)
     )*75;
@@ -682,36 +635,8 @@ function platform(){
         "#185adb"
     );
 
-    if(p===2){
-
-        rect(
-            760,
-            300,
-            110,
-            110,
-            "#5a189a"
-        );
-
-        rect(
-            785,
-            260,
-            60,
-            50,
-            "#7b2cbf"
-        );
-
-        txt(
-            "BOSS!",
-            765,
-            235,
-            20,
-            "#fff"
-        );
-
-    }
-
     txt(
-        "WORLD 1-3",
+        "PIXEL KINGDOM",
         25,
         35,
         17,
@@ -721,84 +646,39 @@ function platform(){
 }
 
 
-/* =====================================================
-   CHANNEL 2
-   SPACE DEFENDER
-===================================================== */
-
-var stars=[];
-
-function makeStars(){
-
-    var i;
-
-    for(i=0;i<80;i++){
-
-        stars.push({
-            x:rnd(0,W),
-            y:rnd(0,H),
-            s:rnd(1,4)
-        });
-
-    }
-
-}
-
-function space(){
-
-    var p = phase();
-
-    if(p===0){
-
-        titleCard(
-            "STAR DEFENDER",
-            "THE GALAXY NEEDS YOU",
-            "#00f5d4"
-        );
-
-        return;
-    }
-
-    if(p===3){
-
-        gameOver(
-            "STAR DEFENDER"
-        );
-
-        return;
-    }
+function passiveSpace(){
 
     clear("#010108");
 
     var i;
 
-    for(i=0;i<stars.length;i++){
+    for(i=0;i<60;i++){
 
-        stars[i].y += stars[i].s;
+        var sx=
+        (i*137)%W;
 
-        if(stars[i].y>H){
-
-            stars[i].y=0;
-            stars[i].x=rnd(0,W);
-
-        }
+        var sy=
+        (
+            i*83+
+            frame*2
+        )%H;
 
         rect(
-            stars[i].x,
-            stars[i].y,
-            stars[i].s,
-            stars[i].s*2,
+            sx,
+            sy,
+            2,
+            4,
             "#fff"
         );
 
     }
 
-    var sx =
-    430 +
+    var ship=
+    430+
     Math.sin(frame/28)*210;
 
     rect(
-        sx,
+        ship,
         450,
         80,
         22,
@@ -806,80 +686,25 @@ function space(){
     );
 
     rect(
-        sx+27,
+        ship+27,
         425,
         26,
         55,
         "#00bbf9"
     );
 
-    if(frame%30<15){
+    for(i=0;i<6;i++){
+
+        var ex=
+        120+i*135+
+        Math.sin(frame/16+i)*35;
 
         rect(
-            sx+39,
-            250,
-            4,
-            175,
-            "#ffe600"
-        );
-
-    }
-
-    if(p===1){
-
-        for(i=0;i<6;i++){
-
-            var ex =
-            120+i*135+
-            Math.sin(frame/16+i)*35;
-
-            var ey =
-            100+
-            Math.sin(frame/12+i)*20;
-
-            rect(
-                ex,
-                ey,
-                42,
-                24,
-                "#ff006e"
-            );
-
-        }
-
-    }
-
-    if(p===2){
-
-        rect(
-            370,
-            90,
-            220,
-            90,
-            "#6a0dad"
-        );
-
-        rect(
-            405,
-            180,
-            40,
-            40,
+            ex,
+            120,
+            42,
+            24,
             "#ff006e"
-        );
-
-        rect(
-            515,
-            180,
-            40,
-            40,
-            "#ff006e"
-        );
-
-        centerText(
-            "MOTHERSHIP",
-            65,
-            18,
-            "#fff"
         );
 
     }
@@ -887,46 +712,7 @@ function space(){
 }
 
 
-/* =====================================================
-   CHANNEL 3
-   NEON RACER
-===================================================== */
-
 function racer(){
-
-    var p = phase();
-
-    if(p===0){
-
-        titleCard(
-            "NEON HIGHWAY",
-            "MIDNIGHT RUN",
-            "#ff006e"
-        );
-
-        return;
-    }
-
-    if(p===3){
-
-        clear("#10002b");
-
-        centerText(
-            "FINISH",
-            250,
-            48,
-            "#00f5d4"
-        );
-
-        centerText(
-            "1ST PLACE",
-            315,
-            30,
-            "#ff006e"
-        );
-
-        return;
-    }
 
     clear("#10002b");
 
@@ -960,31 +746,9 @@ function racer(){
     ctx.lineTo(570,280);
     ctx.lineTo(840,540);
     ctx.lineTo(120,540);
+
     ctx.closePath();
     ctx.fill();
-
-    var offset =
-    (frame*12)%120;
-
-    var i;
-
-    for(i=0;i<6;i++){
-
-        var y =
-        300+i*60+offset;
-
-        var size =
-        (y-260)/7;
-
-        rect(
-            480-size/2,
-            y,
-            size,
-            20,
-            "#fff"
-        );
-
-    }
 
     rect(
         400,
@@ -1002,96 +766,14 @@ function racer(){
         "#7209b7"
     );
 
-    if(p===2){
-
-        rect(
-            640,
-            340,
-            120,
-            50,
-            "#00bbf9"
-        );
-
-        txt(
-            "RIVAL",
-            660,
-            330,
-            16,
-            "#fff"
-        );
-
-    }
-
 }
 
 
-/* =====================================================
-   CHANNEL 4
-   DUNGEON QUEST
-===================================================== */
-
 function dungeon(){
-
-    var p = phase();
-
-    if(p===0){
-
-        titleCard(
-            "DUNGEON QUEST",
-            "FLOOR VII",
-            "#d8f3dc"
-        );
-
-        return;
-    }
-
-    if(p===3){
-
-        clear("#13171a");
-
-        centerText(
-            "TREASURE FOUND",
-            250,
-            34,
-            "#ffd166"
-        );
-
-        centerText(
-            "+ 5000 GOLD",
-            310,
-            22,
-            "#fff"
-        );
-
-        return;
-    }
 
     clear("#13171a");
 
-    var x;
-    var y;
-
-    for(y=0;y<8;y++){
-
-        for(x=0;x<13;x++){
-
-            if((x+y)%2===0){
-
-                rect(
-                    x*80,
-                    y*70,
-                    80,
-                    70,
-                    "#1e2428"
-                );
-
-            }
-
-        }
-
-    }
-
-    var hx =
+    var hx=
     430+
     Math.sin(frame/25)*55;
 
@@ -1111,93 +793,30 @@ function dungeon(){
         "#f2cc8f"
     );
 
-    if(p===1){
+    var slime=
+    680+
+    Math.sin(frame/15)*35;
 
-        var slime =
-        680+
-        Math.sin(frame/15)*35;
+    rect(
+        slime,
+        370,
+        65,
+        38,
+        "#70e000"
+    );
 
-        rect(
-            slime,
-            370,
-            65,
-            38,
-            "#70e000"
-        );
-
-    }
-
-    if(p===2){
-
-        rect(
-            680,
-            250,
-            120,
-            160,
-            "#8b0000"
-        );
-
-        rect(
-            700,
-            210,
-            80,
-            50,
-            "#b22222"
-        );
-
-        txt(
-            "DRAGON LORD",
-            650,
-            190,
-            18,
-            "#fff"
-        );
-
-    }
+    txt(
+        "DUNGEON QUEST",
+        25,
+        35,
+        17,
+        "#fff"
+    );
 
 }
 
 
-/* =====================================================
-   CHANNEL 5
-   STREET BATTLE
-===================================================== */
-
 function fighter(){
-
-    var p=phase();
-
-    if(p===0){
-
-        titleCard(
-            "STREET BATTLE",
-            "ROUND 2",
-            "#f7b267"
-        );
-
-        return;
-    }
-
-    if(p===3){
-
-        clear("#111");
-
-        centerText(
-            "K.O.",
-            250,
-            70,
-            "#ff595e"
-        );
-
-        centerText(
-            "PLAYER 1 WINS",
-            330,
-            24,
-            "#fff"
-        );
-
-        return;
-    }
 
     clear("#ee9b58");
 
@@ -1209,7 +828,7 @@ function fighter(){
         "#3d3d3d"
     );
 
-    var punch =
+    var punch=
     Math.sin(frame/10)*20;
 
     rect(
@@ -1218,14 +837,6 @@ function fighter(){
         55,
         115,
         "#277da1"
-    );
-
-    rect(
-        230,
-        295,
-        35,
-        40,
-        "#f2cc8f"
     );
 
     rect(
@@ -1245,14 +856,6 @@ function fighter(){
     );
 
     rect(
-        710,
-        295,
-        35,
-        40,
-        "#f2cc8f"
-    );
-
-    rect(
         640-punch,
         350,
         70+punch,
@@ -1260,48 +863,10 @@ function fighter(){
         "#d90429"
     );
 
-    if(p===2){
-
-        centerText(
-            "FINAL ROUND",
-            110,
-            22,
-            "#fff"
-        );
-
-    }
-
 }
 
 
-/* =====================================================
-   CHANNEL 6
-   BLOCK DROP
-===================================================== */
-
-function blocks(){
-
-    var p=phase();
-
-    if(p===0){
-
-        titleCard(
-            "BLOCK DROP",
-            "CLEAR THE LINES",
-            "#00f5d4"
-        );
-
-        return;
-    }
-
-    if(p===3){
-
-        gameOver(
-            "BLOCK DROP"
-        );
-
-        return;
-    }
+function passiveBlocks(){
 
     clear("#070707");
 
@@ -1317,8 +882,7 @@ function blocks(){
         "#00bbf9",
         "#f15bb5",
         "#fee440",
-        "#00f5d4",
-        "#9b5de5"
+        "#00f5d4"
     ];
 
     var x;
@@ -1336,7 +900,7 @@ function blocks(){
                     28,
                     28,
                     colors[
-                        (x+y)%5
+                        (x+y)%4
                     ]
                 );
 
@@ -1346,82 +910,12 @@ function blocks(){
 
     }
 
-    var fy =
-    ((frame*2)%380)+35;
-
-    rect(
-        465,
-        fy,
-        28,
-        28,
-        "#00f5d4"
-    );
-
-    rect(
-        495,
-        fy,
-        28,
-        28,
-        "#00f5d4"
-    );
-
-    rect(
-        525,
-        fy,
-        28,
-        28,
-        "#00f5d4"
-    );
-
-    if(p===2){
-
-        centerText(
-            "LEVEL UP!",
-            100,
-            24,
-            "#fee440"
-        );
-
-    }
-
 }
 
 
-/* =====================================================
-   CHANNEL 7
-   PIXEL ISLAND
-===================================================== */
-
 function ocean(){
 
-    var p=phase();
-
-    if(p===0){
-
-        titleCard(
-            "PIXEL ISLAND",
-            "ADVENTURE AWAITS",
-            "#72d6e8"
-        );
-
-        return;
-    }
-
     clear("#72d6e8");
-
-    ctx.fillStyle="#ffe66d";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        780,
-        100,
-        55,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
 
     rect(
         0,
@@ -1439,98 +933,29 @@ function ocean(){
         "#d4a373"
     );
 
-    rect(
-        150,
-        255,
-        20,
-        110,
-        "#6b4423"
-    );
-
-    rect(
-        90,
-        230,
-        150,
-        45,
-        "#52b788"
-    );
-
-    var boatX =
+    var boatX=
     (frame*1.5)%1200-150;
 
     rect(
         boatX,
-        350+
-        Math.sin(frame/12)*6,
+        350,
         110,
         30,
         "#fff"
     );
 
-    if(p===2){
-
-        rect(
-            650,
-            330,
-            80,
-            65,
-            "#8b4513"
-        );
-
-        txt(
-            "TREASURE!",
-            620,
-            310,
-            18,
-            "#fff"
-        );
-
-    }
-
 }
 
 
-/* =====================================================
-   CHANNEL 8
-   MIDNIGHT CITY
-===================================================== */
-
 function city(){
 
-    var p=phase();
-
-    if(p===0){
-
-        titleCard(
-            "MIDNIGHT CITY",
-            "AFTER DARK",
-            "#f15bb5"
-        );
-
-        return;
-    }
-
     clear("#09001a");
-
-    ctx.fillStyle="#e0e1dd";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        780,
-        100,
-        45,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
 
     var i;
 
     for(i=0;i<12;i++){
 
-        var bh =
+        var bh=
         130+
         (i%5)*35;
 
@@ -1552,7 +977,7 @@ function city(){
         "#111"
     );
 
-    var car =
+    var car=
     (frame*4)%1100-100;
 
     rect(
@@ -1563,60 +988,10 @@ function city(){
         "#ff006e"
     );
 
-    if(p===2){
-
-        centerText(
-            "NIGHT DRIVE",
-            110,
-            24,
-            "#00f5d4"
-        );
-
-    }
-
 }
 
 
-/* =====================================================
-   CHANNEL 9
-   PIXEL TENNIS
-===================================================== */
-
-function tennis(){
-
-    var p=phase();
-
-    if(p===0){
-
-        titleCard(
-            "PIXEL TENNIS",
-            "CHAMPIONSHIP MATCH",
-            "#7ae582"
-        );
-
-        return;
-    }
-
-    if(p===3){
-
-        clear("#1b4332");
-
-        centerText(
-            "GAME SET MATCH",
-            250,
-            36,
-            "#fff"
-        );
-
-        centerText(
-            "PLAYER 1",
-            320,
-            26,
-            "#fee440"
-        );
-
-        return;
-    }
+function passiveTennis(){
 
     clear("#1b4332");
 
@@ -1629,7 +1004,7 @@ function tennis(){
     );
 
     ctx.strokeStyle="#fff";
-    ctx.lineWidth=5;
+    ctx.lineWidth=4;
 
     ctx.strokeRect(
         80,
@@ -1652,19 +1027,11 @@ function tennis(){
 
     ctx.stroke();
 
-    rect(
-        450,
-        220,
-        60,
-        4,
-        "#fff"
-    );
-
-    var ballX =
+    var ballX=
     480+
     Math.sin(frame/15)*330;
 
-    var ballY =
+    var ballY=
     270+
     Math.sin(frame/9)*120;
 
@@ -1676,78 +1043,10 @@ function tennis(){
         "#fee440"
     );
 
-    rect(
-        180,
-        270+
-        Math.sin(frame/15)*100,
-        20,
-        60,
-        "#277da1"
-    );
-
-    rect(
-        760,
-        270-
-        Math.sin(frame/15)*100,
-        20,
-        60,
-        "#d90429"
-    );
-
-    if(p===2){
-
-        centerText(
-            "MATCH POINT",
-            50,
-            20,
-            "#fff"
-        );
-
-    }
-
 }
 
 
-/* =====================================================
-   CHANNEL 10
-   CYBER BREAKOUT
-===================================================== */
-
-function breakout(){
-
-    var p=phase();
-
-    if(p===0){
-
-        titleCard(
-            "CYBER BREAKOUT",
-            "DESTROY THE GRID",
-            "#00f5d4"
-        );
-
-        return;
-    }
-
-    if(p===3){
-
-        clear("#050505");
-
-        centerText(
-            "STAGE CLEAR",
-            250,
-            40,
-            "#00f5d4"
-        );
-
-        centerText(
-            "BONUS +5000",
-            320,
-            20,
-            "#fee440"
-        );
-
-        return;
-    }
+function passiveBreakout(){
 
     clear("#050505");
 
@@ -1765,19 +1064,150 @@ function breakout(){
 
         for(x=0;x<10;x++){
 
-            if(
-                (x+y+
-                Math.floor(frame/120))
-                %6!==0
+            rect(
+                85+x*80,
+                60+y*35,
+                68,
+                24,
+                colors[y%4]
+            );
+
+        }
+
+    }
+
+    var paddle=
+    400+
+    Math.sin(frame/20)*250;
+
+    rect(
+        paddle,
+        475,
+        120,
+        18,
+        "#fff"
+    );
+
+}
+
+
+/* =====================================================
+   ARCADE: STAR DEFENDER
+===================================================== */
+
+function startStarGame(){
+
+    score=0;
+
+    shipX=440;
+
+    bullets=[];
+
+    enemies=[];
+
+    var i;
+
+    for(i=0;i<8;i++){
+
+        enemies.push({
+
+            x:rnd(60,880),
+            y:rnd(30,200),
+            alive:true
+
+        });
+
+    }
+
+}
+
+
+function playStar(){
+
+    clear("#010108");
+
+    var i;
+
+    for(i=0;i<60;i++){
+
+        rect(
+            (i*137)%W,
+            (i*83+frame*3)%H,
+            2,
+            4,
+            "#fff"
+        );
+
+    }
+
+    rect(
+        shipX,
+        455,
+        80,
+        22,
+        "#00f5d4"
+    );
+
+    rect(
+        shipX+27,
+        430,
+        26,
+        55,
+        "#00bbf9"
+    );
+
+    for(i=0;i<bullets.length;i++){
+
+        bullets[i].y-=12;
+
+        rect(
+            bullets[i].x,
+            bullets[i].y,
+            5,
+            14,
+            "#ffe600"
+        );
+
+    }
+
+    for(i=0;i<enemies.length;i++){
+
+        if(
+            enemies[i].alive
+        ){
+
+            rect(
+                enemies[i].x,
+                enemies[i].y,
+                42,
+                24,
+                "#ff006e"
+            );
+
+            var b;
+
+            for(
+                b=0;
+                b<bullets.length;
+                b++
             ){
 
-                rect(
-                    85+x*80,
-                    60+y*35,
-                    68,
-                    24,
-                    colors[y%4]
-                );
+                if(
+                    bullets[b].x >
+                    enemies[i].x &&
+                    bullets[b].x <
+                    enemies[i].x+42 &&
+                    bullets[b].y >
+                    enemies[i].y &&
+                    bullets[b].y <
+                    enemies[i].y+24
+                ){
+
+                    enemies[i].alive=false;
+
+                    score+=100;
+
+                }
 
             }
 
@@ -1785,127 +1215,396 @@ function breakout(){
 
     }
 
-    var paddleX =
-    400+
-    Math.sin(frame/20)*250;
-
-    rect(
-        paddleX,
-        475,
-        120,
+    txt(
+        "SCORE "+score,
+        25,
+        35,
         18,
         "#fff"
-    );
-
-    var bx =
-    480+
-    Math.sin(frame/13)*350;
-
-    var by =
-    300+
-    Math.sin(frame/9)*170;
-
-    rect(
-        bx,
-        by,
-        15,
-        15,
-        "#fee440"
     );
 
 }
 
 
 /* =====================================================
-   COMMERCIALS
+   ARCADE: TENNIS
 ===================================================== */
 
-var ads = [
-    {
-        title:"TURBO SODA",
-        sub:"POWER UP YOUR DAY",
-        color:"#ff006e"
-    },
-    {
-        title:"MEGA BYTE",
-        sub:"THE SNACK OF CHAMPIONS",
-        color:"#fee440"
-    },
-    {
-        title:"PIXEL FORCE",
-        sub:"PLAY HARDER",
-        color:"#00f5d4"
-    },
-    {
-        title:"RETRO VISION",
-        sub:"THE FUTURE IS 8-BIT",
-        color:"#8338ec"
+function startTennisGame(){
+
+    score=0;
+
+    tennisPaddleY=220;
+
+    tennisBallX=480;
+    tennisBallY=270;
+
+    tennisDX=6;
+    tennisDY=4;
+
+}
+
+
+function playTennis(){
+
+    clear("#1b4332");
+
+    rect(
+        80,
+        70,
+        800,
+        400,
+        "#40916c"
+    );
+
+    ctx.strokeStyle="#fff";
+    ctx.lineWidth=4;
+
+    ctx.strokeRect(
+        80,
+        70,
+        800,
+        400
+    );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        480,
+        70
+    );
+
+    ctx.lineTo(
+        480,
+        470
+    );
+
+    ctx.stroke();
+
+    tennisBallX+=tennisDX;
+    tennisBallY+=tennisDY;
+
+    if(
+        tennisBallY<80 ||
+        tennisBallY>450
+    ){
+
+        tennisDY=
+        -tennisDY;
+
     }
-];
 
-function commercial(){
+    if(
+        tennisBallX>850
+    ){
 
-    var ad =
-    ads[
-        Math.floor(
-            commercialTimer/3
-        ) %
-        ads.length
+        tennisDX=
+        -tennisDX;
+
+    }
+
+    if(
+        tennisBallX<115
+    ){
+
+        if(
+            tennisBallY >
+            tennisPaddleY &&
+            tennisBallY <
+            tennisPaddleY+110
+        ){
+
+            tennisDX=
+            Math.abs(
+                tennisDX
+            );
+
+            score++;
+
+        }
+
+        else{
+
+            tennisBallX=480;
+            tennisBallY=270;
+
+            score=0;
+
+        }
+
+    }
+
+    rect(
+        100,
+        tennisPaddleY,
+        18,
+        110,
+        "#277da1"
+    );
+
+    rect(
+        tennisBallX,
+        tennisBallY,
+        12,
+        12,
+        "#fee440"
+    );
+
+    txt(
+        "RALLY "+score,
+        25,
+        35,
+        18,
+        "#fff"
+    );
+
+}
+
+
+/* =====================================================
+   ARCADE: BREAKOUT
+===================================================== */
+
+function startBreakoutGame(){
+
+    score=0;
+
+    breakoutPaddleX=400;
+
+    breakoutBallX=480;
+    breakoutBallY=300;
+
+    breakoutDX=5;
+    breakoutDY=-5;
+
+}
+
+
+function playBreakout(){
+
+    clear("#050505");
+
+    var colors=[
+        "#ff006e",
+        "#8338ec",
+        "#3a86ff",
+        "#00f5d4"
     ];
 
-    clear("#111");
+    var x;
+    var y;
 
-    centerText(
-        "RETRO TV COMMERCIAL",
-        85,
-        18,
-        "#777"
-    );
+    for(y=0;y<5;y++){
 
-    centerText(
-        ad.title,
-        230,
-        50,
-        ad.color
-    );
+        for(x=0;x<10;x++){
 
-    centerText(
-        ad.sub,
-        290,
+            rect(
+                85+x*80,
+                60+y*35,
+                68,
+                24,
+                colors[y%4]
+            );
+
+        }
+
+    }
+
+    breakoutBallX+=
+    breakoutDX;
+
+    breakoutBallY+=
+    breakoutDY;
+
+    if(
+        breakoutBallX<15 ||
+        breakoutBallX>945
+    ){
+
+        breakoutDX=
+        -breakoutDX;
+
+    }
+
+    if(
+        breakoutBallY<30
+    ){
+
+        breakoutDY=
+        Math.abs(
+            breakoutDY
+        );
+
+    }
+
+    if(
+        breakoutBallY>460 &&
+        breakoutBallY<500 &&
+        breakoutBallX >
+        breakoutPaddleX &&
+        breakoutBallX <
+        breakoutPaddleX+140
+    ){
+
+        breakoutDY=
+        -Math.abs(
+            breakoutDY
+        );
+
+        score++;
+
+    }
+
+    if(
+        breakoutBallY>540
+    ){
+
+        breakoutBallX=480;
+        breakoutBallY=260;
+
+        score=0;
+
+    }
+
+    rect(
+        breakoutPaddleX,
+        475,
+        140,
         18,
         "#fff"
     );
 
-    centerText(
-        "ONLY 19.99",
-        390,
-        24,
+    rect(
+        breakoutBallX,
+        breakoutBallY,
+        14,
+        14,
         "#fee440"
+    );
+
+    txt(
+        "SCORE "+score,
+        25,
+        35,
+        18,
+        "#fff"
     );
 
 }
 
 
 /* =====================================================
-   STATION ID
+   ARCADE: BLOCK DROP
 ===================================================== */
 
-function stationID(){
+function startBlockGame(){
 
-    clear("#020202");
+    score=0;
 
-    centerText(
-        "RETRO TV",
-        240,
-        60,
-        "#fff"
+    blockX=4;
+    blockY=0;
+
+    blockRotation=0;
+
+}
+
+
+function playBlocks(){
+
+    clear("#070707");
+
+    rect(
+        315,
+        25,
+        330,
+        495,
+        "#111"
     );
 
-    centerText(
-        "ALL GAMES · ALL DAY",
-        305,
+    blockY+=0.06;
+
+    if(
+        blockY>14
+    ){
+
+        blockY=0;
+
+        score++;
+
+    }
+
+    var px=
+    325+
+    blockX*30;
+
+    var py=
+    40+
+    blockY*30;
+
+    rect(
+        px,
+        py,
+        28,
+        28,
+        "#00f5d4"
+    );
+
+    rect(
+        px+30,
+        py,
+        28,
+        28,
+        "#00f5d4"
+    );
+
+    if(
+        blockRotation===0
+    ){
+
+        rect(
+            px+60,
+            py,
+            28,
+            28,
+            "#00f5d4"
+        );
+
+        rect(
+            px+30,
+            py-30,
+            28,
+            28,
+            "#00f5d4"
+        );
+
+    }
+
+    else{
+
+        rect(
+            px+30,
+            py+30,
+            28,
+            28,
+            "#00f5d4"
+        );
+
+        rect(
+            px+30,
+            py-30,
+            28,
+            28,
+            "#00f5d4"
+        );
+
+    }
+
+    txt(
+        "LINES "+score,
+        90,
+        150,
         18,
-        "#777"
+        "#fff"
     );
 
 }
@@ -1923,9 +1622,24 @@ function draw(){
     ){
 
         frame++;
-        phaseFrame++;
 
-        if(commercialMode){
+        if(arcade){
+
+            if(scene===1)
+                playStar();
+
+            else if(scene===5)
+                playBlocks();
+
+            else if(scene===8)
+                playTennis();
+
+            else if(scene===9)
+                playBreakout();
+
+        }
+
+        else if(commercialMode){
 
             commercial();
 
@@ -1934,15 +1648,28 @@ function draw(){
         else{
 
             if(scene===0)platform();
-            if(scene===1)space();
+
+            if(scene===1)
+                passiveSpace();
+
             if(scene===2)racer();
+
             if(scene===3)dungeon();
+
             if(scene===4)fighter();
-            if(scene===5)blocks();
+
+            if(scene===5)
+                passiveBlocks();
+
             if(scene===6)ocean();
+
             if(scene===7)city();
-            if(scene===8)tennis();
-            if(scene===9)breakout();
+
+            if(scene===8)
+                passiveTennis();
+
+            if(scene===9)
+                passiveBreakout();
 
         }
 
@@ -1954,121 +1681,414 @@ function draw(){
 
 
 /* =====================================================
-   NAMES
+   COMMERCIAL
 ===================================================== */
 
-var names=[
-    "PIXEL KINGDOM",
-    "STAR DEFENDER",
-    "NEON HIGHWAY",
-    "DUNGEON QUEST",
-    "STREET BATTLE",
-    "BLOCK DROP",
-    "PIXEL ISLAND",
-    "MIDNIGHT CITY",
-    "PIXEL TENNIS",
-    "CYBER BREAKOUT"
-];
+function commercial(){
 
+    clear("#111");
 
-/* =====================================================
-   CHANNEL SELECTION
-===================================================== */
+    centerText(
+        "RETRO TV COMMERCIAL",
+        90,
+        18,
+        "#777"
+    );
 
-function allowedScene(){
+    centerText(
+        "TURBO SODA",
+        230,
+        50,
+        "#ff006e"
+    );
 
-    if(isNight()){
+    centerText(
+        "POWER UP YOUR DAY",
+        290,
+        18,
+        "#fff"
+    );
 
-        var nightScenes=[
-            1,2,3,7,9
-        ];
-
-        return nightScenes[
-            rnd(
-                0,
-                nightScenes.length-1
-            )
-        ];
-
-    }
-
-    return rnd(
-        0,
-        sceneCount-1
+    centerText(
+        "ONLY 19.99",
+        390,
+        24,
+        "#fee440"
     );
 
 }
 
+
+/* =====================================================
+   ARCADE CONTROL
+===================================================== */
+
+function arcadeAvailable(){
+
+    return (
+        scene===1 ||
+        scene===5 ||
+        scene===8 ||
+        scene===9
+    );
+
+}
+
+
+function tryArcade(){
+
+    if(
+        !arcadeAvailable()
+    ){
+
+        document.getElementById(
+            "nowPlaying"
+        ).innerHTML=
+        "NO GAME ON THIS CHANNEL";
+
+        return;
+
+    }
+
+    startArcade();
+
+}
+
+
+function startArcade(){
+
+    if(arcade)
+        return;
+
+    arcade=true;
+
+    arcadeTimer=0;
+
+    channelTimer=0;
+
+    commercialMode=false;
+
+    document.getElementById(
+        "arcadeOverlay"
+    ).style.display=
+    "block";
+
+    if(scene===1)
+        startStarGame();
+
+    if(scene===5)
+        startBlockGame();
+
+    if(scene===8)
+        startTennisGame();
+
+    if(scene===9)
+        startBreakoutGame();
+
+    updateArcadeInfo();
+
+}
+
+
+function stopArcade(){
+
+    arcade=false;
+
+    arcadeTimer=0;
+
+    document.getElementById(
+        "arcadeOverlay"
+    ).style.display=
+    "none";
+
+    updateChannel();
+
+}
+
+
+function updateArcadeInfo(){
+
+    var remaining=
+    arcadeSeconds-
+    arcadeTimer;
+
+    document.getElementById(
+        "arcadeInfo"
+    ).innerHTML=
+    remaining+
+    " SECONDS · SCORE "+
+    score;
+
+}
+
+
+/* =====================================================
+   TOUCH INPUT
+===================================================== */
+
+function getCanvasPoint(event){
+
+    var rectBox=
+    canvas.getBoundingClientRect();
+
+    var touch=null;
+
+    if(
+        event.touches &&
+        event.touches.length
+    ){
+
+        touch=
+        event.touches[0];
+
+    }
+
+    else{
+
+        touch=event;
+
+    }
+
+    pointerX=
+    (
+        touch.clientX-
+        rectBox.left
+    ) *
+    (
+        W/
+        rectBox.width
+    );
+
+    pointerY=
+    (
+        touch.clientY-
+        rectBox.top
+    ) *
+    (
+        H/
+        rectBox.height
+    );
+
+}
+
+
+function arcadeMove(event){
+
+    if(!arcade)
+        return;
+
+    getCanvasPoint(event);
+
+    if(scene===1){
+
+        shipX=
+        pointerX-40;
+
+        if(shipX<0)
+            shipX=0;
+
+        if(shipX>880)
+            shipX=880;
+
+    }
+
+    if(scene===8){
+
+        tennisPaddleY=
+        pointerY-55;
+
+        if(
+            tennisPaddleY<75
+        )
+            tennisPaddleY=75;
+
+        if(
+            tennisPaddleY>355
+        )
+            tennisPaddleY=355;
+
+    }
+
+    if(scene===9){
+
+        breakoutPaddleX=
+        pointerX-70;
+
+        if(
+            breakoutPaddleX<0
+        )
+            breakoutPaddleX=0;
+
+        if(
+            breakoutPaddleX>820
+        )
+            breakoutPaddleX=820;
+
+    }
+
+}
+
+
+function arcadeTap(event){
+
+    if(!arcade){
+
+        if(
+            arcadeAvailable()
+        ){
+
+            startArcade();
+
+        }
+
+        return;
+
+    }
+
+    getCanvasPoint(event);
+
+    if(scene===1){
+
+        bullets.push({
+
+            x:shipX+38,
+            y:430
+
+        });
+
+    }
+
+    if(scene===5){
+
+        if(
+            pointerX <
+            W/3
+        ){
+
+            blockX--;
+
+            if(blockX<0)
+                blockX=0;
+
+        }
+
+        else if(
+            pointerX >
+            W*2/3
+        ){
+
+            blockX++;
+
+            if(blockX>7)
+                blockX=7;
+
+        }
+
+        else{
+
+            blockRotation=
+            blockRotation===0 ?
+            1 :
+            0;
+
+        }
+
+    }
+
+}
+
+
+canvas.addEventListener(
+    "touchmove",
+    arcadeMove,
+    false
+);
+
+canvas.addEventListener(
+    "touchstart",
+    arcadeTap,
+    false
+);
+
+canvas.addEventListener(
+    "click",
+    arcadeTap,
+    false
+);
+
+
+/* =====================================================
+   CHANNELS
+===================================================== */
+
 function updateChannel(){
 
-    var number=scene+1;
+    var n=
+    scene+1;
 
-    var display=
-    number<10 ?
-    "0"+number :
-    number;
+    var d=
+    n<10 ?
+    "0"+n :
+    n;
 
     document.getElementById(
         "channel"
     ).innerHTML=
-    "CH "+display;
+    "CH "+d;
 
     document.getElementById(
         "nowPlaying"
     ).innerHTML=
-    "CH "+display+
+    "CH "+d+
     " · "+
     names[scene];
 
 }
 
 
-/* =====================================================
-   CHANNEL STATIC
-===================================================== */
-
 function channelStatic(){
 
-    var box=
+    var s=
     document.getElementById(
         "static"
     );
 
-    box.style.display=
+    s.style.display=
     "block";
 
     setTimeout(
         function(){
 
-            box.style.display=
+            s.style.display=
             "none";
 
         },
-        160
+        150
     );
 
 }
 
 
-/* =====================================================
-   NEXT CHANNEL
-===================================================== */
-
 function nextScene(){
+
+    if(arcade)
+        stopArcade();
 
     channelStatic();
 
     commercialMode=false;
-    commercialTimer=0;
+
+    var old=scene;
 
     if(shuffle){
-
-        var old=scene;
 
         while(scene===old){
 
             scene=
-            allowedScene();
+            rnd(
+                0,
+                sceneCount-1
+            );
 
         }
 
@@ -2078,44 +2098,30 @@ function nextScene(){
 
         scene++;
 
-        if(scene>=sceneCount){
-
+        if(scene>=sceneCount)
             scene=0;
-
-        }
 
     }
 
     frame=0;
-    phaseFrame=0;
     channelTimer=0;
 
     updateChannel();
 
 }
 
-
-/* =====================================================
-   PREVIOUS
-===================================================== */
 
 function previousScene(){
 
-    channelStatic();
-
-    commercialMode=false;
+    if(arcade)
+        stopArcade();
 
     scene--;
 
-    if(scene<0){
-
-        scene=
-        sceneCount-1;
-
-    }
+    if(scene<0)
+        scene=sceneCount-1;
 
     frame=0;
-    phaseFrame=0;
     channelTimer=0;
 
     updateChannel();
@@ -2124,61 +2130,7 @@ function previousScene(){
 
 
 /* =====================================================
-   PAUSE
-===================================================== */
-
-function togglePause(){
-
-    paused=!paused;
-
-    document.getElementById(
-        "pauseButton"
-    ).innerHTML=
-    paused ?
-    "PLAY" :
-    "PAUSE";
-
-}
-
-
-/* =====================================================
-   SHUFFLE
-===================================================== */
-
-function toggleShuffle(){
-
-    shuffle=!shuffle;
-
-    document.getElementById(
-        "shuffleButton"
-    ).innerHTML=
-    shuffle ?
-    "SHUFFLE ON" :
-    "SHUFFLE OFF";
-
-}
-
-
-/* =====================================================
-   TV MODE
-===================================================== */
-
-function toggleMode(){
-
-    autoTV=!autoTV;
-
-    document.getElementById(
-        "modeButton"
-    ).innerHTML=
-    autoTV ?
-    "AUTO TV" :
-    "MANUAL";
-
-}
-
-
-/* =====================================================
-   AUTO PROGRAMMING
+   TIMER
 ===================================================== */
 
 function secondTimer(){
@@ -2186,7 +2138,23 @@ function secondTimer(){
     if(
         !started ||
         paused
-    ){
+    )
+        return;
+
+    if(arcade){
+
+        arcadeTimer++;
+
+        updateArcadeInfo();
+
+        if(
+            arcadeTimer>=
+            arcadeSeconds
+        ){
+
+            stopArcade();
+
+        }
 
         return;
 
@@ -2197,7 +2165,7 @@ function secondTimer(){
         commercialTimer++;
 
         if(
-            commercialTimer>=9
+            commercialTimer>=8
         ){
 
             commercialMode=false;
@@ -2210,25 +2178,20 @@ function secondTimer(){
 
     }
 
-    if(!autoTV){
-
+    if(!autoTV)
         return;
-
-    }
 
     channelTimer++;
 
     if(
-        channelTimer>=channelDuration
+        channelTimer>=
+        channelDuration
     ){
 
         channelTimer=0;
 
-        /* about every third change,
-           run a fake ad break */
-
         if(
-            rnd(1,3)===1
+            rnd(1,4)===1
         ){
 
             commercialMode=true;
@@ -2248,102 +2211,47 @@ function secondTimer(){
 
 
 /* =====================================================
-   HIDDEN INTERACTIVE MODE
+   SETTINGS
 ===================================================== */
 
-function screenTap(event){
+function togglePause(){
 
-    if(!started){
-
-        return;
-
-    }
-
-    if(
-        event.target &&
-        event.target.className==="button"
-    ){
-
-        return;
-
-    }
-
-    if(commercialMode){
-
-        return;
-
-    }
-
-    interactiveMode=true;
-
-    score++;
-
-    /* small scene-specific reaction */
-
-    if(scene===0){
-
-        frame += 18;
-
-    }
-
-    if(scene===1){
-
-        frame += 12;
-
-    }
-
-    if(scene===2){
-
-        frame += 20;
-
-    }
-
-    if(scene===3){
-
-        phaseFrame += 15;
-
-    }
-
-    if(scene===4){
-
-        frame += 10;
-
-    }
-
-    if(scene===5){
-
-        frame += 25;
-
-    }
-
-    if(scene===8){
-
-        frame += 20;
-
-    }
-
-    if(scene===9){
-
-        frame += 15;
-
-    }
+    paused=!paused;
 
     document.getElementById(
-        "interactiveHint"
-    ).style.display=
-    "block";
+        "pauseButton"
+    ).innerHTML=
+    paused ?
+    "PLAY" :
+    "PAUSE";
 
-    setTimeout(
-        function(){
+}
 
-            document.getElementById(
-                "interactiveHint"
-            ).style.display=
-            "none";
 
-        },
-        1200
-    );
+function toggleShuffle(){
+
+    shuffle=!shuffle;
+
+    document.getElementById(
+        "shuffleButton"
+    ).innerHTML=
+    shuffle ?
+    "SHUFFLE ON" :
+    "SHUFFLE OFF";
+
+}
+
+
+function toggleMode(){
+
+    autoTV=!autoTV;
+
+    document.getElementById(
+        "modeButton"
+    ).innerHTML=
+    autoTV ?
+    "AUTO TV" :
+    "MANUAL";
 
 }
 
@@ -2359,7 +2267,8 @@ function showControls(){
         "controls"
     );
 
-    controls.style.opacity="1";
+    controls.style.opacity=
+    "1";
 
     if(controlsTimer){
 
@@ -2373,7 +2282,8 @@ function showControls(){
     setTimeout(
         function(){
 
-            controls.style.opacity="0";
+            controls.style.opacity=
+            "0";
 
         },
         3500
@@ -2394,14 +2304,6 @@ document.addEventListener(
     false
 );
 
-document.getElementById(
-    "picture"
-).addEventListener(
-    "click",
-    screenTap,
-    false
-);
-
 
 /* =====================================================
    START
@@ -2409,17 +2311,15 @@ document.getElementById(
 
 function startTV(){
 
-    if(started){
-
+    if(started)
         return;
-
-    }
 
     started=true;
 
     document.getElementById(
         "startScreen"
-    ).style.display="none";
+    ).style.display=
+    "none";
 
 }
 
@@ -2429,18 +2329,6 @@ function startTV(){
 ===================================================== */
 
 function init(){
-
-    makeStars();
-
-    /* start with night-appropriate
-       programming after 8 PM */
-
-    if(isNight()){
-
-        scene=
-        allowedScene();
-
-    }
 
     updateChannel();
 
