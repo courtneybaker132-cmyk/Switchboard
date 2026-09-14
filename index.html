@@ -1,195 +1,1864 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no">
 
-  <title>Switch Test</title>
+<title>Switch Home</title>
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: #111;
-      color: white;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
+<style>
 
-    #screen {
-      width: 100%;
-      height: 100%;
-      text-align: center;
-    }
+/* =========================================================
+   BASE
+========================================================= */
 
-    #header {
-      padding-top: 35px;
-      font-size: 22px;
-    }
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+}
 
-    #clock {
-      margin-top: 30px;
-      font-size: 72px;
-      font-weight: bold;
-    }
+body {
+    transition: background 0.4s;
+}
 
-    #date {
-      margin-top: 8px;
-      font-size: 22px;
-      color: #bbb;
-    }
+#app {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
 
-    #status {
-      margin: 30px auto 0 auto;
-      width: 80%;
-      padding: 15px;
-      background: #222;
-      border-radius: 12px;
-      font-size: 18px;
-    }
+/* =========================================================
+   TOP BAR
+========================================================= */
 
-    .button {
-      display: inline-block;
-      margin: 25px 10px 0 10px;
-      padding: 18px 28px;
-      background: #eee;
-      color: #111;
-      border-radius: 10px;
-      font-size: 20px;
-      text-decoration: none;
-      cursor: pointer;
-    }
+#topbar {
+    height: 58px;
+    line-height: 58px;
+    border-bottom: 1px solid #333;
+    position: relative;
+    z-index: 20;
+}
 
-    #counter {
-      margin-top: 25px;
-      font-size: 20px;
-    }
+#brand {
+    position: absolute;
+    left: 24px;
+    top: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
 
-    #footer {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      font-size: 14px;
-      color: #777;
-    }
-  </style>
+#topTime {
+    position: absolute;
+    right: 28px;
+    top: 0;
+    font-size: 18px;
+}
+
+#onlineStatus {
+    position: absolute;
+    right: 125px;
+    top: 0;
+    font-size: 14px;
+    color: #7dff9b;
+}
+
+/* =========================================================
+   SCREENS
+========================================================= */
+
+.screen {
+    display: none;
+    position: absolute;
+    top: 59px;
+    left: 0;
+    right: 0;
+    bottom: 58px;
+    overflow: hidden;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* =========================================================
+   HOME
+========================================================= */
+
+#greeting {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 34px 0 5px 35px;
+}
+
+#message {
+    margin-left: 36px;
+    margin-top: 8px;
+    font-size: 18px;
+    color: #aaa;
+    width: 88%;
+    min-height: 28px;
+}
+
+#tiles {
+    margin: 35px auto 0 auto;
+    width: 94%;
+    text-align: center;
+}
+
+.tile {
+    display: inline-block;
+    vertical-align: top;
+    width: 20%;
+    min-width: 150px;
+    height: 145px;
+    margin: 8px;
+    border-radius: 18px;
+    background: #242424;
+    border: 2px solid #363636;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+}
+
+.tile:active {
+    transform: scale(0.96);
+}
+
+.tileIcon {
+    font-size: 40px;
+    margin: 20px 0 0 22px;
+}
+
+.tileTitle {
+    position: absolute;
+    left: 22px;
+    bottom: 27px;
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.tileSub {
+    position: absolute;
+    left: 22px;
+    bottom: 9px;
+    font-size: 12px;
+    color: #888;
+}
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+#clockScreen {
+    text-align: center;
+}
+
+#bigClock {
+    font-size: 112px;
+    font-weight: bold;
+    margin-top: 90px;
+}
+
+#bigDate {
+    font-size: 27px;
+    margin-top: 5px;
+    color: #aaa;
+}
+
+#clockMessage {
+    margin-top: 35px;
+    font-size: 21px;
+    color: #888;
+}
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+.pageTitle {
+    font-size: 31px;
+    font-weight: bold;
+    margin: 30px 0 24px 35px;
+}
+
+.linkGrid {
+    text-align: center;
+    width: 94%;
+    margin: auto;
+}
+
+.linkButton {
+    display: inline-block;
+    width: 27%;
+    height: 82px;
+    margin: 8px;
+    background: #242424;
+    border: 2px solid #363636;
+    border-radius: 14px;
+    font-size: 20px;
+    line-height: 82px;
+    cursor: pointer;
+}
+
+.linkButton:active {
+    transform: scale(0.96);
+}
+
+/* =========================================================
+   MINI GAME
+========================================================= */
+
+#gameScreen {
+    text-align: center;
+}
+
+#gameTitle {
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 28px;
+}
+
+#target {
+    width: 150px;
+    height: 150px;
+    border-radius: 80px;
+    background: #ef4444;
+    position: absolute;
+    left: 50%;
+    top: 47%;
+    margin-left: -75px;
+    margin-top: -75px;
+    line-height: 150px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#gameScore {
+    position: absolute;
+    top: 90px;
+    width: 100%;
+    font-size: 22px;
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.settingsBox {
+    width: 88%;
+    margin: 15px auto;
+    background: #202020;
+    padding: 18px;
+    border-radius: 14px;
+}
+
+.settingsTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.settingButton {
+    display: inline-block;
+    padding: 13px 19px;
+    margin: 5px;
+    border-radius: 9px;
+    background: #363636;
+    cursor: pointer;
+}
+
+/* =========================================================
+   SYSTEM
+========================================================= */
+
+#diagnostics {
+    width: 88%;
+    margin: auto;
+    background: #202020;
+    border-radius: 15px;
+    padding: 18px;
+    font-size: 16px;
+    line-height: 30px;
+}
+
+.good {
+    color: #72ff91;
+}
+
+.warn {
+    color: #ffd166;
+}
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+
+#navbar {
+    height: 57px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #333;
+    background: #151515;
+    text-align: center;
+    z-index: 25;
+}
+
+.navButton {
+    display: inline-block;
+    min-width: 110px;
+    padding: 0 12px;
+    height: 57px;
+    line-height: 57px;
+    font-size: 15px;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.navButton.selected {
+    color: white;
+    font-weight: bold;
+}
+
+/* =========================================================
+   SCREENSAVER
+========================================================= */
+
+#screensaver {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    text-align: center;
+}
+
+#screenClock {
+    font-size: 125px;
+    font-weight: bold;
+    margin-top: 180px;
+}
+
+#screenDate {
+    font-size: 27px;
+    color: #777;
+    margin-top: 8px;
+}
+
+#screenHint {
+    margin-top: 100px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+#toast {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    bottom: 75px;
+    left: 50%;
+    margin-left: -160px;
+    width: 320px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #eee;
+    color: #111;
+    text-align: center;
+    font-size: 15px;
+}
+
+/* =========================================================
+   THEMES
+========================================================= */
+
+.themeBlue {
+    background: #101926;
+}
+
+.themeRed {
+    background: #241112;
+}
+
+.themePurple {
+    background: #191126;
+}
+
+.themeBlack {
+    background: #090909;
+}
+
+</style>
 </head>
 
 <body>
 
-<div id="screen">
+<div id="app">
 
-  <div id="header">
-    NINTENDO SWITCH WEB TEST
-  </div>
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
 
-  <div id="clock">
-    --:--
-  </div>
+<div id="topbar">
 
-  <div id="date">
-    Loading...
-  </div>
+    <div id="brand">
+        SWITCH HOME
+    </div>
 
-  <div id="status">
-    If you can read this, HTML and CSS are working.
-  </div>
+    <div id="onlineStatus">
+        ONLINE
+    </div>
 
-  <div>
-    <span class="button" onclick="testButton()">
-      TOUCH TEST
-    </span>
+    <div id="topTime">
+        --:--
+    </div>
 
-    <span class="button" onclick="changeBackground()">
-      COLOR TEST
-    </span>
-  </div>
+</div>
 
-  <div id="counter">
-    Button presses: 0
-  </div>
+<!-- =====================================================
+     HOME SCREEN
+===================================================== -->
 
-  <div id="footer">
-    Switch Dashboard Compatibility Test v1
-  </div>
+<div id="homeScreen" class="screen active">
 
+    <div id="greeting">
+        Welcome
+    </div>
+
+    <div id="message">
+        Loading...
+    </div>
+
+    <div id="tiles">
+
+        <div class="tile" onclick="showScreen('clock')">
+            <div class="tileIcon">◷</div>
+            <div class="tileTitle">Clock</div>
+            <div class="tileSub">Full screen mode</div>
+        </div>
+
+        <div class="tile" onclick="showScreen('links')">
+            <div class="tileIcon">◎</div>
+            <div class="tileTitle">Internet</div>
+            <div class="tileSub">Quick launch</div>
+        </div>
+
+        <div class="tile" onclick="showScreen('game')">
+            <div class="tileIcon">●</div>
+            <div class="tileTitle">Tap Game</div>
+            <div class="tileSub">Switch mini game</div>
+        </div>
+
+        <div class="tile" onclick="showScreen('settings')">
+            <div class="tileIcon">⚙</div>
+            <div class="tileTitle">Settings</div>
+            <div class="tileSub">Customize dashboard</div>
+        </div>
+
+        <div class="tile" onclick="showScreen('system')">
+            <div class="tileIcon">i</div>
+            <div class="tileTitle">System</div>
+            <div class="tileSub">Compatibility info</div>
+        </div>
+
+        <div class="tile" onclick="playSound()">
+            <div class="tileIcon">♫</div>
+            <div class="tileTitle">Sound</div>
+            <div class="tileSub">Audio test</div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     CLOCK SCREEN
+===================================================== -->
+
+<div id="clockScreen" class="screen">
+
+    <div id="bigClock">
+        --:--
+    </div>
+
+    <div id="bigDate">
+        Loading...
+    </div>
+
+    <div id="clockMessage">
+        Make today count.
+    </div>
+
+</div>
+
+<!-- =====================================================
+     INTERNET
+===================================================== -->
+
+<div id="linksScreen" class="screen">
+
+    <div class="pageTitle">
+        Internet
+    </div>
+
+    <div class="linkGrid">
+
+        <div class="linkButton"
+             onclick="openLink('https://www.google.com')">
+            Google
+        </div>
+
+        <div class="linkButton"
+             onclick="openLink('https://www.youtube.com')">
+            YouTube
+        </div>
+
+        <div class="linkButton"
+             onclick="openLink('https://en.wikipedia.org')">
+            Wikipedia
+        </div>
+
+        <div class="linkButton"
+             onclick="openLink('https://www.reddit.com')">
+            Reddit
+        </div>
+
+        <div class="linkButton"
+             onclick="openLink('https://news.google.com')">
+            News
+        </div>
+
+        <div class="linkButton"
+             onclick="openLink('https://weather.com')">
+            Weather
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     GAME
+===================================================== -->
+
+<div id="gameScreen" class="screen">
+
+    <div id="gameTitle">
+        TAP ATTACK
+    </div>
+
+    <div id="gameScore">
+        Score: 0
+    </div>
+
+    <div id="target"
+         onclick="hitTarget()">
+        TAP
+    </div>
+
+</div>
+
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
+
+<div id="settingsScreen" class="screen">
+
+    <div class="pageTitle">
+        Settings
+    </div>
+
+    <div class="settingsBox">
+
+        <div class="settingsTitle">
+            Theme
+        </div>
+
+        <div class="settingButton"
+             onclick="setTheme('black')">
+            Black
+        </div>
+
+        <div class="settingButton"
+             onclick="setTheme('blue')">
+            Blue
+        </div>
+
+        <div class="settingButton"
+             onclick="setTheme('red')">
+            Red
+        </div>
+
+        <div class="settingButton"
+             onclick="setTheme('purple')">
+            Purple
+        </div>
+
+    </div>
+
+    <div class="settingsBox">
+
+        <div class="settingsTitle">
+            Screensaver
+        </div>
+
+        <div class="settingButton"
+             onclick="setSaver(30)">
+            30 sec
+        </div>
+
+        <div class="settingButton"
+             onclick="setSaver(60)">
+            1 min
+        </div>
+
+        <div class="settingButton"
+             onclick="setSaver(120)">
+            2 min
+        </div>
+
+        <div class="settingButton"
+             onclick="setSaver(300)">
+            5 min
+        </div>
+
+    </div>
+
+    <div class="settingsBox">
+
+        <div class="settingsTitle">
+            Tests
+        </div>
+
+        <div class="settingButton"
+             onclick="playSound()">
+            Sound Test
+        </div>
+
+        <div class="settingButton"
+             onclick="storageTest()">
+            Storage Test
+        </div>
+
+        <div class="settingButton"
+             onclick="showSaver()">
+            Screensaver
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     SYSTEM
+===================================================== -->
+
+<div id="systemScreen" class="screen">
+
+    <div class="pageTitle">
+        System
+    </div>
+
+    <div id="diagnostics">
+
+        JavaScript:
+        <span class="good">
+            WORKING
+        </span>
+
+        <br>
+
+        Touch:
+        <span class="good">
+            WORKING
+        </span>
+
+        <br>
+
+        Internet:
+        <span id="diagInternet">
+            Checking
+        </span>
+
+        <br>
+
+        Local Storage:
+        <span id="diagStorage">
+            Checking
+        </span>
+
+        <br>
+
+        Audio:
+        <span id="diagAudio">
+            Tap Sound Test
+        </span>
+
+        <br>
+
+        Screen:
+        <span id="resolution">
+            Detecting
+        </span>
+
+        <br>
+
+        Browser:
+        <span id="browserInfo">
+            Detecting
+        </span>
+
+        <br>
+
+        Dashboard:
+        <span class="good">
+            Switch Home v1.0
+        </span>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
+
+<div id="navbar">
+
+    <div class="navButton selected"
+         id="navHome"
+         onclick="showScreen('home')">
+        HOME
+    </div>
+
+    <div class="navButton"
+         id="navClock"
+         onclick="showScreen('clock')">
+        CLOCK
+    </div>
+
+    <div class="navButton"
+         id="navLinks"
+         onclick="showScreen('links')">
+        WEB
+    </div>
+
+    <div class="navButton"
+         id="navGame"
+         onclick="showScreen('game')">
+        GAME
+    </div>
+
+    <div class="navButton"
+         id="navSettings"
+         onclick="showScreen('settings')">
+        SETTINGS
+    </div>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+     SCREENSAVER
+===================================================== -->
+
+<div id="screensaver"
+     onclick="wakeUp()">
+
+    <div id="screenClock">
+        --:--
+    </div>
+
+    <div id="screenDate">
+        Loading
+    </div>
+
+    <div id="screenHint">
+        Tap anywhere to wake
+    </div>
+
+</div>
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div id="toast">
+    Message
 </div>
 
 <script>
 
-var presses = 0;
-var dark = true;
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+var currentScreen = "home";
+
+var idleSeconds = 0;
+
+var saverTime = 120;
+
+var score = 0;
+
+var touchStartX = 0;
+
+var touchStartY = 0;
+
+var messages = [
+
+    "Small improvements create big results.",
+
+    "Keep building.",
+
+    "You do not need perfect conditions to make progress.",
+
+    "One good decision can change the direction of your day.",
+
+    "Stay curious.",
+
+    "Make something useful today.",
+
+    "Progress beats perfection.",
+
+    "Your old Switch has a new job.",
+
+    "Try something Nintendo never intended.",
+
+    "Make today count."
+
+];
+
+var morningMessages = [
+
+    "Good morning. Start strong.",
+
+    "New day. New opportunity.",
+
+    "Build momentum early.",
+
+    "Start with one win."
+
+];
+
+var eveningMessages = [
+
+    "Slow down and reset.",
+
+    "Good work today.",
+
+    "Finish the day intentionally.",
+
+    "Tomorrow gets another chance."
+
+];
+
+var nightMessages = [
+
+    "Sleep well.",
+
+    "Time to recharge.",
+
+    "Rest is part of progress.",
+
+    "Tomorrow can wait."
+
+];
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function padNumber(number) {
+
+    if (number < 10) {
+
+        return "0" + number;
+
+    }
+
+    return number;
+
+}
+
+function getTimeString() {
+
+    var now = new Date();
+
+    var hours = now.getHours();
+
+    var minutes = now.getMinutes();
+
+    var suffix = "AM";
+
+    if (hours >= 12) {
+
+        suffix = "PM";
+
+    }
+
+    if (hours > 12) {
+
+        hours = hours - 12;
+
+    }
+
+    if (hours === 0) {
+
+        hours = 12;
+
+    }
+
+    return hours + ":" +
+           padNumber(minutes) +
+           " " +
+           suffix;
+
+}
 
 function updateClock() {
 
-  var now = new Date();
+    var now = new Date();
 
-  var hours = now.getHours();
-  var minutes = now.getMinutes();
+    var time = getTimeString();
 
-  var suffix = "AM";
+    var date = now.toDateString();
 
-  if (hours >= 12) {
-    suffix = "PM";
-  }
+    document.getElementById("topTime").innerHTML = time;
 
-  if (hours > 12) {
-    hours = hours - 12;
-  }
+    document.getElementById("bigClock").innerHTML = time;
 
-  if (hours === 0) {
-    hours = 12;
-  }
+    document.getElementById("bigDate").innerHTML = date;
 
-  if (minutes < 10) {
-    minutes = "0" + minutes;
-  }
+    document.getElementById("screenClock").innerHTML = time;
 
-  document.getElementById("clock").innerHTML =
-    hours + ":" + minutes + " " + suffix;
+    document.getElementById("screenDate").innerHTML = date;
 
-  document.getElementById("date").innerHTML =
-    now.toDateString();
 }
 
-function testButton() {
 
-  presses = presses + 1;
+/* =========================================================
+   GREETING
+========================================================= */
 
-  document.getElementById("counter").innerHTML =
-    "Button presses: " + presses;
+function updateGreeting() {
 
-  document.getElementById("status").innerHTML =
-    "JavaScript + touchscreen working!";
+    var hour = new Date().getHours();
+
+    var greeting = "Welcome";
+
+    if (hour >= 5 && hour < 12) {
+
+        greeting = "Good morning";
+
+    }
+
+    else if (hour >= 12 && hour < 17) {
+
+        greeting = "Good afternoon";
+
+    }
+
+    else if (hour >= 17 && hour < 22) {
+
+        greeting = "Good evening";
+
+    }
+
+    else {
+
+        greeting = "Good night";
+
+    }
+
+    document.getElementById("greeting").innerHTML =
+        greeting;
+
 }
 
-function changeBackground() {
 
-  if (dark === true) {
+/* =========================================================
+   MESSAGES
+========================================================= */
 
-    document.body.style.backgroundColor = "#243447";
+function updateMessage() {
 
-    document.getElementById("status").innerHTML =
-      "Dynamic CSS working!";
+    var hour = new Date().getHours();
 
-    dark = false;
+    var list = messages;
 
-  } else {
+    if (hour >= 5 && hour < 12) {
 
-    document.body.style.backgroundColor = "#111111";
+        list = morningMessages;
 
-    document.getElementById("status").innerHTML =
-      "Background reset.";
+    }
 
-    dark = true;
-  }
+    else if (hour >= 17 && hour < 22) {
+
+        list = eveningMessages;
+
+    }
+
+    else if (hour >= 22 || hour < 5) {
+
+        list = nightMessages;
+
+    }
+
+    var random =
+        Math.floor(Math.random() * list.length);
+
+    var message =
+        list[random];
+
+    document.getElementById("message").innerHTML =
+        message;
+
+    document.getElementById("clockMessage").innerHTML =
+        message;
+
 }
 
-updateClock();
 
-setInterval(updateClock, 1000);
+/* =========================================================
+   SCREEN NAVIGATION
+========================================================= */
+
+function showScreen(name) {
+
+    resetIdle();
+
+    hideAllScreens();
+
+    currentScreen = name;
+
+    var element =
+        document.getElementById(name + "Screen");
+
+    if (element) {
+
+        element.className = "screen active";
+
+    }
+
+    updateNavigation();
+
+}
+
+function hideAllScreens() {
+
+    var ids = [
+
+        "homeScreen",
+        "clockScreen",
+        "linksScreen",
+        "gameScreen",
+        "settingsScreen",
+        "systemScreen"
+
+    ];
+
+    var i;
+
+    for (i = 0; i < ids.length; i++) {
+
+        document.getElementById(ids[i]).className =
+            "screen";
+
+    }
+
+}
+
+function updateNavigation() {
+
+    var ids = [
+
+        "navHome",
+        "navClock",
+        "navLinks",
+        "navGame",
+        "navSettings"
+
+    ];
+
+    var i;
+
+    for (i = 0; i < ids.length; i++) {
+
+        document.getElementById(ids[i]).className =
+            "navButton";
+
+    }
+
+    var nav =
+        document.getElementById(
+            "nav" +
+            currentScreen.charAt(0).toUpperCase() +
+            currentScreen.slice(1)
+        );
+
+    if (nav) {
+
+        nav.className =
+            "navButton selected";
+
+    }
+
+}
+
+
+/* =========================================================
+   WEB LINKS
+========================================================= */
+
+function openLink(url) {
+
+    resetIdle();
+
+    showToast("Opening...");
+
+    window.location.href = url;
+
+}
+
+
+/* =========================================================
+   GAME
+========================================================= */
+
+function hitTarget() {
+
+    resetIdle();
+
+    score = score + 1;
+
+    document.getElementById("gameScore").innerHTML =
+        "Score: " + score;
+
+    moveTarget();
+
+    playTinySound();
+
+}
+
+function moveTarget() {
+
+    var target =
+        document.getElementById("target");
+
+    var maxX =
+        window.innerWidth - 180;
+
+    var maxY =
+        window.innerHeight - 250;
+
+    if (maxX < 200) {
+
+        maxX = 200;
+
+    }
+
+    if (maxY < 200) {
+
+        maxY = 200;
+
+    }
+
+    var x =
+        Math.floor(Math.random() * maxX);
+
+    var y =
+        Math.floor(Math.random() * maxY) + 100;
+
+    target.style.left =
+        x + "px";
+
+    target.style.top =
+        y + "px";
+
+    target.style.marginLeft =
+        "0";
+
+    target.style.marginTop =
+        "0";
+
+}
+
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+function playSound() {
+
+    resetIdle();
+
+    try {
+
+        var AudioContextClass =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (!AudioContextClass) {
+
+            document.getElementById("diagAudio").innerHTML =
+                "UNSUPPORTED";
+
+            showToast("Audio API not supported.");
+
+            return;
+
+        }
+
+        var context =
+            new AudioContextClass();
+
+        var oscillator =
+            context.createOscillator();
+
+        var gain =
+            context.createGain();
+
+        oscillator.frequency.value =
+            440;
+
+        gain.gain.value =
+            0.15;
+
+        oscillator.connect(gain);
+
+        gain.connect(context.destination);
+
+        oscillator.start(0);
+
+        setTimeout(function() {
+
+            try {
+
+                oscillator.stop(0);
+
+            }
+
+            catch (error) {}
+
+        }, 250);
+
+        document.getElementById("diagAudio").innerHTML =
+            '<span class="good">WORKING</span>';
+
+        showToast("Sound test!");
+
+    }
+
+    catch (error) {
+
+        document.getElementById("diagAudio").innerHTML =
+            "FAILED";
+
+        showToast("Audio test failed.");
+
+    }
+
+}
+
+function playTinySound() {
+
+    try {
+
+        var AudioContextClass =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (!AudioContextClass) {
+
+            return;
+
+        }
+
+        var context =
+            new AudioContextClass();
+
+        var oscillator =
+            context.createOscillator();
+
+        var gain =
+            context.createGain();
+
+        oscillator.frequency.value =
+            700;
+
+        gain.gain.value =
+            0.05;
+
+        oscillator.connect(gain);
+
+        gain.connect(context.destination);
+
+        oscillator.start(0);
+
+        setTimeout(function() {
+
+            oscillator.stop(0);
+
+        }, 60);
+
+    }
+
+    catch (error) {}
+
+}
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function storageAvailable() {
+
+    try {
+
+        localStorage.setItem(
+            "switchTest",
+            "yes"
+        );
+
+        var result =
+            localStorage.getItem(
+                "switchTest"
+            );
+
+        return result === "yes";
+
+    }
+
+    catch (error) {
+
+        return false;
+
+    }
+
+}
+
+function storageTest() {
+
+    if (storageAvailable()) {
+
+        showToast(
+            "Local storage is working."
+        );
+
+        document.getElementById("diagStorage").innerHTML =
+            '<span class="good">WORKING</span>';
+
+    }
+
+    else {
+
+        showToast(
+            "Storage unavailable."
+        );
+
+        document.getElementById("diagStorage").innerHTML =
+            "UNAVAILABLE";
+
+    }
+
+}
+
+
+/* =========================================================
+   THEMES
+========================================================= */
+
+function setTheme(theme) {
+
+    document.body.className = "";
+
+    if (theme === "blue") {
+
+        document.body.className =
+            "themeBlue";
+
+    }
+
+    else if (theme === "red") {
+
+        document.body.className =
+            "themeRed";
+
+    }
+
+    else if (theme === "purple") {
+
+        document.body.className =
+            "themePurple";
+
+    }
+
+    else {
+
+        document.body.className =
+            "themeBlack";
+
+    }
+
+    try {
+
+        localStorage.setItem(
+            "switchTheme",
+            theme
+        );
+
+    }
+
+    catch (error) {}
+
+    showToast(
+        "Theme saved."
+    );
+
+}
+
+function loadTheme() {
+
+    try {
+
+        var theme =
+            localStorage.getItem(
+                "switchTheme"
+            );
+
+        if (theme) {
+
+            setTheme(theme);
+
+        }
+
+    }
+
+    catch (error) {}
+
+}
+
+
+/* =========================================================
+   SCREENSAVER
+========================================================= */
+
+function setSaver(seconds) {
+
+    saverTime = seconds;
+
+    try {
+
+        localStorage.setItem(
+            "switchSaver",
+            seconds
+        );
+
+    }
+
+    catch (error) {}
+
+    showToast(
+        "Screensaver set."
+    );
+
+}
+
+function loadSaver() {
+
+    try {
+
+        var saved =
+            localStorage.getItem(
+                "switchSaver"
+            );
+
+        if (saved) {
+
+            saverTime =
+                parseInt(saved, 10);
+
+        }
+
+    }
+
+    catch (error) {}
+
+}
+
+function resetIdle() {
+
+    idleSeconds = 0;
+
+}
+
+function idleTick() {
+
+    idleSeconds =
+        idleSeconds + 1;
+
+    if (idleSeconds >= saverTime) {
+
+        showSaver();
+
+    }
+
+}
+
+function showSaver() {
+
+    document.getElementById("screensaver").style.display =
+        "block";
+
+}
+
+function wakeUp() {
+
+    document.getElementById("screensaver").style.display =
+        "none";
+
+    resetIdle();
+
+}
+
+
+/* =========================================================
+   TOUCH / SWIPE
+========================================================= */
+
+function touchStart(event) {
+
+    resetIdle();
+
+    if (!event.touches ||
+        event.touches.length === 0) {
+
+        return;
+
+    }
+
+    touchStartX =
+        event.touches[0].clientX;
+
+    touchStartY =
+        event.touches[0].clientY;
+
+}
+
+function touchEnd(event) {
+
+    resetIdle();
+
+    if (!event.changedTouches ||
+        event.changedTouches.length === 0) {
+
+        return;
+
+    }
+
+    var x =
+        event.changedTouches[0].clientX;
+
+    var y =
+        event.changedTouches[0].clientY;
+
+    var diffX =
+        x - touchStartX;
+
+    var diffY =
+        y - touchStartY;
+
+    if (Math.abs(diffX) > 120 &&
+        Math.abs(diffX) > Math.abs(diffY)) {
+
+        if (diffX > 0) {
+
+            previousScreen();
+
+        }
+
+        else {
+
+            nextScreen();
+
+        }
+
+    }
+
+}
+
+function nextScreen() {
+
+    var order = [
+
+        "home",
+        "clock",
+        "links",
+        "game",
+        "settings"
+
+    ];
+
+    var index =
+        findScreenIndex(
+            order,
+            currentScreen
+        );
+
+    index = index + 1;
+
+    if (index >= order.length) {
+
+        index = 0;
+
+    }
+
+    showScreen(order[index]);
+
+}
+
+function previousScreen() {
+
+    var order = [
+
+        "home",
+        "clock",
+        "links",
+        "game",
+        "settings"
+
+    ];
+
+    var index =
+        findScreenIndex(
+            order,
+            currentScreen
+        );
+
+    index = index - 1;
+
+    if (index < 0) {
+
+        index =
+            order.length - 1;
+
+    }
+
+    showScreen(order[index]);
+
+}
+
+function findScreenIndex(array, value) {
+
+    var i;
+
+    for (i = 0; i < array.length; i++) {
+
+        if (array[i] === value) {
+
+            return i;
+
+        }
+
+    }
+
+    return 0;
+
+}
+
+
+/* =========================================================
+   CONNECTION
+========================================================= */
+
+function updateConnection() {
+
+    var status =
+        navigator.onLine;
+
+    if (status === false) {
+
+        document.getElementById("onlineStatus").innerHTML =
+            "OFFLINE";
+
+        document.getElementById("onlineStatus").style.color =
+            "#ff6b6b";
+
+        document.getElementById("diagInternet").innerHTML =
+            "OFFLINE";
+
+    }
+
+    else {
+
+        document.getElementById("onlineStatus").innerHTML =
+            "ONLINE";
+
+        document.getElementById("onlineStatus").style.color =
+            "#7dff9b";
+
+        document.getElementById("diagInternet").innerHTML =
+            '<span class="good">ONLINE</span>';
+
+    }
+
+}
+
+
+/* =========================================================
+   DIAGNOSTICS
+========================================================= */
+
+function runDiagnostics() {
+
+    document.getElementById("resolution").innerHTML =
+        window.innerWidth +
+        " x " +
+        window.innerHeight;
+
+    var userAgent =
+        navigator.userAgent;
+
+    if (userAgent.length > 65) {
+
+        userAgent =
+            userAgent.substring(
+                0,
+                65
+            ) + "...";
+
+    }
+
+    document.getElementById("browserInfo").innerHTML =
+        userAgent;
+
+    if (storageAvailable()) {
+
+        document.getElementById("diagStorage").innerHTML =
+            '<span class="good">WORKING</span>';
+
+    }
+
+    else {
+
+        document.getElementById("diagStorage").innerHTML =
+            '<span class="warn">UNKNOWN</span>';
+
+    }
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(text) {
+
+    var toast =
+        document.getElementById("toast");
+
+    toast.innerHTML =
+        text;
+
+    toast.style.display =
+        "block";
+
+    setTimeout(function() {
+
+        toast.style.display =
+            "none";
+
+    }, 1800);
+
+}
+
+
+/* =========================================================
+   STARTUP
+========================================================= */
+
+function startDashboard() {
+
+    updateClock();
+
+    updateGreeting();
+
+    updateMessage();
+
+    updateConnection();
+
+    loadSaver();
+
+    loadTheme();
+
+    runDiagnostics();
+
+    document.addEventListener(
+        "touchstart",
+        touchStart,
+        false
+    );
+
+    document.addEventListener(
+        "touchend",
+        touchEnd,
+        false
+    );
+
+    document.addEventListener(
+        "click",
+        resetIdle,
+        false
+    );
+
+    setInterval(
+        updateClock,
+        1000
+    );
+
+    setInterval(
+        idleTick,
+        1000
+    );
+
+    setInterval(
+        updateMessage,
+        60000
+    );
+
+    setInterval(
+        updateConnection,
+        10000
+    );
+
+}
+
+startDashboard();
 
 </script>
 
