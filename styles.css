@@ -1,0 +1,42 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #eee; background: #080808; }
+.display { height: 100vh; overflow: hidden; background: radial-gradient(circle at center, #191919 0%, #080808 76%); }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; padding: 11px 16px; margin: 4px 4px 4px 0; border: 0; border-radius: 5px; background: #efbe64; color: #17130b; font-weight: bold; }
+button.secondary { background: #36393d; color: #eee; }
+button:focus, input:focus, select:focus { outline: 2px solid #efbe64; outline-offset: 3px; }
+label { display: block; line-height: 1.6; margin-top: 16px; }
+input, select, textarea { display: block; width: 100%; margin: 8px 0 16px; padding: 10px; background: #161819; color: #fff; border: 1px solid #666; border-radius: 4px; }
+textarea { min-height: 105px; resize: vertical; text-transform: uppercase; }
+a { color: #efbe64; }
+input[type=checkbox] { display: inline; width: auto; margin-right: 8px; }
+h1 { font-size: 26px; } h2 { font-size: 20px; margin-top: 28px; }
+p { line-height: 1.6; }
+.hint, .status { color: #c5c7cb; font-size: 14px; line-height: 1.6; }
+.hidden { display: none !important; }
+.board-shell { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.board-row { white-space: nowrap; height: 16.666666%; }
+.flap { display: inline-block; vertical-align: top; position: relative; width: 4.545454%; height: 100%; border: 2px solid #080808; border-radius: 3px; overflow: hidden; text-align: center; font-family: "Arial Narrow", Arial, Helvetica, sans-serif; font-weight: 700; color: #f1f0e9; text-shadow: 0 1px 2px #000; background: linear-gradient(to bottom,#242424 0%,#1c1c1c 48%,#0c0c0c 49%,#0c0c0c 51%,#1a1a1a 52%,#171717 100%); box-shadow: inset 0 1px rgba(255,255,255,.08), inset 0 -2px 4px rgba(0,0,0,.9); }
+.flap:after { content: ""; position: absolute; top: 50%; left: 0; right: 0; border-top: 2px solid #0a0a0b; box-shadow: 0 1px rgba(255,255,255,.04); }
+.flip { animation: flap 96ms linear; }
+@keyframes flap { 0%,100% { transform: perspective(160px) rotateX(0deg); } 50% { transform: perspective(160px) rotateX(-58deg); } }
+.color-red { background: #b9413c; } .color-orange { background: #d46f31; }
+.color-yellow { background: #d6b43d; } .color-green { background: #4f8c56; }
+.color-blue { background: #3d79a5; } .color-purple { background: #73599a; }
+.color-white { background: #d9d6cb; }
+.board-toolbar { position: fixed; bottom: 10px; left: 12px; right: 12px; text-align: center; background: rgba(8,8,8,.9); border-radius: 6px; padding: 5px; }
+.symbol-heart { color: #ff807b; }
+.symbol-smile, .symbol-star, .symbol-sun, .symbol-lightning, .symbol-check, .symbol-sparkle, .symbol-peace { color: #efca69; }
+.symbol-music { color: #d2b6ff; } .symbol-coffee { color: #f0cf9e; } .symbol-moon { color: #c8d8ff; }
+/* Silk fix: touch hover and focus cannot keep these visible. */
+.board-toolbar.faded { opacity: 0 !important; visibility: hidden; pointer-events: none; }
+.settings-overlay { position: fixed; z-index: 10; top: 0; bottom: 0; left: 0; right: 0; overflow: auto; padding: 16px; background: rgba(0,0,0,.92); }
+.settings-inner { max-width: 580px; margin: 10px auto; padding: 22px; border: 1px solid #454545; border-radius: 8px; background: #202224; }
+.editor { padding: 14px; border: 1px solid #555; border-radius: 7px; background: #17191a; }
+.symbol-picker button { min-width: 46px; font-size: 22px; padding: 8px; }
+.message-preview { overflow: hidden; margin: 12px 0; padding: 12px 5px; border-radius: 5px; background: #080808; color: #f1f0e9; font: bold 16px/1.35 monospace; white-space: pre; text-align: center; letter-spacing: 1px; }
+.button-row { margin: 10px 0; }
+.saved-message { margin: 10px 0; padding: 11px; border: 1px solid #4a4d50; border-radius: 5px; background: #25282a; }
+.saved-message p { margin: 0 0 6px; white-space: pre-line; }
+@media (prefers-reduced-motion: reduce) { .flip { animation: none; } }
+@media (max-width: 600px) { .board-toolbar button { padding: 9px; font-size: 14px; } .settings-inner { padding: 16px; } }
