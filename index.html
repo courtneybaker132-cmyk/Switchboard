@@ -25,341 +25,179 @@ html,body{
     user-select:none;
 }
 
-/* =====================================================
-   OUTER "CONSOLE" AREA
-===================================================== */
-
 #cabinet{
     position:absolute;
     left:0;
     top:0;
     width:100%;
     height:100%;
-    background:#080808;
+    background:#070707;
 }
-
-/* =====================================================
-   CRT FRAME
-
-   Intentionally smaller than entire browser viewport.
-   Nintendo/browser controls can remain around it without
-   covering important game content.
-===================================================== */
 
 #tv{
     position:absolute;
-
     left:3%;
-    top:3%;
-
+    top:2%;
     width:94%;
-    height:88%;
-
+    height:89%;
     background:#171717;
-
     border-radius:24px;
 
     box-shadow:
         inset 0 0 0 4px #303030,
-        inset 0 0 0 10px #0b0b0b,
+        inset 0 0 0 10px #090909,
         0 8px 25px rgba(0,0,0,.9);
 }
 
-/* actual picture */
-
 #picture{
     position:absolute;
-
     left:2.2%;
     top:3%;
-
     width:95.6%;
     height:88%;
-
     background:#000;
-
-    border-radius:18px;
-
+    border-radius:17px;
     overflow:hidden;
 }
 
 canvas{
+    display:block;
     width:100%;
     height:100%;
-
-    display:block;
-
     image-rendering:pixelated;
 }
 
-/* =====================================================
-   CRT EFFECTS
-===================================================== */
-
 #scanlines{
     pointer-events:none;
-
     position:absolute;
-
     left:0;
     top:0;
-
     width:100%;
     height:100%;
-
     z-index:20;
-
-    opacity:.38;
 
     background:
     repeating-linear-gradient(
         to bottom,
         rgba(255,255,255,0),
         rgba(255,255,255,0) 2px,
-        rgba(0,0,0,.30) 3px,
-        rgba(0,0,0,.30) 4px
+        rgba(0,0,0,.25) 3px,
+        rgba(0,0,0,.25) 4px
     );
 }
 
 #vignette{
     pointer-events:none;
-
     position:absolute;
-
     left:0;
     top:0;
-
     width:100%;
     height:100%;
-
     z-index:21;
 
-    border-radius:18px;
-
     box-shadow:
-        inset 0 0 95px rgba(0,0,0,.85);
+        inset 0 0 90px rgba(0,0,0,.85);
 }
 
 #glass{
     pointer-events:none;
-
     position:absolute;
-
     left:0;
     top:0;
-
     width:100%;
     height:100%;
-
     z-index:22;
 
     background:
         linear-gradient(
             120deg,
-            rgba(255,255,255,.06),
+            rgba(255,255,255,.05),
             rgba(255,255,255,0) 22%
         );
 }
 
-/* =====================================================
-   TV LABEL AREA
-===================================================== */
-
-#brand{
-    position:absolute;
-
-    left:32px;
-    bottom:17px;
-
-    color:#777;
-
-    letter-spacing:4px;
-
-    font-size:13px;
-}
-
-#channel{
-    position:absolute;
-
-    right:30px;
-    bottom:15px;
-
-    color:#777;
-
-    font-size:13px;
-}
-
-/* power LED */
-
-#led{
-    position:absolute;
-
-    right:15px;
-    bottom:19px;
-
-    width:7px;
-    height:7px;
-
-    border-radius:8px;
-
-    background:#00d26a;
-
-    box-shadow:
-        0 0 8px #00d26a;
-}
-
-/* =====================================================
-   OVERLAY INFORMATION
-===================================================== */
-
 #osd{
     position:absolute;
-
-    left:24px;
-    top:20px;
-
+    left:22px;
+    top:18px;
     z-index:30;
-
     color:#fff;
-
-    font-size:17px;
-
-    text-shadow:
-        2px 2px #000;
-
+    font-size:16px;
+    text-shadow:2px 2px #000;
     opacity:.75;
 }
 
 #nowPlaying{
-    margin-top:5px;
-
+    margin-top:4px;
     font-size:12px;
-
-    color:#bdbdbd;
+    color:#c5c5c5;
 }
 
-/* =====================================================
-   CONTROLS
-===================================================== */
+#brand{
+    position:absolute;
+    left:30px;
+    bottom:17px;
+    color:#6f6f6f;
+    letter-spacing:3px;
+    font-size:12px;
+}
+
+#channel{
+    position:absolute;
+    right:28px;
+    bottom:16px;
+    color:#6f6f6f;
+    font-size:12px;
+}
+
+#led{
+    position:absolute;
+    right:14px;
+    bottom:18px;
+    width:7px;
+    height:7px;
+    border-radius:8px;
+    background:#00d26a;
+    box-shadow:0 0 8px #00d26a;
+}
 
 #controls{
     position:absolute;
-
     left:50%;
     bottom:20px;
-
-    width:680px;
-
-    margin-left:-340px;
-
-    z-index:45;
-
+    width:660px;
+    margin-left:-330px;
     text-align:center;
-
+    z-index:50;
     padding:10px 0;
-
-    border-radius:14px;
-
-    background:rgba(0,0,0,.80);
-
+    border-radius:13px;
+    background:rgba(0,0,0,.82);
     opacity:0;
 }
 
 .button{
     display:inline-block;
-
-    padding:12px 17px;
-
+    padding:11px 15px;
     margin:0 4px;
-
-    min-width:58px;
-
+    min-width:55px;
     color:#fff;
-
     background:#252525;
-
     border:1px solid #555;
-
     border-radius:8px;
-
-    font-size:14px;
+    font-size:13px;
 }
 
 .button:active{
     background:#777;
 }
 
-/* =====================================================
-   START SCREEN
-===================================================== */
-
-#startScreen{
-    position:absolute;
-
-    left:0;
-    top:0;
-
-    width:100%;
-    height:100%;
-
-    background:#000;
-
-    z-index:100;
-
-    color:#fff;
-
-    text-align:center;
-}
-
-#startTitle{
-    margin-top:175px;
-
-    font-size:48px;
-
-    letter-spacing:10px;
-}
-
-#startSubtitle{
-    margin-top:22px;
-
-    color:#999;
-
-    font-size:17px;
-
-    animation:blink 1.1s steps(2,start) infinite;
-}
-
-#startSmall{
-    margin-top:30px;
-
-    color:#555;
-
-    font-size:12px;
-}
-
-@keyframes blink{
-
-    50%{
-        opacity:.15;
-    }
-
-}
-
-/* =====================================================
-   CHANNEL CHANGE STATIC
-===================================================== */
-
 #static{
     display:none;
-
     position:absolute;
-
     left:0;
     top:0;
-
     width:100%;
     height:100%;
-
     z-index:35;
 
     background:
@@ -372,35 +210,50 @@ canvas{
         #000 4px
     );
 
-    opacity:.82;
+    opacity:.85;
 }
 
-/* =====================================================
-   PAUSE
-===================================================== */
-
-#pauseLabel{
+#interactiveHint{
     display:none;
-
     position:absolute;
-
     left:0;
-    top:45%;
-
+    bottom:15px;
     width:100%;
-
     text-align:center;
-
     color:#fff;
+    font-size:13px;
+    z-index:32;
+    text-shadow:2px 2px #000;
+}
 
-    font-size:38px;
+#startScreen{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:#000;
+    color:#fff;
+    z-index:100;
+    text-align:center;
+}
 
-    z-index:33;
+#startTitle{
+    margin-top:175px;
+    font-size:48px;
+    letter-spacing:10px;
+}
 
-    letter-spacing:8px;
+#startSubtitle{
+    margin-top:20px;
+    font-size:17px;
+    color:#999;
+}
 
-    text-shadow:
-        3px 3px #000;
+#startSmall{
+    margin-top:30px;
+    font-size:12px;
+    color:#555;
 }
 
 </style>
@@ -414,11 +267,9 @@ canvas{
 
 <div id="picture">
 
-<canvas
-id="game"
+<canvas id="game"
 width="960"
-height="540">
-</canvas>
+height="540"></canvas>
 
 <div id="scanlines"></div>
 <div id="vignette"></div>
@@ -427,17 +278,12 @@ height="540">
 <div id="static"></div>
 
 <div id="osd">
-
 RETRO TV
-
-<div id="nowPlaying">
-CH 01
+<div id="nowPlaying">CH 01</div>
 </div>
 
-</div>
-
-<div id="pauseLabel">
-PAUSED
+<div id="interactiveHint">
+TAP SCREEN TO PLAY
 </div>
 
 </div>
@@ -454,45 +300,27 @@ CH 01
 
 </div>
 
-
 <div id="controls">
 
 <span class="button"
-onclick="previousScene()">
-◀
-</span>
+onclick="previousScene()">◀</span>
 
 <span class="button"
 onclick="togglePause()"
-id="pauseButton">
-PAUSE
-</span>
+id="pauseButton">PAUSE</span>
 
 <span class="button"
-onclick="nextScene()">
-▶
-</span>
-
-<span class="button"
-onclick="toggleMute()"
-id="muteButton">
-SOUND
-</span>
+onclick="nextScene()">▶</span>
 
 <span class="button"
 onclick="toggleShuffle()"
-id="shuffleButton">
-SHUFFLE
-</span>
+id="shuffleButton">SHUFFLE ON</span>
 
 <span class="button"
-onclick="changeDuration()"
-id="durationButton">
-45 SEC
-</span>
+onclick="toggleMode()"
+id="modeButton">AUTO TV</span>
 
 </div>
-
 
 <div id="startScreen"
 onclick="startTV()">
@@ -506,13 +334,12 @@ TAP TO START
 </div>
 
 <div id="startSmall">
-CHIPTUNE VIDEO GAME TELEVISION
+24-HOUR PIXEL VIDEO GAME CHANNEL
 </div>
 
 </div>
 
 </div>
-
 
 <script>
 
@@ -530,246 +357,74 @@ var W = 960;
 var H = 540;
 
 var scene = 0;
-var scenes = 8;
+var sceneCount = 10;
 
 var frame = 0;
+var phaseFrame = 0;
 
 var paused = false;
-
-var muted = false;
-
 var shuffle = true;
-
-var duration = 45;
-
-var sceneTime = 0;
 
 var started = false;
 
+var autoTV = true;
+
+var channelTimer = 0;
+var channelDuration = 65;
+
 var controlsTimer = null;
 
+var commercialMode = false;
+var commercialTimer = 0;
 
-/* animation compatibility */
+var interactiveMode = false;
+
+var score = 0;
 
 var raf =
 window.requestAnimationFrame ||
 window.webkitRequestAnimationFrame ||
 function(fn){
-
     return setTimeout(fn,33);
-
 };
 
 
 /* =====================================================
-   AUDIO
+   TIME OF DAY
 ===================================================== */
 
-var audioContext = null;
+function currentHour(){
 
-var musicTimer = null;
-
-var beat = 0;
-
-
-function setupAudio(){
-
-    try{
-
-        var AC =
-        window.AudioContext ||
-        window.webkitAudioContext;
-
-        if(!AC){
-
-            muted = true;
-
-            document.getElementById(
-                "muteButton"
-            ).innerHTML =
-            "NO AUDIO";
-
-            return;
-        }
-
-        audioContext =
-        new AC();
-
-    }
-
-    catch(e){
-
-        muted = true;
-
-    }
+    return new Date().getHours();
 
 }
 
+function isNight(){
 
-/* simple oscillator note */
+    var h = currentHour();
 
-function tone(
-    frequency,
-    length,
-    type,
-    volume
-){
-
-    if(
-        muted ||
-        !audioContext
-    ){
-
-        return;
-
-    }
-
-    try{
-
-        var osc =
-        audioContext.createOscillator();
-
-        var gain =
-        audioContext.createGain();
-
-        osc.type =
-        type || "square";
-
-        osc.frequency.value =
-        frequency;
-
-        gain.gain.value =
-        volume || .025;
-
-        osc.connect(gain);
-
-        gain.connect(
-            audioContext.destination
-        );
-
-        osc.start(0);
-
-        setTimeout(
-            function(){
-
-                try{
-
-                    osc.stop(0);
-
-                }
-                catch(e){}
-
-            },
-
-            length
-        );
-
-    }
-
-    catch(e){}
-
-}
-
-
-/* =====================================================
-   CHIPTUNE MUSIC ENGINE
-===================================================== */
-
-var noteSets = [
-
-/* platform */
-[262,330,392,523,392,330,294,349],
-
-/* space */
-[110,165,220,330,220,165,147,196],
-
-/* racer */
-[130,196,261,392,349,261,196,233],
-
-/* dungeon */
-[146,174,220,261,220,174,130,146],
-
-/* fighter */
-[196,247,294,392,294,247,220,294],
-
-/* blocks */
-[330,392,440,523,440,392,349,440],
-
-/* ocean */
-[220,277,330,440,330,277,247,330],
-
-/* city */
-[164,246,329,493,392,329,246,293]
-
-];
-
-
-function musicBeat(){
-
-    if(
-        !started ||
-        paused ||
-        muted
-    ){
-
-        return;
-    }
-
-    var notes =
-    noteSets[scene];
-
-    var note =
-    notes[
-        beat % notes.length
-    ];
-
-    tone(
-        note,
-        100,
-        "square",
-        .018
+    return (
+        h >= 20 ||
+        h < 6
     );
 
-    /* bass every 2 beats */
-
-    if(
-        beat % 2 === 0
-    ){
-
-        tone(
-            note/2,
-            130,
-            "square",
-            .010
-        );
-
-    }
-
-    beat++;
-
 }
 
 
 /* =====================================================
-   BASIC DRAW HELPERS
+   DRAW HELPERS
 ===================================================== */
 
 function clear(c){
 
-    ctx.fillStyle=c;
-
-    ctx.fillRect(
-        0,0,W,H
-    );
+    ctx.fillStyle = c;
+    ctx.fillRect(0,0,W,H);
 
 }
 
+function rect(x,y,w,h,c){
 
-function rect(
-    x,y,w,h,c
-){
-
-    ctx.fillStyle=c;
+    ctx.fillStyle = c;
 
     ctx.fillRect(
         Math.floor(x),
@@ -780,26 +435,34 @@ function rect(
 
 }
 
+function txt(value,x,y,size,color){
 
-function txt(
-    value,
-    x,
-    y,
-    size,
-    color
-){
-
-    ctx.fillStyle=color;
-
-    ctx.font=
-    size+"px monospace";
+    ctx.fillStyle = color;
+    ctx.font = size + "px monospace";
 
     ctx.fillText(
-        value,x,y
+        value,
+        x,
+        y
     );
 
 }
 
+function centerText(value,y,size,color){
+
+    ctx.fillStyle = color;
+    ctx.font = size + "px monospace";
+
+    var width =
+    ctx.measureText(value).width;
+
+    ctx.fillText(
+        value,
+        (W-width)/2,
+        y
+    );
+
+}
 
 function rnd(a,b){
 
@@ -812,43 +475,131 @@ function rnd(a,b){
 
 
 /* =====================================================
-   STARS
+   TITLE CARD
 ===================================================== */
 
-var stars=[];
+function titleCard(title,subtitle,color){
 
+    clear("#050505");
 
-function makeStars(){
+    centerText(
+        title,
+        230,
+        42,
+        color
+    );
 
-    var i;
+    centerText(
+        subtitle,
+        280,
+        17,
+        "#aaa"
+    );
 
-    for(i=0;i<80;i++){
-
-        stars.push({
-
-            x:rnd(0,W),
-
-            y:rnd(0,H),
-
-            s:rnd(1,4)
-
-        });
-
-    }
+    centerText(
+        "PRESENTED BY RETRO TV",
+        420,
+        13,
+        "#555"
+    );
 
 }
 
 
 /* =====================================================
-   SCENE 1
+   GAME OVER
+===================================================== */
+
+function gameOver(title){
+
+    clear("#080808");
+
+    centerText(
+        "GAME OVER",
+        235,
+        46,
+        "#ff4d6d"
+    );
+
+    centerText(
+        title,
+        285,
+        18,
+        "#fff"
+    );
+
+    centerText(
+        "HIGH SCORE  025840",
+        350,
+        17,
+        "#fee440"
+    );
+
+    centerText(
+        "PRESS START",
+        430,
+        15,
+        "#777"
+    );
+
+}
+
+
+/* =====================================================
+   SCENE PHASE
+===================================================== */
+
+function phase(){
+
+    var seconds =
+    Math.floor(
+        phaseFrame / 30
+    );
+
+    if(seconds < 5)
+        return 0;
+
+    if(seconds < 35)
+        return 1;
+
+    if(seconds < 50)
+        return 2;
+
+    return 3;
+
+}
+
+
+/* =====================================================
+   CHANNEL 1
    PLATFORM KINGDOM
 ===================================================== */
 
 function platform(){
 
-    clear("#58bde8");
+    var p = phase();
 
-    /* clouds */
+    if(p===0){
+
+        titleCard(
+            "PIXEL KINGDOM",
+            "WORLD 1-1",
+            "#5bc0eb"
+        );
+
+        return;
+    }
+
+    if(p===3){
+
+        gameOver(
+            "PIXEL KINGDOM"
+        );
+
+        return;
+    }
+
+    clear("#58bde8");
 
     var cx =
     (frame*1.2)%1150;
@@ -869,8 +620,6 @@ function platform(){
         "#fff"
     );
 
-    /* distant land */
-
     rect(
         0,
         350,
@@ -878,8 +627,6 @@ function platform(){
         190,
         "#439c70"
     );
-
-    /* ground */
 
     rect(
         0,
@@ -897,8 +644,6 @@ function platform(){
         "#91c83e"
     );
 
-    /* blocks */
-
     var i;
 
     for(i=0;i<13;i++){
@@ -912,22 +657,6 @@ function platform(){
         );
 
     }
-
-    /* coin */
-
-    var coinY =
-    290 +
-    Math.sin(frame/8)*15;
-
-    rect(
-        690,
-        coinY,
-        18,
-        35,
-        "#ffd500"
-    );
-
-    /* hero */
 
     var px =
     (frame*2.8)%1080-80;
@@ -953,17 +682,37 @@ function platform(){
         "#185adb"
     );
 
+    if(p===2){
+
+        rect(
+            760,
+            300,
+            110,
+            110,
+            "#5a189a"
+        );
+
+        rect(
+            785,
+            260,
+            60,
+            50,
+            "#7b2cbf"
+        );
+
+        txt(
+            "BOSS!",
+            765,
+            235,
+            20,
+            "#fff"
+        );
+
+    }
+
     txt(
         "WORLD 1-3",
         25,
-        35,
-        17,
-        "#fff"
-    );
-
-    txt(
-        "012500",
-        835,
         35,
         17,
         "#fff"
@@ -973,33 +722,64 @@ function platform(){
 
 
 /* =====================================================
-   SCENE 2
+   CHANNEL 2
    SPACE DEFENDER
 ===================================================== */
 
+var stars=[];
+
+function makeStars(){
+
+    var i;
+
+    for(i=0;i<80;i++){
+
+        stars.push({
+            x:rnd(0,W),
+            y:rnd(0,H),
+            s:rnd(1,4)
+        });
+
+    }
+
+}
+
 function space(){
+
+    var p = phase();
+
+    if(p===0){
+
+        titleCard(
+            "STAR DEFENDER",
+            "THE GALAXY NEEDS YOU",
+            "#00f5d4"
+        );
+
+        return;
+    }
+
+    if(p===3){
+
+        gameOver(
+            "STAR DEFENDER"
+        );
+
+        return;
+    }
 
     clear("#010108");
 
     var i;
 
-    for(
-        i=0;
-        i<stars.length;
-        i++
-    ){
+    for(i=0;i<stars.length;i++){
 
-        stars[i].y +=
-        stars[i].s;
+        stars[i].y += stars[i].s;
 
-        if(
-            stars[i].y>H
-        ){
+        if(stars[i].y>H){
 
             stars[i].y=0;
-
-            stars[i].x=
-            rnd(0,W);
+            stars[i].x=rnd(0,W);
 
         }
 
@@ -1033,9 +813,7 @@ function space(){
         "#00bbf9"
     );
 
-    if(
-        frame%30<15
-    ){
+    if(frame%30<15){
 
         rect(
             sx+39,
@@ -1047,68 +825,112 @@ function space(){
 
     }
 
-    for(i=0;i<6;i++){
+    if(p===1){
 
-        var ex =
-        120+i*135+
-        Math.sin(
-            frame/16+i
-        )*35;
+        for(i=0;i<6;i++){
 
-        var ey =
-        100+
-        Math.sin(
-            frame/12+i
-        )*20;
+            var ex =
+            120+i*135+
+            Math.sin(frame/16+i)*35;
 
-        rect(
-            ex,
-            ey,
-            42,
-            24,
-            "#ff006e"
-        );
+            var ey =
+            100+
+            Math.sin(frame/12+i)*20;
 
-        rect(
-            ex+8,
-            ey+24,
-            8,
-            12,
-            "#ff006e"
-        );
+            rect(
+                ex,
+                ey,
+                42,
+                24,
+                "#ff006e"
+            );
 
-        rect(
-            ex+28,
-            ey+24,
-            8,
-            12,
-            "#ff006e"
-        );
+        }
 
     }
 
-    txt(
-        "STAR DEFENDER",
-        25,
-        35,
-        18,
-        "#00f5d4"
-    );
+    if(p===2){
+
+        rect(
+            370,
+            90,
+            220,
+            90,
+            "#6a0dad"
+        );
+
+        rect(
+            405,
+            180,
+            40,
+            40,
+            "#ff006e"
+        );
+
+        rect(
+            515,
+            180,
+            40,
+            40,
+            "#ff006e"
+        );
+
+        centerText(
+            "MOTHERSHIP",
+            65,
+            18,
+            "#fff"
+        );
+
+    }
 
 }
 
 
 /* =====================================================
-   SCENE 3
-   NEON HIGHWAY
+   CHANNEL 3
+   NEON RACER
 ===================================================== */
 
 function racer(){
 
+    var p = phase();
+
+    if(p===0){
+
+        titleCard(
+            "NEON HIGHWAY",
+            "MIDNIGHT RUN",
+            "#ff006e"
+        );
+
+        return;
+    }
+
+    if(p===3){
+
+        clear("#10002b");
+
+        centerText(
+            "FINISH",
+            250,
+            48,
+            "#00f5d4"
+        );
+
+        centerText(
+            "1ST PLACE",
+            315,
+            30,
+            "#ff006e"
+        );
+
+        return;
+    }
+
     clear("#10002b");
 
-    ctx.fillStyle=
-    "#ff4d6d";
+    ctx.fillStyle="#ff4d6d";
 
     ctx.beginPath();
 
@@ -1130,29 +952,15 @@ function racer(){
         "#03001c"
     );
 
-    ctx.fillStyle=
-    "#111";
+    ctx.fillStyle="#111";
 
     ctx.beginPath();
 
-    ctx.moveTo(
-        390,280
-    );
-
-    ctx.lineTo(
-        570,280
-    );
-
-    ctx.lineTo(
-        840,540
-    );
-
-    ctx.lineTo(
-        120,540
-    );
-
+    ctx.moveTo(390,280);
+    ctx.lineTo(570,280);
+    ctx.lineTo(840,540);
+    ctx.lineTo(120,540);
     ctx.closePath();
-
     ctx.fill();
 
     var offset =
@@ -1194,47 +1002,69 @@ function racer(){
         "#7209b7"
     );
 
-    rect(
-        415,
-        472,
-        35,
-        25,
-        "#050505"
-    );
+    if(p===2){
 
-    rect(
-        510,
-        472,
-        35,
-        25,
-        "#050505"
-    );
+        rect(
+            640,
+            340,
+            120,
+            50,
+            "#00bbf9"
+        );
 
-    txt(
-        "NEON HIGHWAY",
-        25,
-        38,
-        19,
-        "#00f5d4"
-    );
+        txt(
+            "RIVAL",
+            660,
+            330,
+            16,
+            "#fff"
+        );
 
-    txt(
-        "220 KM/H",
-        810,
-        38,
-        16,
-        "#ff006e"
-    );
+    }
 
 }
 
 
 /* =====================================================
-   SCENE 4
-   DUNGEON
+   CHANNEL 4
+   DUNGEON QUEST
 ===================================================== */
 
 function dungeon(){
+
+    var p = phase();
+
+    if(p===0){
+
+        titleCard(
+            "DUNGEON QUEST",
+            "FLOOR VII",
+            "#d8f3dc"
+        );
+
+        return;
+    }
+
+    if(p===3){
+
+        clear("#13171a");
+
+        centerText(
+            "TREASURE FOUND",
+            250,
+            34,
+            "#ffd166"
+        );
+
+        centerText(
+            "+ 5000 GOLD",
+            310,
+            22,
+            "#fff"
+        );
+
+        return;
+    }
 
     clear("#13171a");
 
@@ -1245,9 +1075,7 @@ function dungeon(){
 
         for(x=0;x<13;x++){
 
-            if(
-                (x+y)%2===0
-            ){
+            if((x+y)%2===0){
 
                 rect(
                     x*80,
@@ -1262,42 +1090,6 @@ function dungeon(){
         }
 
     }
-
-    /* torches */
-
-    rect(
-        100,
-        115,
-        10,
-        50,
-        "#754321"
-    );
-
-    rect(
-        90,
-        85+
-        Math.sin(frame/5)*5,
-        30,
-        32,
-        "#ff9500"
-    );
-
-    rect(
-        850,
-        115,
-        10,
-        50,
-        "#754321"
-    );
-
-    rect(
-        840,
-        85+
-        Math.sin(frame/5)*5,
-        30,
-        32,
-        "#ff9500"
-    );
 
     var hx =
     430+
@@ -1319,59 +1111,93 @@ function dungeon(){
         "#f2cc8f"
     );
 
-    rect(
-        hx+47,
-        315,
-        6,
-        92,
-        "#ddd"
-    );
+    if(p===1){
 
-    var slime =
-    680+
-    Math.sin(frame/15)*35;
+        var slime =
+        680+
+        Math.sin(frame/15)*35;
 
-    rect(
-        slime,
-        370,
-        65,
-        38,
-        "#70e000"
-    );
+        rect(
+            slime,
+            370,
+            65,
+            38,
+            "#70e000"
+        );
 
-    rect(
-        slime+12,
-        350,
-        40,
-        25,
-        "#70e000"
-    );
+    }
 
-    txt(
-        "DUNGEON QUEST",
-        25,
-        36,
-        18,
-        "#d8f3dc"
-    );
+    if(p===2){
 
-    txt(
-        "HP  ███████░░░",
-        25,
-        510,
-        17,
-        "#ff4d6d"
-    );
+        rect(
+            680,
+            250,
+            120,
+            160,
+            "#8b0000"
+        );
+
+        rect(
+            700,
+            210,
+            80,
+            50,
+            "#b22222"
+        );
+
+        txt(
+            "DRAGON LORD",
+            650,
+            190,
+            18,
+            "#fff"
+        );
+
+    }
 
 }
 
 
 /* =====================================================
-   SCENE 5
-   FIGHTER
+   CHANNEL 5
+   STREET BATTLE
 ===================================================== */
 
 function fighter(){
+
+    var p=phase();
+
+    if(p===0){
+
+        titleCard(
+            "STREET BATTLE",
+            "ROUND 2",
+            "#f7b267"
+        );
+
+        return;
+    }
+
+    if(p===3){
+
+        clear("#111");
+
+        centerText(
+            "K.O.",
+            250,
+            70,
+            "#ff595e"
+        );
+
+        centerText(
+            "PLAYER 1 WINS",
+            330,
+            24,
+            "#fff"
+        );
+
+        return;
+    }
 
     clear("#ee9b58");
 
@@ -1383,58 +1209,8 @@ function fighter(){
         "#3d3d3d"
     );
 
-    var i;
-
-    for(i=0;i<8;i++){
-
-        rect(
-            i*130,
-            100+(i%3)*35,
-            90,
-            220,
-            "#232323"
-        );
-
-    }
-
-    /* health */
-
-    rect(
-        55,
-        45,
-        330,
-        25,
-        "#111"
-    );
-
-    rect(
-        60,
-        50,
-        290,
-        15,
-        "#43aa8b"
-    );
-
-    rect(
-        575,
-        45,
-        330,
-        25,
-        "#111"
-    );
-
-    rect(
-        610,
-        50,
-        290,
-        15,
-        "#ff595e"
-    );
-
     var punch =
     Math.sin(frame/10)*20;
-
-    /* fighter 1 */
 
     rect(
         220,
@@ -1460,8 +1236,6 @@ function fighter(){
         "#277da1"
     );
 
-    /* fighter 2 */
-
     rect(
         700,
         330,
@@ -1486,23 +1260,48 @@ function fighter(){
         "#d90429"
     );
 
-    txt(
-        "ROUND 2",
-        440,
-        36,
-        19,
-        "#fff"
-    );
+    if(p===2){
+
+        centerText(
+            "FINAL ROUND",
+            110,
+            22,
+            "#fff"
+        );
+
+    }
 
 }
 
 
 /* =====================================================
-   SCENE 6
+   CHANNEL 6
    BLOCK DROP
 ===================================================== */
 
 function blocks(){
+
+    var p=phase();
+
+    if(p===0){
+
+        titleCard(
+            "BLOCK DROP",
+            "CLEAR THE LINES",
+            "#00f5d4"
+        );
+
+        return;
+    }
+
+    if(p===3){
+
+        gameOver(
+            "BLOCK DROP"
+        );
+
+        return;
+    }
 
     clear("#070707");
 
@@ -1514,7 +1313,7 @@ function blocks(){
         "#111"
     );
 
-    var colors = [
+    var colors=[
         "#00bbf9",
         "#f15bb5",
         "#fee440",
@@ -1529,9 +1328,7 @@ function blocks(){
 
         for(x=1;x<10;x++){
 
-            if(
-                (x+y)%3!==0
-            ){
+            if((x+y)%3!==0){
 
                 rect(
                     325+x*30,
@@ -1576,46 +1373,43 @@ function blocks(){
         "#00f5d4"
     );
 
-    rect(
-        495,
-        fy-30,
-        28,
-        28,
-        "#00f5d4"
-    );
+    if(p===2){
 
-    txt(
-        "LINES",
-        90,
-        145,
-        18,
-        "#fff"
-    );
+        centerText(
+            "LEVEL UP!",
+            100,
+            24,
+            "#fee440"
+        );
 
-    txt(
-        "042",
-        90,
-        185,
-        30,
-        "#fee440"
-    );
+    }
 
 }
 
 
 /* =====================================================
-   SCENE 7
-   PIXEL OCEAN
+   CHANNEL 7
+   PIXEL ISLAND
 ===================================================== */
 
 function ocean(){
 
+    var p=phase();
+
+    if(p===0){
+
+        titleCard(
+            "PIXEL ISLAND",
+            "ADVENTURE AWAITS",
+            "#72d6e8"
+        );
+
+        return;
+    }
+
     clear("#72d6e8");
 
-    /* sun */
-
-    ctx.fillStyle=
-    "#ffe66d";
+    ctx.fillStyle="#ffe66d";
 
     ctx.beginPath();
 
@@ -1629,8 +1423,6 @@ function ocean(){
 
     ctx.fill();
 
-    /* sea */
-
     rect(
         0,
         240,
@@ -1638,28 +1430,6 @@ function ocean(){
         300,
         "#0077b6"
     );
-
-    var wave =
-    Math.sin(frame/10)*7;
-
-    var i;
-
-    for(i=0;i<12;i++){
-
-        rect(
-            i*90+
-            ((frame*2)%90)-90,
-            270+
-            (i%2)*30+
-            wave,
-            55,
-            5,
-            "#90e0ef"
-        );
-
-    }
-
-    /* island */
 
     rect(
         80,
@@ -1685,8 +1455,6 @@ function ocean(){
         "#52b788"
     );
 
-    /* boat */
-
     var boatX =
     (frame*1.5)%1200-150;
 
@@ -1699,39 +1467,52 @@ function ocean(){
         "#fff"
     );
 
-    rect(
-        boatX+45,
-        300+
-        Math.sin(frame/12)*6,
-        5,
-        55,
-        "#fff"
-    );
+    if(p===2){
 
-    txt(
-        "PIXEL ISLAND",
-        25,
-        35,
-        18,
-        "#fff"
-    );
+        rect(
+            650,
+            330,
+            80,
+            65,
+            "#8b4513"
+        );
+
+        txt(
+            "TREASURE!",
+            620,
+            310,
+            18,
+            "#fff"
+        );
+
+    }
 
 }
 
 
 /* =====================================================
-   SCENE 8
-   NIGHT CITY
+   CHANNEL 8
+   MIDNIGHT CITY
 ===================================================== */
 
 function city(){
 
+    var p=phase();
+
+    if(p===0){
+
+        titleCard(
+            "MIDNIGHT CITY",
+            "AFTER DARK",
+            "#f15bb5"
+        );
+
+        return;
+    }
+
     clear("#09001a");
 
-    /* moon */
-
-    ctx.fillStyle=
-    "#e0e1dd";
+    ctx.fillStyle="#e0e1dd";
 
     ctx.beginPath();
 
@@ -1761,45 +1542,7 @@ function city(){
             "#15152c"
         );
 
-        var floor;
-
-        for(
-            floor=0;
-            floor<4;
-            floor++
-        ){
-
-            if(
-                (i+floor+
-                Math.floor(frame/90))
-                %3!==0
-            ){
-
-                rect(
-                    i*90+15,
-                    390-bh+
-                    floor*35+100,
-                    11,
-                    14,
-                    "#ffd166"
-                );
-
-                rect(
-                    i*90+43,
-                    390-bh+
-                    floor*35+100,
-                    11,
-                    14,
-                    "#ffd166"
-                );
-
-            }
-
-        }
-
     }
-
-    /* road */
 
     rect(
         0,
@@ -1820,28 +1563,349 @@ function city(){
         "#ff006e"
     );
 
+    if(p===2){
+
+        centerText(
+            "NIGHT DRIVE",
+            110,
+            24,
+            "#00f5d4"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CHANNEL 9
+   PIXEL TENNIS
+===================================================== */
+
+function tennis(){
+
+    var p=phase();
+
+    if(p===0){
+
+        titleCard(
+            "PIXEL TENNIS",
+            "CHAMPIONSHIP MATCH",
+            "#7ae582"
+        );
+
+        return;
+    }
+
+    if(p===3){
+
+        clear("#1b4332");
+
+        centerText(
+            "GAME SET MATCH",
+            250,
+            36,
+            "#fff"
+        );
+
+        centerText(
+            "PLAYER 1",
+            320,
+            26,
+            "#fee440"
+        );
+
+        return;
+    }
+
+    clear("#1b4332");
+
     rect(
-        car+20,
-        462,
+        80,
+        70,
+        800,
+        400,
+        "#40916c"
+    );
+
+    ctx.strokeStyle="#fff";
+    ctx.lineWidth=5;
+
+    ctx.strokeRect(
+        80,
+        70,
+        800,
+        400
+    );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        480,
+        70
+    );
+
+    ctx.lineTo(
+        480,
+        470
+    );
+
+    ctx.stroke();
+
+    rect(
+        450,
+        220,
+        60,
+        4,
+        "#fff"
+    );
+
+    var ballX =
+    480+
+    Math.sin(frame/15)*330;
+
+    var ballY =
+    270+
+    Math.sin(frame/9)*120;
+
+    rect(
+        ballX,
+        ballY,
+        12,
+        12,
+        "#fee440"
+    );
+
+    rect(
+        180,
+        270+
+        Math.sin(frame/15)*100,
+        20,
+        60,
+        "#277da1"
+    );
+
+    rect(
+        760,
+        270-
+        Math.sin(frame/15)*100,
+        20,
+        60,
+        "#d90429"
+    );
+
+    if(p===2){
+
+        centerText(
+            "MATCH POINT",
+            50,
+            20,
+            "#fff"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CHANNEL 10
+   CYBER BREAKOUT
+===================================================== */
+
+function breakout(){
+
+    var p=phase();
+
+    if(p===0){
+
+        titleCard(
+            "CYBER BREAKOUT",
+            "DESTROY THE GRID",
+            "#00f5d4"
+        );
+
+        return;
+    }
+
+    if(p===3){
+
+        clear("#050505");
+
+        centerText(
+            "STAGE CLEAR",
+            250,
+            40,
+            "#00f5d4"
+        );
+
+        centerText(
+            "BONUS +5000",
+            320,
+            20,
+            "#fee440"
+        );
+
+        return;
+    }
+
+    clear("#050505");
+
+    var colors=[
+        "#ff006e",
+        "#8338ec",
+        "#3a86ff",
+        "#00f5d4"
+    ];
+
+    var x;
+    var y;
+
+    for(y=0;y<5;y++){
+
+        for(x=0;x<10;x++){
+
+            if(
+                (x+y+
+                Math.floor(frame/120))
+                %6!==0
+            ){
+
+                rect(
+                    85+x*80,
+                    60+y*35,
+                    68,
+                    24,
+                    colors[y%4]
+                );
+
+            }
+
+        }
+
+    }
+
+    var paddleX =
+    400+
+    Math.sin(frame/20)*250;
+
+    rect(
+        paddleX,
+        475,
+        120,
+        18,
+        "#fff"
+    );
+
+    var bx =
+    480+
+    Math.sin(frame/13)*350;
+
+    var by =
+    300+
+    Math.sin(frame/9)*170;
+
+    rect(
+        bx,
+        by,
+        15,
+        15,
+        "#fee440"
+    );
+
+}
+
+
+/* =====================================================
+   COMMERCIALS
+===================================================== */
+
+var ads = [
+    {
+        title:"TURBO SODA",
+        sub:"POWER UP YOUR DAY",
+        color:"#ff006e"
+    },
+    {
+        title:"MEGA BYTE",
+        sub:"THE SNACK OF CHAMPIONS",
+        color:"#fee440"
+    },
+    {
+        title:"PIXEL FORCE",
+        sub:"PLAY HARDER",
+        color:"#00f5d4"
+    },
+    {
+        title:"RETRO VISION",
+        sub:"THE FUTURE IS 8-BIT",
+        color:"#8338ec"
+    }
+];
+
+function commercial(){
+
+    var ad =
+    ads[
+        Math.floor(
+            commercialTimer/3
+        ) %
+        ads.length
+    ];
+
+    clear("#111");
+
+    centerText(
+        "RETRO TV COMMERCIAL",
+        85,
+        18,
+        "#777"
+    );
+
+    centerText(
+        ad.title,
+        230,
         50,
-        22,
-        "#8338ec"
+        ad.color
     );
 
-    rect(
-        car-20,
-        493,
+    centerText(
+        ad.sub,
+        290,
         18,
-        5,
-        "#ffbe0b"
+        "#fff"
     );
 
-    txt(
-        "MIDNIGHT CITY",
-        25,
-        35,
+    centerText(
+        "ONLY 19.99",
+        390,
+        24,
+        "#fee440"
+    );
+
+}
+
+
+/* =====================================================
+   STATION ID
+===================================================== */
+
+function stationID(){
+
+    clear("#020202");
+
+    centerText(
+        "RETRO TV",
+        240,
+        60,
+        "#fff"
+    );
+
+    centerText(
+        "ALL GAMES · ALL DAY",
+        305,
         18,
-        "#f15bb5"
+        "#777"
     );
 
 }
@@ -1859,22 +1923,28 @@ function draw(){
     ){
 
         frame++;
+        phaseFrame++;
 
-        if(scene===0)platform();
+        if(commercialMode){
 
-        if(scene===1)space();
+            commercial();
 
-        if(scene===2)racer();
+        }
 
-        if(scene===3)dungeon();
+        else{
 
-        if(scene===4)fighter();
+            if(scene===0)platform();
+            if(scene===1)space();
+            if(scene===2)racer();
+            if(scene===3)dungeon();
+            if(scene===4)fighter();
+            if(scene===5)blocks();
+            if(scene===6)ocean();
+            if(scene===7)city();
+            if(scene===8)tennis();
+            if(scene===9)breakout();
 
-        if(scene===5)blocks();
-
-        if(scene===6)ocean();
-
-        if(scene===7)city();
+        }
 
     }
 
@@ -1884,48 +1954,68 @@ function draw(){
 
 
 /* =====================================================
-   CHANNEL NAMES
+   NAMES
 ===================================================== */
 
-var names = [
-
-"PIXEL KINGDOM",
-
-"STAR DEFENDER",
-
-"NEON HIGHWAY",
-
-"DUNGEON QUEST",
-
-"STREET BATTLE",
-
-"BLOCK DROP",
-
-"PIXEL ISLAND",
-
-"MIDNIGHT CITY"
-
+var names=[
+    "PIXEL KINGDOM",
+    "STAR DEFENDER",
+    "NEON HIGHWAY",
+    "DUNGEON QUEST",
+    "STREET BATTLE",
+    "BLOCK DROP",
+    "PIXEL ISLAND",
+    "MIDNIGHT CITY",
+    "PIXEL TENNIS",
+    "CYBER BREAKOUT"
 ];
 
 
+/* =====================================================
+   CHANNEL SELECTION
+===================================================== */
+
+function allowedScene(){
+
+    if(isNight()){
+
+        var nightScenes=[
+            1,2,3,7,9
+        ];
+
+        return nightScenes[
+            rnd(
+                0,
+                nightScenes.length-1
+            )
+        ];
+
+    }
+
+    return rnd(
+        0,
+        sceneCount-1
+    );
+
+}
+
 function updateChannel(){
 
-    var number =
-    scene+1;
+    var number=scene+1;
 
-    var display =
+    var display=
     number<10 ?
     "0"+number :
     number;
 
     document.getElementById(
         "channel"
-    ).innerHTML =
+    ).innerHTML=
     "CH "+display;
 
     document.getElementById(
         "nowPlaying"
-    ).innerHTML =
+    ).innerHTML=
     "CH "+display+
     " · "+
     names[scene];
@@ -1939,56 +2029,46 @@ function updateChannel(){
 
 function channelStatic(){
 
-    var staticBox =
+    var box=
     document.getElementById(
         "static"
     );
 
-    staticBox.style.display=
+    box.style.display=
     "block";
-
-    tone(
-        65,
-        100,
-        "square",
-        .018
-    );
 
     setTimeout(
         function(){
 
-            staticBox.style.display=
+            box.style.display=
             "none";
 
         },
-        180
+        160
     );
 
 }
 
 
 /* =====================================================
-   NEXT / PREVIOUS
+   NEXT CHANNEL
 ===================================================== */
 
 function nextScene(){
 
     channelStatic();
 
+    commercialMode=false;
+    commercialTimer=0;
+
     if(shuffle){
 
         var old=scene;
 
-        while(
-            scene===old &&
-            scenes>1
-        ){
+        while(scene===old){
 
             scene=
-            rnd(
-                0,
-                scenes-1
-            );
+            allowedScene();
 
         }
 
@@ -1998,7 +2078,7 @@ function nextScene(){
 
         scene++;
 
-        if(scene>=scenes){
+        if(scene>=sceneCount){
 
             scene=0;
 
@@ -2007,34 +2087,36 @@ function nextScene(){
     }
 
     frame=0;
-
-    beat=0;
-
-    sceneTime=0;
+    phaseFrame=0;
+    channelTimer=0;
 
     updateChannel();
 
 }
 
 
+/* =====================================================
+   PREVIOUS
+===================================================== */
+
 function previousScene(){
 
     channelStatic();
+
+    commercialMode=false;
 
     scene--;
 
     if(scene<0){
 
         scene=
-        scenes-1;
+        sceneCount-1;
 
     }
 
     frame=0;
-
-    beat=0;
-
-    sceneTime=0;
+    phaseFrame=0;
+    channelTimer=0;
 
     updateChannel();
 
@@ -2049,69 +2131,12 @@ function togglePause(){
 
     paused=!paused;
 
-    if(paused){
-
-        document.getElementById(
-            "pauseButton"
-        ).innerHTML=
-        "PLAY";
-
-        document.getElementById(
-            "pauseLabel"
-        ).style.display=
-        "block";
-
-    }
-
-    else{
-
-        document.getElementById(
-            "pauseButton"
-        ).innerHTML=
-        "PAUSE";
-
-        document.getElementById(
-            "pauseLabel"
-        ).style.display=
-        "none";
-
-    }
-
-}
-
-
-/* =====================================================
-   SOUND
-===================================================== */
-
-function toggleMute(){
-
-    muted=!muted;
-
-    if(muted){
-
-        document.getElementById(
-            "muteButton"
-        ).innerHTML=
-        "MUTED";
-
-    }
-
-    else{
-
-        document.getElementById(
-            "muteButton"
-        ).innerHTML=
-        "SOUND";
-
-        tone(
-            440,
-            80,
-            "square",
-            .03
-        );
-
-    }
+    document.getElementById(
+        "pauseButton"
+    ).innerHTML=
+    paused ?
+    "PLAY" :
+    "PAUSE";
 
 }
 
@@ -2124,84 +2149,94 @@ function toggleShuffle(){
 
     shuffle=!shuffle;
 
-    if(shuffle){
-
-        document.getElementById(
-            "shuffleButton"
-        ).innerHTML=
-        "SHUFFLE ON";
-
-    }
-
-    else{
-
-        document.getElementById(
-            "shuffleButton"
-        ).innerHTML=
-        "SHUFFLE OFF";
-
-    }
+    document.getElementById(
+        "shuffleButton"
+    ).innerHTML=
+    shuffle ?
+    "SHUFFLE ON" :
+    "SHUFFLE OFF";
 
 }
 
 
 /* =====================================================
-   CHANNEL DURATION
+   TV MODE
 ===================================================== */
 
-function changeDuration(){
+function toggleMode(){
 
-    if(duration===30){
-
-        duration=45;
-
-    }
-
-    else if(duration===45){
-
-        duration=60;
-
-    }
-
-    else if(duration===60){
-
-        duration=120;
-
-    }
-
-    else{
-
-        duration=30;
-
-    }
-
-    sceneTime=0;
+    autoTV=!autoTV;
 
     document.getElementById(
-        "durationButton"
+        "modeButton"
     ).innerHTML=
-    duration+
-    " SEC";
+    autoTV ?
+    "AUTO TV" :
+    "MANUAL";
 
 }
 
 
 /* =====================================================
-   AUTOMATIC CHANNEL SWITCH
+   AUTO PROGRAMMING
 ===================================================== */
 
-function timer(){
+function secondTimer(){
 
     if(
-        started &&
-        !paused
+        !started ||
+        paused
     ){
 
-        sceneTime++;
+        return;
+
+    }
+
+    if(commercialMode){
+
+        commercialTimer++;
 
         if(
-            sceneTime>=duration
+            commercialTimer>=9
         ){
+
+            commercialMode=false;
+
+            nextScene();
+
+        }
+
+        return;
+
+    }
+
+    if(!autoTV){
+
+        return;
+
+    }
+
+    channelTimer++;
+
+    if(
+        channelTimer>=channelDuration
+    ){
+
+        channelTimer=0;
+
+        /* about every third change,
+           run a fake ad break */
+
+        if(
+            rnd(1,3)===1
+        ){
+
+            commercialMode=true;
+            commercialTimer=0;
+
+        }
+
+        else{
 
             nextScene();
 
@@ -2213,18 +2248,118 @@ function timer(){
 
 
 /* =====================================================
+   HIDDEN INTERACTIVE MODE
+===================================================== */
+
+function screenTap(event){
+
+    if(!started){
+
+        return;
+
+    }
+
+    if(
+        event.target &&
+        event.target.className==="button"
+    ){
+
+        return;
+
+    }
+
+    if(commercialMode){
+
+        return;
+
+    }
+
+    interactiveMode=true;
+
+    score++;
+
+    /* small scene-specific reaction */
+
+    if(scene===0){
+
+        frame += 18;
+
+    }
+
+    if(scene===1){
+
+        frame += 12;
+
+    }
+
+    if(scene===2){
+
+        frame += 20;
+
+    }
+
+    if(scene===3){
+
+        phaseFrame += 15;
+
+    }
+
+    if(scene===4){
+
+        frame += 10;
+
+    }
+
+    if(scene===5){
+
+        frame += 25;
+
+    }
+
+    if(scene===8){
+
+        frame += 20;
+
+    }
+
+    if(scene===9){
+
+        frame += 15;
+
+    }
+
+    document.getElementById(
+        "interactiveHint"
+    ).style.display=
+    "block";
+
+    setTimeout(
+        function(){
+
+            document.getElementById(
+                "interactiveHint"
+            ).style.display=
+            "none";
+
+        },
+        1200
+    );
+
+}
+
+
+/* =====================================================
    CONTROLS
 ===================================================== */
 
 function showControls(){
 
-    var controls =
+    var controls=
     document.getElementById(
         "controls"
     );
 
-    controls.style.opacity=
-    "1";
+    controls.style.opacity="1";
 
     if(controlsTimer){
 
@@ -2238,11 +2373,10 @@ function showControls(){
     setTimeout(
         function(){
 
-            controls.style.opacity=
-            "0";
+            controls.style.opacity="0";
 
         },
-        4000
+        3500
     );
 
 }
@@ -2257,6 +2391,14 @@ document.addEventListener(
 document.addEventListener(
     "click",
     showControls,
+    false
+);
+
+document.getElementById(
+    "picture"
+).addEventListener(
+    "click",
+    screenTap,
     false
 );
 
@@ -2275,64 +2417,41 @@ function startTV(){
 
     started=true;
 
-    setupAudio();
-
     document.getElementById(
         "startScreen"
-    ).style.display=
-    "none";
-
-    updateChannel();
-
-    tone(
-        440,
-        80,
-        "square",
-        .03
-    );
-
-    setTimeout(
-        function(){
-
-            tone(
-                660,
-                100,
-                "square",
-                .025
-            );
-
-        },
-        90
-    );
+    ).style.display="none";
 
 }
 
+
+/* =====================================================
+   INIT
+===================================================== */
 
 function init(){
 
     makeStars();
 
+    /* start with night-appropriate
+       programming after 8 PM */
+
+    if(isNight()){
+
+        scene=
+        allowedScene();
+
+    }
+
     updateChannel();
 
     setInterval(
-        timer,
+        secondTimer,
         1000
-    );
-
-    /*
-      roughly 8-bit music tempo
-    */
-
-    musicTimer=
-    setInterval(
-        musicBeat,
-        220
     );
 
     draw();
 
 }
-
 
 init();
 
